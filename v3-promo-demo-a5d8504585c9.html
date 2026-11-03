@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>V3 推广 B 端 Demo</title>
 <style>
 :root{color-scheme:light;--blue:#1d5fa6;--blue2:#2a6fba;--pri:#1d61a8;--pri-soft:#eaf2fb;--line:#e4e7ec;--th:#f7f8fa;--ink:#1f2329;--mut:#7a8290;--green:#18a058;--green-soft:#e9f7ef;--red:#d03050;--red-soft:#fdecef;--orange:#f0a020;--orange-soft:#fff6e5;--bg:#f2f4f7;--new:#e8492f;--chg:#f08a00}
@@ -1629,3 +1634,5 @@ function grpDel(i){const g=GROUPS[i],n=CHANNELS.filter(c=>c.grp===g.name).length
  if(!document.querySelector('#modal.on')&&ed&&id){const c=CHANNELS.find(x=>x.id===id);if(c){c.grp=v==='未分组'?'':(v||c.grp);render()}}return res}}
 {const h=location.hash.slice(1);if(PAGES[h])go(h);else render()}
 </script>
+
+</body></html>
