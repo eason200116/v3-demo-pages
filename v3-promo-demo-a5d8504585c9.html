@@ -729,8 +729,8 @@ const TIPS={
  '平台接入ID':'在广告平台后台拿到的编号，如 Facebook 的 Pixel ID、TikTok 的 Pixel Code；Google 不用，填 Customer ID 并授权。填错了数据就发不到这个平台。',
  'Access Token':'用来把注册、充值结果发给广告平台，在广告平台后台生成后粘贴进来。',
  '归属代理':'填代理 ID 或代理邀请码，二选一。从这个渠道注册的新用户，自动成为这个代理的下级，不用再填邀请码。老用户不会改上级。',
- '母包':'总控统一做好的安装包，每个端只有一个。新建 App 渠道时按端自动带出；用户从哪个渠道下载，系统就把那个渠道号写进去，不重新打包。',
- '母包名称':'总控统一做好的安装包，每个端只有一个。用户从哪个渠道下载，系统就把那个渠道号写进去，不重新打包。',
+ '母包':'总控统一做好的安装包，每个商户的安卓原生、安卓壳包各一个。新建 App 渠道时按端自动带出；用户从哪个渠道下载，系统就把那个渠道号写进去，不重新打包。',
+ '母包名称':'总控统一做好的安装包，每个商户的安卓原生、安卓壳包各一个。用户从哪个渠道下载，系统就把那个渠道号写进去，不重新打包。',
  '更新方式':'打开时自动更新：用户不用重装，打开应用就换成新版本。提示下载新包：用户要下载安装新的安装包。',
  
  
@@ -1223,22 +1223,30 @@ PAGES.aApp={end:'a',title:'应用与版本',bd:['新',''],tab:0,render(){
   `<div class="selrow">${inp('集团','亚太集团')}${inp('商户',M)}${inp('应用','daman（安卓原生 / 安卓壳包）',{w:260})}<span class="note" style="margin-left:auto">选「全部商户」时看所有母包</span></div>`+
   tabs(['母包','版本'],t,'aAppTab');
   if(t===0)h+=`<div class="bar"><button class="btn p" onclick="motherNew()">＋ 新增母包</button></div>`+table([
-   {t:'集团',k:()=>'亚太集团'},{t:'商户',k:()=>pill(M)},{t:'应用',k:()=>'daman'},{t:'母包ID',k:0},{t:'母包名称',k:1},{t:'类型',k:r=>`<span class="tag">${r[2]}</span>`},{t:'版本号',k:3},{t:'状态',k:6},{t:'最后修改人/时间',k:7},{t:'操作',k:r=>`<span class="ops"><a onclick="motherEdit('${r[0]}')">编辑</a><a>上传新版本</a></span>`}].map(c=>c),MPS.length?MPS:(MPS=[
+   {t:'集团',k:()=>'亚太集团'},{t:'商户',k:()=>pill(M)},{t:'应用',k:()=>'daman'},{t:'母包ID',k:0},{t:'母包名称',k:1},{t:'类型',k:r=>`<span class="tag">${r[2]}</span>`},{t:'版本号',k:3},{t:'状态',k:6},{t:'最后修改人/时间',k:7},{t:'操作',k:r=>`<span class="ops"><a onclick="motherEdit('${r[0]}')">编辑</a></span>`}].map(c=>c),MPS.length?MPS:(MPS=[
    ['MP01','安卓原生母包','安卓原生','v3.1.0','AR-Release · 2027-08-30',['读取渠道号'],st('启用','ok'),who('admin01','2026-11-02 15:00')],
    ['MP02','安卓壳包母包','安卓壳包','v2.3.1','AR-Shell · 2027-03-12',['读取渠道号','壳内网页桥接'],st('启用','ok'),who('admin02','2026-10-30 18:00')]]));
   if(t===1)h+=flt([inp('母包'),inp('平台','',{ph:'全部'}),inp('发布状态'),inp('问题类型'),inp('处理状态')])+`<div class="bar"><button class="btn p" onclick="verNew()">＋ 新建版本</button></div>`+table([
-   {t:'集团',k:()=>'亚太集团'},{t:'商户',k:()=>pill(M)},{t:'应用',k:()=>'daman'},{t:'版本ID',k:r=>(VEXT[r[0]]||{}).id||'--'},{t:'平台',k:()=>'<span class="tag">ANDROID</span>'},{t:'版本号',k:0},{t:'母包',k:1},{t:'更新方式',k:3},{t:'更新类型',k:r=>VTYPE[r[0]]==='强制更新'?'<span class="tag" style="background:#fdecee;color:#c03">强制更新</span>':'<span class="tag">建议更新</span>'},{t:'更新说明',l:1,k:4},{t:'测试结果',k:6},{t:'发布状态',k:7},{t:'文件大小',k:r=>(VEXT[r[0]]||{}).size||'--'},{t:'下载地址',k:r=>r[7].includes('草稿')&&!(VEXT[r[0]]||{}).size?'--':`<a onclick="toast('演示：开始下载 daman_${r[0]}${/热更/.test(r[3])?'.zip':'.apk'}')">下载</a>`},
+   {t:'版本ID',k:r=>(VEXT[r[0]]||{}).id||'--'},{t:'平台',k:()=>'<span class="tag">ANDROID</span>'},{t:'版本号',k:0},{t:'母包',k:1},{t:'更新方式',k:3},{t:'更新类型',k:r=>VTYPE[r[0]]==='强制更新'?'<span class="tag" style="background:#fdecee;color:#c03">强制更新</span>':'<span class="tag">建议更新</span>'},{t:'更新说明',l:1,k:4},{t:'测试结果',k:6},{t:'发布状态',k:7},{t:'文件大小',k:r=>(VEXT[r[0]]||{}).size||'--'},{t:'下载地址',k:r=>r[7].includes('草稿')&&!(VEXT[r[0]]||{}).size?'--':`<a onclick="toast('演示：开始下载 daman_${r[0]}${/热更/.test(r[3])?'.zip':'.apk'}')">下载</a>`},
    {t:'升级进度',cls:'newc',k:r=>r[8]?`<span class="prog"><i style="width:${r[8][0]}%"></i></span>${r[8][1]}`:'--'},
-   {t:'问题数',cls:'newc',k:r=>{const n=ISSUES.filter(x=>x[8]===r[0]).length;return (n?`<a onclick="verIssues('${r[0]}')">${n}</a>`:'0')+`<span style="display:none">${ISSUES.filter(x=>x[8]===r[0]).map(x=>x[1]).join(' ')}</span>`}},
+   {t:'问题数',cls:'newc',k:r=>{const n=ISSUES.filter(x=>x[8]===r[0]).length;return `<a onclick="verIssues('${r[0]}')">${n}</a>`+`<span style="display:none">${ISSUES.filter(x=>x[8]===r[0]).map(x=>x[1]).join(' ')}</span>`}},
    {t:'问题类型',cls:'newc',k:r=>{const L=[...new Set(ISSUES.filter(x=>x[8]===r[0]).map(x=>x[1]))];return L.length?L.join('、'):'--'}},{t:'处理状态',cls:'newc',k:r=>{const L=ISSUES.filter(x=>x[8]===r[0]);return !L.length?'--':L.some(x=>x[6]!=='已修复')?st('处理中','run'):st('已修复','ok')}},{t:'最后修改人/时间',k:r=>(VEXT[r[0]]||{}).u||'--'},
-   {t:'操作',k:r=>`<span class="ops">${r[7].includes('草稿')?`<a>编辑</a><a>发布</a><a class="r" onclick="verDel('${r[0]}')">删除</a>`:`<a onclick="verView('${r[0]}')">查看</a>`}<a onclick="verIssues('${r[0]}')">问题</a>${r[7].includes('已发布')?`<a onclick="verRollback('${r[0]}')">回滚</a><a class="r">下架</a>`:''}</span>`}],VERS)+
+   {t:'操作',k:r=>`<span class="ops">${r[7].includes('草稿')?`<a onclick="verEdit('${r[0]}')">编辑</a><a onclick="verPub('${r[0]}')" ${/已通过/.test(r[6])?'':'style="color:var(--mut)"'}>发布</a><a class="r" onclick="verDel('${r[0]}')">删除</a>`:`<a onclick="verView('${r[0]}')">查看</a>`}${r[7].includes('已发布')?`<a onclick="verRollback('${r[0]}')">回滚</a><a class="r">下架</a>`:''}</span>`}],VERS)+
    `<p class="note">原「更新与维护」并到这里：每个版本的升级进度、问题数、处理状态放在同一行，点「问题」看这个版本的问题并处理。强制更新：系统自动重建这个商户所有渠道的子包，下载链接不变，商户端只收到只读通知和更新记录，不用重新上传；传到应用商店的子包不会自己更新，商户端会标「需人工重新上传」。建议更新：商户在「版本更新」里点「更新」选渠道，系统重建这些渠道的子包。热更（网页内容）不用重建子包。子包用母包的签名证书；App 启动时检查版本、提示用户更新，强制更新靠这个让已装的 App 也升级。</p>`;
   return h}};
 function aAppTab(i){PAGES.aApp.tab=i;render()}
-function verNew(){openDrawer('新建版本',
- F([['母包',S('安卓壳包母包'),{req:1}],['平台',S('ANDROID'),{req:1}],['版本号',VNO('v2.4.1'),{req:1}],['更新方式',R(['安装包升级','热更网页内容','热更配置'],'热更网页内容'),{req:1,full:1}],['更新类型',R(['强制更新','建议更新'],'建议更新'),{req:1}],
-  ['兼容的母包版本',I('≥ v2.3.0')],['商户',`<span>${M}</span>`,{ro:1}],['更新说明',`<div class="inp t" style="height:56px;align-items:flex-start;padding-top:4px">请输入</div>`,{req:1,full:1}],['上传文件','<button class="btn sm">选择文件</button>',{full:1}]],140),
- '<button class="btn" onclick="closeDrawer()">取消</button><button class="btn" onclick="closeDrawer();toast(\'演示：已存草稿\')">存草稿</button><button class="btn p" onclick="closeDrawer();toast(\'演示：已提交测试\')">确定</button>',720)}
+function verNew(d){d=d||{};const ed=!!d.v;openDrawer(ed?'编辑版本':'新建版本',
+ F([['商户',`<span>${M}</span>`,{ro:1}],['母包',S(d.mp||'安卓壳包母包'),{req:1}],['平台',S('ANDROID'),{req:1}],['版本号',VNO(d.v||'v2.4.1'),{req:1}],['更新方式',R(['安装包升级','热更网页内容','热更配置'],d.how||'热更网页内容'),{req:1,full:1}],['更新类型',R(['强制更新','建议更新'],d.type||'建议更新'),{req:1}],
+  ['兼容的母包版本',I(d.cp||'≥ v2.3.0')],['更新说明',`<textarea class="inp ta" placeholder="请输入">${d.note||''}</textarea>`,{req:1,full:1}],['上传文件',d.size?`<span>daman_${d.v}.apk（${d.size}）</span> <button class="btn sm">重新选择</button>`:'<button class="btn sm">选择文件</button>',{full:1}]],140),
+ `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn" onclick="verSaveD('${d.v||''}',0)">存草稿</button><button class="btn p" onclick="verSaveD('${d.v||''}',1)">确定</button>`,720,ed?[['版本ID',d.id]]:undefined)}
+function verEdit(v){const r=VERS.find(x=>x[0]===v);if(!r)return;const e=VEXT[v]||{};verNew({v,mp:r[1],how:r[3],type:VTYPE[v],cp:/^--/.test(r[9])?'':r[9],note:r[4],size:e.size,id:e.id})}
+function verSaveD(old,sub){const b=$('#dbody');const v=(b.querySelector('input.vno').value||'').trim();const note=(b.querySelector('textarea').value||'').trim();if(!v)return toast('请填版本号');if(!note)return toast('请填更新说明');
+ const r=old&&VERS.find(x=>x[0]===old);if(r){const mp=chFr('母包')?.querySelector('div.inp')?.textContent.trim();const how=chFr('更新方式')?.querySelector('.radio .on')?.textContent;const ty=chFr('更新类型')?.querySelector('.radio .on')?.textContent;
+  if(v!==old){VERS[VERS.indexOf(r)][0]=v;VEXT[v]=VEXT[old];VTYPE[v]=VTYPE[old]}r[1]=mp||r[1];r[3]=how||r[3];r[4]=note;VTYPE[v]=ty||VTYPE[v];(VEXT[v]||{}).u=who('admin01','2026-11-04 16:00');if(sub)r[6]=st('验证中','run')}
+ closeDrawer();render();toast(sub?'已提交测试，测试通过后才能发布':'已存草稿')}
+function verPub(v){const r=VERS.find(x=>x[0]===v);if(!r)return;if(!/已通过/.test(r[6]))return toast('测试还没通过，通过后才能发布');
+ openDrawer('发布',F([['版本ID',`<b style="font-weight:500">${(VEXT[v]||{}).id||v}</b>`,{ro:1}]],96)+'<div class="alert">发布后，商户可以在「应用与版本 › 版本更新」里安排这个版本。</div>',`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="cfok">确定</button>`,440);
+ $('#cfok').onclick=()=>{r[7]=st('已发布','ok');r[8]=[0,'0 / 410 台'];closeDrawer();render();toast('已发布')}}
 
 /* ---- 总控 · 推广报表 ---- */
 PAGES.aRpt={end:'a',title:'推广报表',bd:['新',''],tab:0,render(){return PAGES.mRpt.render.call(this)}}; function aRptTab(i){PAGES.aRpt.tab=i;render()}
@@ -1523,14 +1531,14 @@ const _ds2=doSearch;doSearch=function(btn){_ds2(btn);if(!/^[am]Rpt$/.test(CUR)||
  toast(`筛选后共 ${n} 条`)};
 const VERS=[
  ['v3.2.0','安卓原生母包','安装包 + 配置','安装包升级','充值页提速、修复部分机型闪退','--',st('验证中','run'),st('草稿','no'),null,'--（新安装包）','--'],
- ['v2.4.0','安卓壳包母包','网页内容','热更网页内容','修复充值页白屏','--',st('已通过','ok'),st('已发布','ok'),[22,'1,026 / 4,650 台'],'≥ v2.3.0','--'],
- ['v3.1.0','安卓原生母包','安装包','安装包升级','充值页改版','--',st('已通过','ok'),st('已发布','ok'),[18,'850 / 4,720 台'],'--（新安装包）','--'],
- ['v2.3.1','安卓壳包母包','安装包','安装包升级','修复登录态丢失','--',st('已通过','ok'),st('已发布','ok'),[93,'4,325 / 4,650 台'],'--（新安装包）','--']];
+ ['v2.4.0','安卓壳包母包','网页内容','热更网页内容','修复充值页白屏','--',st('已通过','ok'),st('已发布','ok'),[22,'412 / 1,904 台'],'≥ v2.3.0','--'],
+ ['v3.1.0','安卓原生母包','安装包','安装包升级','充值页改版','--',st('已通过','ok'),st('已发布','ok'),[21,'86 / 410 台'],'--（新安装包）','--'],
+ ['v2.3.1','安卓壳包母包','安装包','安装包升级','修复登录态丢失','--',st('已通过','ok'),st('已发布','ok'),[100,'1,904 / 1,904 台'],'--（新安装包）','--']];
 const ISSUES=[
- ['IS3002','写入渠道号失败','渠道 B 用 v3.1.0 重建子包时写入渠道 code 超时，已自动重试','(1050)daman','1 个渠道','2026-11-02 16:32','处理中','admin02','v3.1.0'],
+ ['IS3002','写入渠道号失败','渠道 B 用 v3.1.0 重建子包时写入渠道号失败（超时），已自动重试，还没成功','(1050)daman','1 个渠道','2026-11-02 16:32','处理中','admin02','v3.1.0'],
  ['IS3003','更新失败','安装包部分机型安装失败','(1050)daman','2 个渠道 · 约 120 用户','2026-10-31 20:40','已修复','admin01','v2.3.1']];
 OPTS['发布状态']=['草稿','已发布','已下架'];OPTS['平台']=['ANDROID'];
-const VEXT={'v3.2.0':{id:'VER20261103001',size:'45.1 MB',u:who('admin01','2026-11-03 09:40')},'v2.4.0':{id:'VER20261101002',size:'3.2 MB',u:who('admin02','2026-11-01 14:00')},'v3.1.0':{id:'VER20261028001',size:'42.3 MB',u:who('admin01','2026-10-28 11:20')},'v2.3.1':{id:'VER20261020001',size:'18.6 MB',u:who('admin02','2026-10-20 16:30')}};
+const VEXT={'v3.2.0':{id:'VER20261103001',size:'45.1 MB',u:who('admin01','2026-11-03 09:40')},'v2.4.0':{id:'VER20261102001',size:'3.2 MB',u:who('admin02','2026-11-02 14:00')},'v3.1.0':{id:'VER20261028001',size:'42.3 MB',u:who('admin01','2026-10-28 11:20')},'v2.3.1':{id:'VER20261030001',size:'18.6 MB',u:who('admin02','2026-10-30 18:00')}};
 function verDel(v){openDrawer('删除',F([['版本号',`<b style="font-weight:500">${v}</b>`,{ro:1}]],96)+'<div class="alert w">删除后这个草稿版本不再显示，不能恢复。</div>',`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="cfok">确定</button>`,440);
  $('#cfok').onclick=()=>{const i=VERS.findIndex(x=>x[0]===v);if(i>=0)VERS.splice(i,1);closeDrawer();render();toast('已删除')}}OPTS['问题类型']=['写入渠道号失败','更新失败','缺陷'];OPTS['处理状态']=['处理中','已修复'];
 function verIssues(v){const L=ISSUES.filter(x=>x[8]===v);
@@ -1869,10 +1877,9 @@ var SUBS=[{id:'SP-1102-02',ch:'FB_SHELL_IN_001',ver:'安卓壳包 v2.3.1',file:'
  {id:'SP-1020-01',ch:'GG_APK_IN_001',ver:'安卓原生 v3.1.0',file:'daman_GG_APK_IN_001_v3.1.0.apk',size:'42.3 MB',st:'ok',who:who('运营-张伟','2026-10-20 10:05'),rm:''}];
 const subCh=id=>CHANNELS.find(c=>c.id===id)||{};
 const SUBVER={'安卓原生':['安卓原生 v3.1.0（最新）','安卓原生 v3.0.2'],'安卓壳包':['安卓壳包 v2.3.1（最新）','安卓壳包 v2.3.0']};
-function subPage(){return flt([inp('商户',M,{req:1}),inp('平台','',{ph:'全部'}),inp('子包渠道','',{ph:'全部'})])+`<div class="bar"><button class="btn p" onclick="subNew()">＋ 自动打包</button><span class="note" style="margin-left:10px">只列安卓原生、安卓壳包的渠道；一个渠道只有一个子包，推广链接下载的就是它</span></div>`+
- table([{t:'商户',k:()=>pill(M)},{t:'子包ID',k:'id'},{t:'平台',k:()=>'<span class="tag">ANDROID</span>'},{t:'渠道',l:1,k:r=>`${subCh(r.ch).name||'--'}<span class="sub" style="font-family:Menlo,Consolas,monospace">${r.ch}</span>`},{t:'包名',l:1,k:r=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${subPkg(r)}</span>`},{t:'应用名称',k:r=>r.app||'daman'},{t:'应用图标',k:()=>SUBICON},{t:'端',k:r=>subCh(r.ch).end||'--'},{t:'母包版本',k:'ver'},{t:'文件',l:1,k:r=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${r.file}</span><span class="sub">${r.size}</span>`},{t:'任务数',k:r=>(r.tasks||1)+' 个任务'},{t:'状态',k:r=>(r.st==='ok'?st('已生成','ok'):st('生成中','run'))+(subRe(r)?`<span class="sub"><span class="tag" style="background:#fdecee;color:#c03">需人工重新上传</span></span><span class="sub">应用商店里还是 ${r.sv}</span>`:'')},{t:'生成人/时间',k:'who'},{t:'备注',k:r=>r.rm||'--'},
-  {t:'操作',k:r=>`<span class="ops"><a onclick="subView('${r.id}')">详情</a>`+(r.st==='ok'?`<a onclick="subTask('${r.id}')">创建任务</a><a onclick="subEdit('${r.id}')">编辑</a><a onclick="toast('演示：开始下载 ${r.file}')">下载</a><a onclick="toast('演示：已复制下载链接')">复制链接</a><a class="r" onclick="subDel('${r.id}')">删除</a>`:'<a onclick="toast(\'生成中，生成好后才能操作\')">生成中…</a>')+'</span>'}],SUBS)+
- `<p class="note">一个渠道只认一个下载包：生成了子包，推广链接下载的就是这个子包；没生成的渠道，用户下载时系统把渠道 code 写进母包。再打包会替换这个渠道原来的子包，下载链接不变。总控强制更新时，系统自动重建全部子包；建议更新时，在「版本更新」里点「更新」选渠道重建。传到应用商店的子包不会自己更新，重建后标「需人工重新上传」，要人工把新包传上去。</p>`}
+function subPage(){return flt([inp('商户',M,{req:1}),inp('子包渠道','',{ph:'全部'})])+`<div class="bar"><button class="btn p" onclick="subNew()">＋ 自动打包</button><span class="note" style="margin-left:10px">只列安卓原生、安卓壳包的渠道；一个渠道只有一个子包，推广链接下载的就是它</span></div>`+
+ table([{t:'商户',k:()=>pill(M)},{t:'子包ID',k:'id'},{t:'渠道',l:1,k:r=>`${subCh(r.ch).name||'--'}<span class="sub" style="font-family:Menlo,Consolas,monospace">${r.ch}</span>`},{t:'包名',l:1,k:r=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${subPkg(r)}</span>`},{t:'应用名称',k:r=>r.app||'daman'},{t:'应用图标',k:()=>SUBICON},{t:'设备类型',k:r=>subCh(r.ch).end||'--'},{t:'母包版本',k:'ver'},{t:'文件',l:1,k:r=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${r.file}</span><span class="sub">${r.size}</span>`},{t:'状态',k:r=>(r.st==='ok'?st('已生成','ok'):st('生成中','run'))+(subRe(r)?`<span class="sub"><span class="tag" style="background:#fdecee;color:#c03">需人工重新上传</span></span><span class="sub">应用商店里还是 ${r.sv}</span>`:'')},{t:'生成人/时间',k:'who'},{t:'备注',k:r=>r.rm||'--'},
+  {t:'操作',k:r=>`<span class="ops"><a onclick="subView('${r.id}')">详情</a>`+(r.st==='ok'?`<a onclick="subEdit('${r.id}')">编辑</a><a onclick="toast('演示：开始下载 ${r.file}')">下载</a><a onclick="toast('演示：已复制下载链接')">复制链接</a><a class="r" onclick="subDel('${r.id}')">删除</a>`:'<a onclick="toast(\'生成中，生成好后才能操作\')">生成中…</a>')+'</span>'}],SUBS)}
 function subNew(){const L=CHANNELS.filter(c=>c.end==='安卓原生'||c.end==='安卓壳包').map(c=>`${c.name}（${c.id}）`);OPTS['子包渠道']=L;OPTS['母包版本']=[];
  openDrawer('自动打包',F([['商户',S(M),{req:1}],['平台',S('ANDROID'),{req:1}],['渠道',`<div class="inp" data-l="子包渠道">选择渠道</div>`,{req:1}],['应用名称',I('daman','装到手机上显示的名字'),{req:1}],
   ['包名',`<div style="display:flex;align-items:center;gap:4px;width:100%"><span id="subPkgPre" style="font-family:Menlo,Consolas,monospace;font-size:12px;white-space:nowrap">com.ar.1050.渠道code.</span><input class="inp" id="subPkgSuf" style="flex:1;min-width:0" value="daman"></div>`,{req:1,full:1}],
@@ -1891,15 +1898,15 @@ const SUBICON='<span style="display:inline-flex;width:24px;height:24px;border-ra
 const SUBUP='<div class="upl" onclick="this.innerHTML=\'已上传 ✓\'">＋ 上传</div>';
 function subPkg(r){return 'com.ar.1050.'+r.ch.toLowerCase()+'.'+(r.suf||'daman')}
 function subView(id){const r=SUBS.find(x=>x.id===id);const c=subCh(r.ch);
- openDrawer('详情',F([['平台','ANDROID',{ro:1}],['渠道',`${c.name||'--'}（${r.ch}）`,{ro:1}],['应用名称',r.app||'daman',{ro:1}],['包名',subPkg(r),{ro:1}],['母包版本',r.ver,{ro:1}],['文件',`${r.file}（${r.size}）`,{ro:1}],['应用图标',SUBICON,{ro:1}],['签名配置','用平台统一签名证书',{ro:1}],['任务数',(r.tasks||1)+' 个任务',{ro:1}],['状态',r.st==='ok'?st('已生成','ok'):st('生成中','run'),{ro:1}],['生成人/时间',r.who,{ro:1}],['备注',r.rm||'--',{ro:1}]],100),CLOSEF,600,[['子包ID',id]])}
+ openDrawer('详情',F([['平台','ANDROID',{ro:1}],['渠道',`${c.name||'--'}（${r.ch}）`,{ro:1}],['应用名称',r.app||'daman',{ro:1}],['包名',subPkg(r),{ro:1}],['母包版本',r.ver,{ro:1}],['文件',`${r.file}（${r.size}）`,{ro:1}],['应用图标',SUBICON,{ro:1}],['签名配置','用母包的签名证书',{ro:1}],['状态',r.st==='ok'?st('已生成','ok'):st('生成中','run'),{ro:1}],['生成人/时间',r.who,{ro:1}],['备注',r.rm||'--',{ro:1}]],100),CLOSEF,600,[['子包ID',id]])}
 function subTask(id){const r=SUBS.find(x=>x.id===id);
  openDrawer('创建任务',F([['子包ID',`<b style="font-weight:500">${id}</b>`,{ro:1}]],96)+'<div class="alert">确定要为此打包配置创建构建任务吗？打好后替换这个渠道原来的子包，下载链接不变。</div>',`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="cfok">确定</button>`,440);
  $('#cfok').onclick=()=>{r.tasks=(r.tasks||1)+1;r.st='run';closeDrawer();render();toast('任务创建成功');setTimeout(()=>{r.st='ok';if(CUR==='mApp')render()},1500)}}
 function subEdit(id){const r=SUBS.find(x=>x.id===id);const c=subCh(r.ch);subNew();$('#dtitle').firstChild.textContent='编辑打包配置';
  const d=$('#dbody div.inp[data-l="子包渠道"]');d.textContent=`${c.name}（${r.ch}）`;d.classList.add('v','ro');OPTS['母包版本']=SUBVER[c.end]||[];const v=$('#dbody [data-l="母包版本"]');v.textContent=(SUBVER[c.end]||[r.ver])[0];v.classList.add('v');v.classList.remove('note');subFn();
  const a=chFr('应用名称')?.querySelector('input');if(a)a.value=r.app||'daman';const sf=$('#subPkgSuf');if(sf)sf.value=r.suf||'daman';const rm=chFr('备注')?.querySelector('input');if(rm)rm.value=r.rm||'';
- $('#dfoot').innerHTML=`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="subEok">保存</button>`;
- $('#subEok').onclick=()=>{r.app=a?a.value:r.app;r.suf=sf?sf.value:r.suf;r.rm=rm?rm.value:r.rm;closeDrawer();render();toast('已保存，下次创建任务时按新配置打包')}}
+ $('#dfoot').innerHTML=`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="subEok">保存并重新打包</button>`;
+ $('#subEok').onclick=()=>{r.app=a?a.value:r.app;r.suf=sf?sf.value:r.suf;r.rm=rm?rm.value:r.rm;r.st='run';r.who=who('当前账号','2026-11-04 16:00');closeDrawer();render();toast('已保存，正在重新打包，打好后替换原来的子包，下载链接不变');setTimeout(()=>{r.st='ok';if(CUR==='mApp')render()},1500)}}
 function subDel(id){openDrawer('删除',F([['子包ID',`<b style="font-weight:500">${id}</b>`,{ro:1}]],96)+'<div class="alert w">删除后这个渠道没有子包，用户下载时改为系统把渠道 code 写进母包。</div>',`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="cfok">确定</button>`,440);
  $('#cfok').onclick=()=>{const i=SUBS.findIndex(x=>x.id===id);if(i>=0)SUBS.splice(i,1);closeDrawer();render();toast('已删除')}}
 TIPS['母包版本']='固定用当前母包版本，不能选旧版本。之后总控强制更新会自动重建；建议更新要在「版本更新」里点「更新」。';
@@ -1914,14 +1921,14 @@ SUBVER['安卓原生']=['安卓原生 v3.1.0（最新）','安卓原生 v3.0.2']
 var UPS=[['UP-1030-01','安卓壳包 v2.3.1','强制更新','全部安卓壳包渠道（渠道 C）','1 / 1','1,512 / 1,904',['用户更新中','run'],'总控 · admin02 2026-10-30 18:00'],
  ['UP-1027-03','安卓壳包 v2.3.0','建议更新','渠道 C','1 / 1','1,128 / 1,128',['已完成','ok'],'运营-张伟 2026-10-27 10:20']];
 const upTag=t=>t==='强制更新'?'<span class="tag" style="background:#fdecee;color:#c03">强制更新</span>':'<span class="tag">建议更新</span>';
-function verPage(){const left=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id)&&CHVER[c.id]!=='v3.1.0');
+function verPage(){const left=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id)&&CHVER[c.id]!=='v3.1.0'&&!UPS.some(u=>u.ver==='安卓原生 v3.1.0'&&u.st[0]==='更新中'&&u.chs.includes(c.name)));
  return `<div class="banner" style="align-items:flex-start"><span>${upTag('强制更新')}</span><span>总控 11-02 强制热更了 <b>安卓壳包 网页内容 v2.4.0</b>（修复充值页白屏）。只更新网页内容，子包不用重建；已装的 App 打开时自动更新。<span class="note">只读通知，不用操作。</span></span></div>`+
  `<div class="banner" style="align-items:flex-start;margin-top:8px"><span>${upTag('强制更新')}</span><span>总控 10-30 强制更新了 <b>安卓壳包 v2.3.1</b>（修复登录态丢失）。系统已自动重建你的 2 个安卓壳包子包，下载链接不变；已装的 App 打开时会提示用户更新。<span class="note">只读通知，不用操作。</span></span></div>`+
  `<div class="banner" style="align-items:flex-start;margin-top:8px"><span>${upTag('建议更新')}</span><span>总控发布了 <b>安卓原生 v3.1.0</b>（充值页改版）。${left.length?`还有 ${left.length} 个安卓原生子包是旧版本，点「更新」选渠道，系统会重建这些子包，下载链接不变。没打过子包的渠道，用户下载时直接写入最新母包，不用更新。`:'你的安卓原生子包都已更新到这个版本。'}</span>${left.length?'<button class="btn p sm" onclick="upSuggest()">更新</button>':''}</div>`+
  flt([inp('商户',M,{req:1}),inp('母包'),inp('状态')])+table([{t:'商户',k:()=>pill(M)},{t:'记录ID',k:0},{t:'母包版本',k:1},{t:'更新类型',k:r=>upTag(r[2])},{t:'渠道',l:1,k:3},{t:'子包重建',k:4},{t:'已装 App 已更新 / 总数',k:5},{t:'状态',k:r=>st(r[6][0],r[6][1])},{t:'发起',k:7},{t:'操作',k:r=>`<a onclick="upView('${r[0]}')">查看明细</a>`}],UPS)+
  `<p class="note">母包由总控上传和管理，商户端没有母包管理。强制更新由系统自动重建全部子包，商户只收到通知和记录；建议更新由商户点「更新」选渠道。子包用母包的签名证书，下载链接一直不变；已装的 App 启动时检查版本、提示用户更新。</p>`}
-function upSuggest(){const L=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id));
- openDrawer('更新到 安卓原生 v3.1.0',`<div class="alert" style="margin-top:0">选中的渠道：系统用 v3.1.0 母包重建子包（写好各自的渠道 code，统一签名），下载链接不变；已装的 App 打开时提示用户更新。</div>`+
+function upSuggest(){const L=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id)&&!UPS.some(u=>u.ver==='安卓原生 v3.1.0'&&u.st[0]==='更新中'&&u.chs.includes(c.name)));
+ openDrawer('更新到 安卓原生 v3.1.0',`<div class="alert" style="margin-top:0">选中的渠道：系统用 v3.1.0 母包重建子包（写好各自的渠道 code，用母包的签名），下载链接不变；已装的 App 打开时提示用户更新。</div>`+
   table([{t:'',k:c=>`<input type="checkbox" class="upck" value="${c.id}" ${CHVER[c.id]==='v3.1.0'?'disabled':'checked'}>`},{t:'渠道',l:1,k:c=>`${c.name}<span class="sub" style="font-family:Menlo,Consolas,monospace">${c.id}</span>`},{t:'子包现在的版本',k:c=>CHVER[c.id]||'--'},{t:'子包文件',k:c=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">daman_${c.id}.apk</span>`}],L)+'<p class="note">只列打过子包的渠道；没打过子包的渠道下载时直接写入最新母包，一直是最新版本。</p>',
   `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="upSave()">确定更新</button>`,600)}
 function upSave(){const ids=[...document.querySelectorAll('#dbody .upck:checked')].map(x=>x.value);if(!ids.length)return toast('请至少选一个渠道');
@@ -1947,30 +1954,30 @@ const ARPTCHG='总控的推广报表和商户端完全一样：同样 5 个页�
 TIPS['统计日期']=TIPS['日期'];TIPS['发生时间']='事件发生的时间，按这个时间筛选。';TIPS['问题类型']='这个版本上报过的问题类型，点「问题」看明细。';TIPS['进度']='已装 App 里已更新的台数 / 总台数。App 启动时检查版本并提示更新。';
 {const G=PL.find(x=>x.name==='Google Ads');G.idL='';G.need='账号授权、Customer ID';G.intro='先点「授权 Google 账号」，再填 Customer ID。授权后我方在这个账号里自动建好要用的 Conversion Action，事件用 Google Ads API 上传，不用填 Conversion ID。没有 gclid 的用户改用 Enhanced Conversions（哈希过的手机号或邮箱）匹配，都没有就只记我方报表。'}
 /* 商户 · 版本更新：简化 */
-var UPS=[{id:'UP-1102-01',ver:'安卓壳包 网页内容 v2.4.0',how:'热更（网页内容）',type:'强制更新',chs:['渠道 C'],sub:'热更不用重建子包',app:'412 / 1,904',st:['更新中','run'],by:'总控 · admin02',t:'2026-11-02 14:00',note:'修复充值页白屏'},
- {id:'UP-1030-01',ver:'安卓壳包 v2.3.1',how:'安装包',type:'强制更新',chs:['渠道 C'],sub:'1 / 1 已重建，下载链接不变',app:'1,512 / 1,904',st:['更新中','run'],by:'总控 · admin02',t:'2026-10-30 18:00',note:'修复登录态丢失'},
+var UPS=[{id:'UP-1102-01',ver:'安卓壳包 网页内容 v2.4.0',how:'热更（网页内容）',type:'强制更新',chs:['渠道 C','渠道 F'],sub:'热更不用重建子包',app:'412 / 1,904',st:['更新中','run'],by:'总控 · admin02',t:'2026-11-02 14:00',note:'修复充值页白屏'},
+ {id:'UP-1030-01',ver:'安卓壳包 v2.3.1',how:'安装包',type:'强制更新',chs:['渠道 C','渠道 F'],sub:'1 / 1 已重建，下载链接不变（渠道 F 没有子包，下载时直接写进最新母包）',app:'1,904 / 1,904',st:['已完成','ok'],iss:'部分机型安装失败（约 120 用户），总控 10-31 已修复',by:'总控 · admin02',t:'2026-10-30 18:00',note:'修复登录态丢失'},
  {id:'UP-1027-03',ver:'安卓壳包 v2.3.0',how:'安装包',type:'建议更新',chs:['渠道 C'],sub:'1 / 1 已重建，下载链接不变',app:'1,128 / 1,128',st:['已完成','ok'],by:'运营-张伟',t:'2026-10-27 10:20',note:''}];
-function verPage(){const left=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id)&&CHVER[c.id]!=='v3.1.0');
+function verPage(){const left=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id)&&CHVER[c.id]!=='v3.1.0'&&!UPS.some(u=>u.ver==='安卓原生 v3.1.0'&&u.st[0]==='更新中'&&u.chs.includes(c.name)));
  return (left.length?`<div class="bar" style="background:#eef4ff;border:1px solid #d6e4ff;border-radius:6px;padding:8px 12px;margin-bottom:10px"><span>${upTag('建议更新')} 安卓原生 v3.1.0 可更新，${left.length} 个渠道待更新</span><button class="btn p sm" style="margin-left:12px" onclick="upSuggest()">更新</button></div>`:'')+
- flt([inp('商户',M,{req:1}),inp('母包'),inp('状态')])+table([{t:'商户',k:()=>pill(M)},{t:'母包版本',k:'ver'},{t:'更新类型',k:r=>upTag(r.type)},{t:'涉及渠道',l:1,k:r=>r.chs.join('、')},{t:'进度',k:'app'},{t:'状态',k:r=>st(r.st[0],r.st[1])+(r.warn?`<span class="sub" style="color:var(--red)">${r.warn}</span>`:'')},{t:'时间',k:'t'},{t:'操作',k:r=>`<a onclick="upView('${r.id}')">明细</a>`}],UPS)}
+ flt([inp('商户',M,{req:1}),inp('母包'),inp('状态')])+table([{t:'商户',k:()=>pill(M)},{t:'母包版本',k:'ver'},{t:'更新类型',k:r=>upTag(r.type)},{t:'涉及渠道',l:1,k:r=>r.chs.join('、')},{t:'进度',k:'app'},{t:'状态',k:r=>st(r.st[0],r.st[1])+(r.warn?`<span class="sub" style="color:var(--red)">${r.warn}</span>`:'')+(r.iss?`<span class="sub">有 1 个问题，已修复</span>`:'')},{t:'时间',k:'t'},{t:'操作',k:r=>`<a onclick="upView('${r.id}')">明细</a>`}],UPS)}
 function upSave(){const ids=[...document.querySelectorAll('#dbody .upck:checked')].map(x=>x.value);if(!ids.length)return toast('请至少选一个渠道');
  ids.forEach(id=>{CHVER[id]='v3.1.0';SUBS.filter(x=>x.ch===id).forEach(x=>{x.ver='安卓原生 v3.1.0';x.rm='11-03 建议更新时重建'})});
  UPS.unshift({id:'UP-1103-0'+(UPS.length+1),ver:'安卓原生 v3.1.0',how:'安装包',type:'建议更新',chs:ids.map(id=>subCh(id).name),sub:ids.length+' / '+ids.length+' 已重建，下载链接不变',app:'0 / 386',st:['更新中','run'],by:'当前账号',t:'2026-11-03 10:30',note:'充值页改版'});
  closeDrawer();render();toast(`已重建 ${ids.length} 个渠道的子包，下载链接不变`)}
-function upView(id){const r=UPS.find(x=>x.id===id);if(!r)return;openDrawer('更新明细 · '+id,F([['母包版本',`<span>${r.ver}</span>`,{ro:1}],['更新类型',upTag(r.type),{ro:1}],['更新方式',`<span>${r.how}</span>`,{ro:1}],['更新内容',`<span>${r.note||'--'}</span>`,{ro:1}],['涉及渠道',`<span>${r.chs.join('、')}</span>`,{ro:1,full:1}],['子包',`<span>${r.sub}</span>`,{ro:1,full:1}],['已装 App',`<span>${r.app} 已更新（App 启动时检查版本并提示）</span>`,{ro:1,full:1}],...(r.warn?[['问题',`<span style="color:var(--red)">${r.warn}</span>`,{ro:1,full:1}]]:[]),['发起',`<span>${r.by} · ${r.t}</span>`,{ro:1}]],100)+
+function upView(id){const r=UPS.find(x=>x.id===id);if(!r)return;openDrawer('更新明细 · '+id,F([['母包版本',`<span>${r.ver}</span>`,{ro:1}],['更新类型',upTag(r.type),{ro:1}],['更新方式',`<span>${r.how}</span>`,{ro:1}],['更新内容',`<span>${r.note||'--'}</span>`,{ro:1}],['涉及渠道',`<span>${r.chs.join('、')}</span>`,{ro:1,full:1}],['子包',`<span>${r.sub}</span>`,{ro:1,full:1}],['已装 App',`<span>${r.app} 已更新（App 启动时检查版本并提示）</span>`,{ro:1,full:1}],...(r.warn?[['问题',`<span style="color:var(--red)">${r.warn}</span>`,{ro:1,full:1}]]:[]),...(r.iss?[['问题',`<span>${r.iss}</span>`,{ro:1,full:1}]]:[]),['发起',`<span>${r.by} · ${r.t}</span>`,{ro:1}]],100)+
  `<div class="alert">${r.type==='强制更新'?'强制更新由总控发起，系统自动重建全部子包（热更不用重建），商户不用操作。':'建议更新由商户点「更新」选渠道，系统重建这些渠道的子包。'}子包用母包的签名，下载链接不变。</div>`,CLOSEF,600)}
 
 const upTag2=t=>t==='回滚'?'<span class="tag" style="background:#f2f3f5;color:#555">回滚</span>':upTag(t);
 
-UPS.unshift({id:'UP-1102-02',ver:'安卓原生 v3.1.0',prev:'安卓原生 v3.0.2',how:'安装包',type:'建议更新',chs:['渠道 B'],sub:'0 / 1 已重建（渠道 B 写入渠道号超时，处理中）',app:'86 / 410',st:['更新中','run'],by:'运营-张伟',t:'2026-11-02 16:30',note:'充值页改版',warn:'写入渠道号超时，总控处理中'});
+UPS.unshift({id:'UP-1102-02',ver:'安卓原生 v3.1.0',prev:'安卓原生 v3.0.2',how:'安装包',type:'建议更新',chs:['渠道 B'],sub:'0 / 1 已重建（渠道 B 写入渠道号失败，总控处理中）',app:'86 / 410',st:['更新中','run'],by:'运营-张伟',t:'2026-11-02 16:30',note:'充值页改版',warn:'写入渠道号失败，总控处理中'});
 UPS.sort((a,b)=>a.t<b.t?1:-1);
-function verPage(){const left=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id)&&CHVER[c.id]!=='v3.1.0');
+function verPage(){const left=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id)&&CHVER[c.id]!=='v3.1.0'&&!UPS.some(u=>u.ver==='安卓原生 v3.1.0'&&u.st[0]==='更新中'&&u.chs.includes(c.name)));
  return (left.length?`<div class="bar" style="background:#eef4ff;border:1px solid #d6e4ff;border-radius:6px;padding:8px 12px;margin-bottom:10px"><span>${upTag('建议更新')} 安卓原生 v3.1.0 可更新，${left.length} 个渠道待更新</span><button class="btn p sm" style="margin-left:12px" onclick="upSuggest()">更新</button></div>`:'')+
- flt([inp('商户',M,{req:1}),inp('母包'),inp('状态')])+table([{t:'商户',k:()=>pill(M)},{t:'母包版本',k:'ver'},{t:'更新类型',k:r=>upTag2(r.type)},{t:'涉及渠道',l:1,k:r=>r.chs.join('、')},{t:'进度',k:'app'},{t:'状态',k:r=>st(r.st[0],r.st[1])+(r.warn?`<span class="sub" style="color:var(--red)">${r.warn}</span>`:'')},{t:'时间',k:'t'},
-  {t:'操作',k:r=>`<span class="ops"><a onclick="upView('${r.id}')">明细</a>${r.type==='建议更新'&&!r.by.startsWith('总控')&&r.prev&&r.st[0]!=='已回滚'?`<a onclick="upRollback('${r.id}')">回滚</a>`:''}</span>`}],UPS)}
+ flt([inp('商户',M,{req:1}),inp('母包'),inp('状态')])+table([{t:'商户',k:()=>pill(M)},{t:'母包版本',k:'ver'},{t:'更新类型',k:r=>upTag2(r.type)},{t:'涉及渠道',l:1,k:r=>r.chs.join('、')},{t:'进度',k:'app'},{t:'状态',k:r=>st(r.st[0],r.st[1])+(r.warn?`<span class="sub" style="color:var(--red)">${r.warn}</span>`:'')+(r.iss?`<span class="sub">有 1 个问题，已修复</span>`:'')},{t:'时间',k:'t'},
+  {t:'操作',k:r=>`<span class="ops"><a onclick="upView('${r.id}')">明细</a>${r.type==='建议更新'&&!r.by.startsWith('总控')&&r.prev&&r.st[0]!=='已回滚'&&!/^0 \//.test(r.sub)?`<a onclick="upRollback('${r.id}')">回滚</a>`:''}</span>`}],UPS)}
 function upRollback(id){const r=UPS.find(x=>x.id===id);if(!r)return;
  openDrawer('回滚 '+r.ver,`<div class="alert" style="margin-top:0">选中的渠道用上一版 <b>${r.prev}</b> 重建子包，下载链接不变。之后从子包链接下载的用户装的是 ${r.prev}；没有子包的渠道，用户下载的仍是最新母包。已装的 App 不会自动降级。</div>`+
-  table([{t:'',k:c=>`<input type="checkbox" class="rbck" value="${c}" checked>`},{t:'渠道',l:1,k:c=>c},{t:'现在的版本',k:()=>r.ver.replace(/^\S+ /,'')},{t:'回滚到',k:()=>r.prev.replace(/^\S+ /,'')}],r.chs),
+  table([{t:'',k:c=>`<input type="checkbox" class="rbck" value="${c}" checked>`},{t:'渠道',l:1,k:c=>c},{t:'现在的版本',k:c=>CHVER[(CHANNELS.find(x=>x.name===c)||{}).id]||r.ver.replace(/^\S+ /,'')},{t:'回滚到',k:()=>r.prev.replace(/^\S+ /,'')}],r.chs),
   `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="upRbSave('${id}')">确定回滚</button>`,560)}
 function upRbSave(id){const r=UPS.find(x=>x.id===id);const L=[...document.querySelectorAll('#dbody .rbck:checked')].map(x=>x.value);if(!L.length)return toast('请至少选一个渠道');
  const pv=r.prev.replace(/^\S+ /,'');L.forEach(n=>{const c=CHANNELS.find(x=>x.name===n);if(!c)return;CHVER[c.id]=pv;SUBS.filter(x=>x.ch===c.id).forEach(x=>{x.ver=r.prev;x.rm='11-03 回滚时重建'})});
