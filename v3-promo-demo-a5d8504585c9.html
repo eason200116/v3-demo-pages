@@ -1,4 +1,5 @@
-<!doctype html><html lang="zh-CN"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html lang="zh-CN"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.tw.cangrab{cursor:grab}.tw.dragging{cursor:grabbing;user-select:none}.tw::-webkit-scrollbar{height:10px}.tw::-webkit-scrollbar-thumb{background:#c8ccd2;border-radius:5px}.tw::-webkit-scrollbar-track{background:#f0f2f5}
+</style></head><body>
 <title>V3 推广 B 端 Demo</title>
 <style>
 :root{color-scheme:light;--blue:#1d5fa6;--blue2:#2a6fba;--pri:#1d61a8;--pri-soft:#eaf2fb;--line:#e4e7ec;--th:#f7f8fa;--ink:#1f2329;--mut:#7a8290;--green:#18a058;--green-soft:#e9f7ef;--red:#d03050;--red-soft:#fdecef;--orange:#f0a020;--orange-soft:#fff6e5;--bg:#f2f4f7;--new:#e8492f;--chg:#f08a00}
@@ -2164,6 +2165,14 @@ Object.assign(KNAME,{WEB:'Web',APP:'安卓原生',SHELL:'安卓壳包'});
 Object.defineProperty(OPTS,'投放端',{get:()=>CUR==='mCh'?ENDS:Object.values(KNAME),configurable:true});
 TIPS['投放端']='投到哪种端：Web（电脑、手机浏览器打开的是同一条链接）、PWA（装到桌面的网页）、安卓原生、安卓壳包。一个渠道只对应一种；渠道只能选投放端对得上的广告接入配置。';
 TIPS['渠道 code']='系统自动生成、不能改的渠道编号，推广链接都带它，注册、充值都按它统计。格式：类型_投放端_地区_序号，如 FB_WEB_IN_001（Facebook）、agt_WEB_IN_001（代理）、self_WEB_IN_001（自建）、off_WEB_IN_001（主站）。';
+/* 表格按住左右拖动 */
+{let D=null,moved=false;const skip='a,button,input,select,textarea,.sw,.inp,[onclick]';
+ const mark=()=>document.querySelectorAll('.tw').forEach(w=>w.classList.toggle('cangrab',w.scrollWidth>w.clientWidth+2));
+ new MutationObserver(mark).observe(document.body,{childList:true,subtree:true});addEventListener('resize',mark);
+ document.addEventListener('mousedown',e=>{const w=e.target.closest&&e.target.closest('.tw');if(!w||e.button!==0||w.scrollWidth<=w.clientWidth+2||e.target.closest(skip))return;D={w,x:e.clientX,l:w.scrollLeft};moved=false});
+ document.addEventListener('mousemove',e=>{if(!D)return;const dx=e.clientX-D.x;if(Math.abs(dx)>3){moved=true;D.w.classList.add('dragging')}if(moved){D.w.scrollLeft=D.l-dx;e.preventDefault()}});
+ document.addEventListener('mouseup',()=>{if(D)D.w.classList.remove('dragging');D=null});
+ document.addEventListener('click',e=>{if(moved){e.stopPropagation();e.preventDefault();moved=false}},true)}
 {const h=location.hash.slice(1);if(PAGES[h])go(h);else render()}
 </script>
 
