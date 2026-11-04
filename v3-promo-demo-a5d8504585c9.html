@@ -743,8 +743,8 @@ const TIPS={
  '推广链接':'自动子域名直接是 https://渠道code.推广泛域名；独立推广域名是 域名/?ch=渠道 code（参数名统一叫 ch）。两种都带渠道 code，统计只认它。',
  '落地页':'用户点广告后先到的页面（PWA或广告图），在「落地页管理」里做。同一个落地页可以给多个渠道用。',
  '推广域名':'渠道的入口域名，链接带渠道 code。默认自动生成子域名（渠道 code.推广泛域名），也可以选独立推广域名。一对一：一个渠道一个，一个只属于一个渠道。',
- '跳转域名':'落地页按钮（或落地指向选主站时的推广链接）去主站、去下载时经过的中转域名。公共池，多个渠道共用，被封时池里其他域名接着用。跳转全程带着渠道 code，不影响统计。不选就用默认池。',
- '防封下载页':'主站或推广域名被封后的救援页。已装 PWA / App 的用户打开时，系统弹出救援弹窗，让用户复制链接到浏览器打开这个页面，重新下载 PWA 或 App，再用原账号登录。公共池，不选就用默认。只对 PWA、App 渠道有用，Web 渠道不显示。',
+ '跳转域名':'落地页按钮（或落地指向选主站时的推广链接）去主站、去下载时经过的中转域名。公共池，多个渠道共用，每个渠道必须选一个；被封时到「域名管理」换。跳转全程带着渠道 code，不影响统计。',
+ '防封下载页':'主站或推广域名被封后的救援页。已装 PWA / App 的用户打开时，系统弹出救援弹窗，让用户复制链接到浏览器打开这个页面，重新下载 PWA 或 App，再用原账号登录。每个渠道必须选一个。只对 PWA、App 渠道有用，Web 渠道不显示。',
  '域名类型':'主域名：主站。推广域名：渠道入口，一对一。跳转域名、防封下载页：公共池，多个渠道共用。下载域名：放母包，另备几个备用的。',
  '页面路径':'这个落地页的预览地址后缀，如 reg500，只用来预览和区分页面，不出现在推广链接里。同一商户下不能重复。',
  '自动跳转':'打开几秒后自动点按钮。有的广告平台不允许，审核会被拒，默认不跳。',
@@ -936,13 +936,13 @@ const BTNOF={'Web':'进入网站','PWA':'弹出「添加到桌面」引导','安
 const mono=t=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px;white-space:normal;word-break:break-all;display:inline-block;width:210px;text-align:left">${t}</span>`;
 const tyTag=t=>t&&t!=='--'?`<span class="tag">${t}渠道</span>`:'--';
 PAGES.mCh={end:'m',title:'渠道管理',bd:['改','c'],from:'渠道管理',render(){
-  return flt([inp('商户',M,{req:1}),inp('渠道code/渠道名','',{t:1,ph:'多个用逗号、空格或换行分隔'}),inp('渠道类型','',{ph:'全部'}),inp('分组','',{ph:'全部'}),inp('归属代理','',{t:1,ph:'代理ID'}),inp('投放端','',{ph:'全部'})])+
+  return flt([inp('商户',M,{req:1}),inp('渠道code/渠道名','',{t:1,ph:'多个用逗号、空格或换行分隔'}),inp('渠道类型','',{ph:'全部'}),inp('分组','',{ph:'全部'}),inp('归属代理','',{t:1,ph:'代理ID'}),inp('设备类型','',{ph:'全部'})])+
   `<div class="bar"><button class="btn p" onclick="chEdit()">＋ 新增渠道</button><button class="btn" style="margin-left:8px" onclick="grpMgr()">分组管理</button><button class="btn" style="margin-left:8px" onclick="chBatch()">批量更新状态</button></div>`+
   table([
    {t:'<input type="checkbox" class="chk0" onclick="chCkAll(this)">',k:r=>r.sys?'':`<input type="checkbox" class="chck" value="${r.id}">`},
    {t:'商户',k:()=>pill(M)},{t:'渠道 code',k:r=>`<b style="font-weight:500;font-family:Menlo,Consolas,monospace">${r.id}</b>`},{t:'渠道名',k:'name'},{t:'分组',k:r=>r.grp?grpTag(r.grp):'--'},{t:'渠道类型',k:r=>tyTag(r.type)},
    {t:'归属代理',k:'agent'},
-   {t:'投放端',k:r=>`<span class="tag">${r.end}</span>`+(()=>{const x=(window.SUBS||[]).find(y=>y.ch===r.id&&y.st==='ok');return x&&typeof subRe==='function'&&subRe(x)?`<span class="sub">${st('子包需人工重新上传','err')}</span>`:''})()},
+   {t:'设备类型',k:r=>`<span class="tag">${r.end}</span>`+(()=>{const x=(window.SUBS||[]).find(y=>y.ch===r.id&&y.st==='ok');return x&&typeof subRe==='function'&&subRe(x)?`<span class="sub">${st('子包需人工重新上传','err')}</span>`:''})()},
    {t:'推广域名',k:r=>`<span style="white-space:nowrap">${mono(hostOf(r))}<a class="cpi" title="复制推广链接" onclick="event.stopPropagation();toast('已复制推广链接')"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M10.5 5V3.5A1.5 1.5 0 0 0 9 2H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5H5"/></svg></a></span>`},
    {t:'落地指向',k:r=>toCell(r)},
    {t:'广告接入配置',k:r=>cfgCell(r)},
@@ -979,7 +979,7 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web'
  openDrawer(id?'编辑渠道':'新增渠道',
  F([['商户',S(M),{req:1}],['渠道ID',id?`<span>${chCid(r)}</span>`:'<span class="note">保存后自动生成</span>',{ro:1}],['渠道名',I(r.name),{req:1}],['分组',S(r.grp||'','选择分组（可不选）')],
   ['渠道类型',`<div class="radio" id="chType">${['代理','非代理'].map(o=>`<span class="${o===(r.type||'代理')?'on':''}" onclick="chTypeSet('${o}',${id?1:0})">${o}渠道</span>`).join('')}</div><span class="note" style="margin-left:10px">代理渠道挂一个代理（哪个等级都行，相当于这个代理的分享），必须填；非代理渠道不挂代理</span>`,{req:1,full:1}],
-  ['投放端',`<div class="radio" id="chEnd">${ENDS.map(o=>`<span class="${o===e?'on':''}" onclick="chEndSet('${o}',${id?1:0})">${o}</span>`).join('')}</div>`,{req:1,full:1}],
+  ['设备类型',`<div class="radio" id="chEnd">${ENDS.map(o=>`<span class="${o===e?'on':''}" onclick="chEndSet('${o}',${id?1:0})">${o}</span>`).join('')}</div>`,{req:1,full:1}],
   ['母包',`<span id="chMp">${MPOF[e]||''}</span><span class="note" style="margin-left:8px">按端自动带出；只有这一个母包，用户下载时系统把渠道号写进去，不重新打包</span>`,{full:1,ro:1}],
   ['落地指向',`<div class="radio" id="chTo">${['落地页','主站首页','主站注册页'].map(o=>`<span class="${o===to?'on':''}" onclick="chToClk('${o}')">${o}</span>`).join('')}</div><span class="note" style="margin-left:10px">用户点广告后先到哪</span>`,{req:1,full:1}],
   ['推广域名',id?`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${hostOf(r).replace('https://','')}</span><span class="note" style="margin-left:8px">${r.dm?'独立推广域名，被封用列表里的「换域名」':'自动子域名，根域名被封到「域名管理」一键替换'}</span>`:
@@ -988,13 +988,13 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web'
   ['版面配置',`<div class="inp v" data-l="版面配置">${layHtml(r.lay||DLAY)}</div>`,{req:1}],
   ['安装设置',`<div style="display:flex;align-items:center;white-space:nowrap"><div class="radio" id="chIns">${['跟主站','单独设置'].map(o=>`<span class="${o===(r.ins||'跟主站')?'on':''}" onclick="chInsSet('${o}')">${o}</span>`).join('')}</div><a style="margin-left:10px" onclick="go('mGuide')">看主站默认</a></div><div id="chInsX" style="display:none;margin-top:6px;gap:8px;flex-wrap:wrap;align-items:center;width:100%"><span class="note">引导装</span><div class="inp v" data-l="引导装" style="width:110px">${(r.insv||{}).g||'PWA'}</div><span class="note">弹窗时机</span><div class="inp v" data-l="弹窗时机" style="width:190px">${(r.insv||{}).t||'访问首页'}</div><span class="note">安装奖励 ₹</span><input class="inp" style="width:80px;min-width:0" value="${(r.insv||{}).m||20}"></div>`,{full:1}],
   ['分享卡片',`<div class="radio" id="chShare">${['用默认','单独设置'].map(o=>`<span class="${o==='用默认'?'on':''}" onclick="chShareSet('${o}')">${o}</span>`).join('')}</div><div id="chShareX" style="display:none;margin-top:6px;gap:8px;align-items:center;width:100%"><input class="inp" style="width:200px;min-width:0" placeholder="标题"><input class="inp" style="width:240px;min-width:0" placeholder="描述"><div class="lpup" onclick="this.classList.add('on');this.innerHTML='已上传 ✓'">＋ 分享图</div></div>`,{full:1}],
-  ['跳转域名',S(r.jp||'用默认（公共池轮换）'),{}],['防封下载页',S(r.sf||'用默认（公共池）'),{}],
+  ['跳转域名',S(r.jp||'','选跳转域名'),{req:1}],['防封下载页',S(r.sf||'','选防封下载页'),{req:1}],
   ['归属代理',I(r.agent&&r.agent!=='--'?r.agent:'','输入代理 ID 或代理邀请码'),{req:1}],
   ['广告接入配置',S(r.cfg&&r.cfg!=='--'?r.cfg:'','只列出和这个渠道匹配的配置'),{req:1}],
   ['状态',`<span class="sw ${id&&r.state?'on':''}" id="chSt" onclick="chStGuard(event)"></span>`],
   ['备注',I(r.rm||'')]],110)+
  (id?'':'<div class="alert">保存后自动生成渠道 code（不能改）、推广链接和二维码，注册、充值都按渠道 code 统计。</div>')+
- '<div class="alert" id="chTip"></div>'+(id?'<div class="alert w">渠道类型、投放端、推广域名建好后不能改；广告接入配置只能换同一平台的，改了只影响之后的事件和新用户。</div>':''),
+ '<div class="alert" id="chTip"></div>'+(id?'<div class="alert w">渠道类型、设备类型、推广域名建好后不能改；广告接入配置只能换同一平台的，改了只影响之后的事件和新用户。</div>':''),
  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="chSave(${id?1:0})">保存</button>`,860,id?[['渠道 code',r.id]]:null);
  chEndSet(e,0,1);chTypeSet(r.type||'代理');chToSet(to)}
 function chLay(){const ag=($('#chType .on')?.textContent||'')==='代理渠道',lp=($('#chTo .on')?.textContent||'')==='落地页';const rm=chFr('备注');if(rm){const sf=chFr('防封下载页')?.style.display!=='none';rm.classList.toggle('full',((ag?1:0)+(lp?1:0)+(sf?1:0))%2===1)}}
@@ -1002,7 +1002,7 @@ function chTypeSet(t,lock){if(lock)return toast('建好后渠道类型不能改�
 function chToSet(t){document.querySelectorAll('#chTo span').forEach(x=>x.classList.toggle('on',x.textContent===t));const r=chFr('落地页');if(r)r.style.display=t==='落地页'?'':'none';chLay();const tp=$('#chTip'),e=$('#chEnd .on');if(tp&&e)tp.textContent=tp.textContent.replace(/^[^。]*。/,chBtnTxt(e.textContent))}
 function chBtnTxt(o){const to=$('#chTo .on')?.textContent||'落地页';return to==='落地页'?'落地页上的按钮会'+BTNOF[o]+'。':isApp(o)?'用户直接到'+to+'，页面上的下载按钮下载安装包（下载时写入渠道号）；主站入口同样读取点击编号，交给服务端。':'用户直接到'+to+'，渠道 code 和点击编号跟着带过去；主站入口同样读取点击编号，交给服务端。'}
 function chDmSet(i){document.querySelectorAll('#chDm span').forEach((x,j)=>x.classList.toggle('on',j===i));$('#chDmPick').style.display=i?'':'none';$('#chDmTip').textContent=i?'只列出没被别的渠道用过、能访问的域名':'保存后生成：渠道 code.'+wildOn()}
-function chEndSet(o,lock,init){if(lock)return toast('建好后投放端不能改，要投别的端请另建渠道');
+function chEndSet(o,lock,init){if(lock)return toast('建好后设备类型不能改，要换设备类型请另建渠道');
  document.querySelectorAll('#chEnd span').forEach(x=>x.classList.toggle('on',x.textContent===o));const app=isApp(o);
  const r=chFr('母包');if(r)r.style.display=app?'':'none';const sf=chFr('防封下载页');if(sf)sf.style.display=(app||o==='PWA')?'':'none';chLay();
  if(!init){const c=chFr('广告接入配置').querySelector('.inp');c.textContent='只列出和这个渠道匹配的配置';c.classList.remove('v')}
@@ -1628,7 +1628,7 @@ TIPS['版面配置']='V3 的商户版面（总控「商户版面配置」里给�
 TIPS['绑定渠道']='这个推广域名给了哪个渠道。用户打开后落到哪里（落地页、主站首页、主站注册页），在新增渠道时按链路选，域名这里不设。';
 document.addEventListener('pick',ev=>{const el=ev.target;if(el&&el.dataset&&el.dataset.l==='版面配置'){const n=el.textContent.replace('默认版面','').trim();el.innerHTML=layHtml(n)}});
 function dTo(id){const c=CHANNELS.find(c=>c.id===id)||{};return c.to==='落地页'?'落地页 '+(c.lp||''):(c.to||'--')+' · '+(c.lay||DLAY)}
-{const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','投放端','母包','推广域名','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转域名','防封下载页','状态','备注'];
+{const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','设备类型','母包','推广域名','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转域名','防封下载页','状态','备注'];
  const FULL=['商户','归属代理','落地页','版面配置','广告接入配置'];
  const _ce=chEdit;chEdit=function(id){const r=_ce.apply(this,arguments);const b=$('#dbody');const g=b&&b.querySelector('.fr')?.parentElement;if(!g||!chFr('渠道类型'))return r;
   ORD.forEach(k=>{const f=chFr(k);if(f){g.appendChild(f);if(FULL.includes(k))f.classList.add('full')}});
@@ -2127,11 +2127,11 @@ function motherSave(id){const r=MPS.find(x=>x[0]===id);const b=$('#dbody'),nm=(b
  r[1]=nm;r[6]=b.querySelector('.sw.on')?st('启用','ok'):st('停用','no');r[7]=who('admin01','2026-11-04 16:00');closeDrawer();render();toast('已保存')}
 /* 渠道详情 */
 function chDetail(id){const r=CHANNELS.find(x=>x.id===id);if(!r)return;const x=r.cx||CHX0,app=isApp(r.end),sp=t=>`<span>${t}</span>`;
- const fs=[['商户',sp(M)],['渠道ID',sp(chCid(r))],['渠道 code',sp(r.id)],['渠道名',sp(r.name)],['分组',r.grp?grpTag(r.grp):sp('--')],['渠道类型',tyTag(r.type)],['归属代理',sp(r.type==='代理'?r.agent:'--')],['投放端',sp(r.end)],
+ const fs=[['商户',sp(M)],['渠道ID',sp(chCid(r))],['渠道 code',sp(r.id)],['渠道名',sp(r.name)],['分组',r.grp?grpTag(r.grp):sp('--')],['渠道类型',tyTag(r.type)],['归属代理',sp(r.type==='代理'?r.agent:'--')],['设备类型',sp(r.end)],
   ...(app?[['母包',sp(MPOF[r.end]||'--')]]:[]),['推广域名',sp(hostOf(r))],['落地指向',sp(r.to||'落地页')],
   ((r.to||'落地页')==='落地页'?['落地页',sp(r.lp||'--')]:['版面配置',sp(layHtml(r.lay||DLAY))]),
-  ...((r.to||'落地页')!=='落地页'?[['分享卡片',sp('用默认')]]:[]),['广告接入配置',sp(r.cfg&&r.cfg!=='--'?r.cfg:'--')],['跳转域名',sp(r.jp||'用默认（公共池轮换）')],
-  ...(app||r.end==='PWA'?[['防封下载页',sp(r.sf||'用默认（公共池）')]]:[]),
+  ...((r.to||'落地页')!=='落地页'?[['分享卡片',sp('用默认')]]:[]),['广告接入配置',sp(r.cfg&&r.cfg!=='--'?r.cfg:'--')],['跳转域名',sp(r.jp||'--')],
+  ...(app||r.end==='PWA'?[['防封下载页',sp(r.sf||'--')]]:[]),
   ['状态',r.state?st('启用','ok'):st('停用','no')],['备注',sp(r.rm||'--'),{full:1}],
   ['展示下载入口',sp(r.sys&&x.dlIn==='跟主站'?'开':x.dlIn)],['App 下载弹窗',sp(x.pop?'开':'关')],
   ...(x.pop?[['展示哪些下载',sp(x.ends.join('、')||'--')],['能不能关',sp(x.close)],['弹给谁',sp(`注册满 ${x.reg} 天，充值满 ${x.dep} 次，提现满 ${x.wd} 次`)],['装不了时改装',sp(x.fb)]]:[]),
@@ -2155,7 +2155,21 @@ function chStCell(r){let h=r.state?st('启用','ok'):st('停用','no');if(!r.sys
 Object.assign(KNAME,{WEB:'Web',APP:'安卓原生',SHELL:'安卓壳包'});
 Object.defineProperty(OPTS,'投放端',{get:()=>CUR==='mCh'?ENDS:Object.values(KNAME),configurable:true});
 TIPS['投放端']='投到哪种端：Web（电脑、手机浏览器打开的是同一条链接）、PWA（装到桌面的网页）、安卓原生、安卓壳包。一个渠道只对应一种；渠道只能选投放端对得上的广告接入配置。';
-TIPS['渠道 code']='系统自动生成、不能改的渠道编号，推广链接都带它，注册、充值都按它统计。格式：类型_投放端_地区_序号，如 FB_WEB_IN_001（Facebook）、agt_WEB_IN_001（代理）、self_WEB_IN_001（自建）。';
+TIPS['渠道 code']='系统自动生成、不能改的渠道编号，推广链接都带它，注册、充值都按它统计。格式：类型_设备类型_地区_序号，如 FB_WEB_IN_001（Facebook）、agt_WEB_IN_001（代理）、self_WEB_IN_001（自建）。';
+/* 11-04 渠道：设备类型改名、按设备类型收窄落地页和落地指向、跳转域名/防封下载页必选 */
+OPTS['设备类型']=ENDS;TIPS['设备类型']='用户用哪种设备：Web（电脑、手机浏览器打开的是同一条链接）、PWA（装到桌面的网页）、安卓原生、安卓壳包。一个渠道只对应一种。PWA 只能选 PWA 落地页；Web 和安卓只能选广告图落地页；安卓渠道只能指向落地页。';
+Object.defineProperty(OPTS,'跳转域名',{get:()=>POOL.filter(d=>d[1]==='跳转域名'&&d[2]).map(d=>d[0]),configurable:true});
+Object.defineProperty(OPTS,'防封下载页',{get:()=>POOL.filter(d=>d[1]==='防封下载页'&&d[2]).map(d=>d[0]),configurable:true});
+Object.defineProperty(OPTS,'落地页',{get:()=>{const e=$('#modal.on #chEnd .on')?.textContent;const t=e==='PWA'?'PWA':'广告图';return LPS.filter(x=>!e||x.type===t).map(x=>x.name)},configurable:true});
+CHANNELS.forEach((c,i)=>{if(!c.jp)c.jp=i%2?'https://jump2.1050.test':'https://jump1.1050.test';if((isApp(c.end)||c.end==='PWA')&&!c.sf)c.sf=i%2?'https://safe-h.1050.test':'https://safe-g.1050.test';if(isApp(c.end)&&c.lp==='daman 商城页')c.lp='下载送 500（印地语）'});
+{const _es=chEndSet;chEndSet=function(o,lock,init){const res=_es.apply(this,arguments);if(lock)return res;const app=isApp(o);
+ document.querySelectorAll('#chTo span').forEach(x=>{if(x.textContent!=='落地页')x.style.display=app?'none':''});
+ if(app&&($('#chTo .on')?.textContent||'落地页')!=='落地页')chToSet('落地页');
+ if(!init){const f=chFr('落地页')?.querySelector('.inp');if(f&&!OPTS['落地页'].includes(f.textContent.trim())){f.textContent='选落地页';f.classList.remove('v')}}
+ return res}}
+{const _sv=chSave;chSave=function(ed){for(const k of ['跳转域名','防封下载页']){const f=chFr(k);if(f&&f.style.display!=='none'&&f.querySelector('.inp')?.textContent.trim()==='选'+k)return toast('请选'+k)}
+ const jp=chFr('跳转域名')?.querySelector('.inp')?.textContent.trim(),id=CHE,n=CHANNELS.length;const res=_sv.apply(this,arguments);
+ if(!document.querySelector('#modal.on')){const c=ed?CHANNELS.find(x=>x.id===id):CHANNELS.length>n?CHANNELS[CHANNELS.length-1]:null;if(c&&jp)c.jp=jp}return res}}
 /* 表格按住左右拖动 */
 {let D=null,moved=false;const skip='a,button,input,select,textarea,.sw,.inp,[onclick]';
  const mark=()=>document.querySelectorAll('.tw').forEach(w=>w.classList.toggle('cangrab',w.scrollWidth>w.clientWidth+2));
