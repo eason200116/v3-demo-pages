@@ -807,7 +807,7 @@ const ST={};
 /* ---- 商户 · 广告接入 ---- */
 PAGES.mAd={end:'m',title:'广告接入',bd:['新',''],tab:-1,render(){const t=this.tab;
   const rows=t>=0?CONFIGS.filter(r=>r.plat===PL[t].name):CONFIGS,pf=r=>PL.find(x=>x.name===r.plat);
-  return chg('new','')+
+  return chg('new','所有广告平台在一个列表，用「广告平台」筛选；新增时先选平台，再按平台填接入信息、看要准备什么和怎么测试。Web、PWA 固定自动上报 5 个事件（注册、登录、充值发起、充值、首充），App、壳包多报一个「激活」（打开 App）；Kwai 的登录只在 App、壳包报，商户不用选，只填平台信息、做测试。')+
   flt([inp('商户',M,{req:1}),inp('广告平台',t>=0?PL[t].name:''),inp('投放端'),inp('回传状态'),inp('配置名称/ID','',{t:1,ph:'多个以空格隔开'})])+
   `<div class="bar"><button class="btn p" onclick="adEdit()">＋ 新增配置</button></div>`+
   table([
