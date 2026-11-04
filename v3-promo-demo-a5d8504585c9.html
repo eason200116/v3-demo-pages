@@ -903,7 +903,7 @@ function adTest(){const app=ST.ad.r.end==='APP'||ST.ad.r.end==='SHELL',code=ST.a
 function renderAd(){const {r,step,p}=ST.ad;
   let b='';
   if(step===0)b+=`<div class="banner" style="align-items:flex-start;flex-direction:column;gap:4px;margin-bottom:14px"><div><b>${p.name}</b>　${p.intro}</div><div class="note">要准备：${p.need}　·　测试：${p.testTxt}　·　<a href="${p.doc}" target="_blank" rel="noopener">${p.docT} ↗</a></div></div>`+F([['商户',S(M),{req:1}],['配置名称',I(r.name),{req:1}],['广告平台',r.id?`<b style="font-weight:500">${p.name}</b>`:`<div class="radio">${PL.map(x=>`<span class="${x.name===p.name?'on':''}" onclick="adPlatSet('${x.name}')">${x.name}</span>`).join('')}</div>`,r.id?{ro:1}:{req:1,full:1}],['投放端',`<div class="radio" id="adEnd">${['Web','PWA','App','壳包'].map(o=>`<span class="${o===KNAME[r.end]?'on':''}" onclick="adEndSet('${o}')">${o}</span>`).join('')}</div>`,{req:1,full:1}],
-   ['关联渠道',`<span>${adChOf(r)||'--'}</span>`,{ro:1}],...(p.idL?[[p.idL,I(r.pix,p.idPh),{req:1}]]:[]),...(p.name==='Google Ads'?[['Customer ID',I(r.gcid||'','如 123-456-7890（Google Ads 后台右上角）'),{req:1}],['账号授权',gAuthHtml(r),{full:1}]]:[]),...(p.keyL?[[p.keyL,I(r.id?tok(r):'','粘贴平台提供的 Access Token'),{req:1}]]:[]),['状态',`<span class="sw ${!r.id||r.state?'on':''}"></span>`,{full:!p.keyL}],['备注',I(''),{full:1}]],120)+
+   ['关联渠道',S(adChOf(r)||'','选择渠道（可先不关联）')],...(p.idL?[[p.idL,I(r.pix,p.idPh),{req:1}]]:[]),...(p.name==='Google Ads'?[['Customer ID',I(r.gcid||'','如 123-456-7890（Google Ads 后台右上角）'),{req:1}],['账号授权',gAuthHtml(r),{full:1}]]:[]),...(p.keyL?[[p.keyL,I(r.id?tok(r):'','粘贴平台提供的 Access Token'),{req:1}]]:[]),['状态',`<span class="sw ${!r.id||r.state?'on':''}"></span>`,{full:!p.keyL}],['备注',I(''),{full:1}]],120)+
    `<div class="sec">自动上报以下事件<a href="${p.doc}" target="_blank" rel="noopener" style="margin-left:auto;font-weight:400">${p.docT} ↗</a></div>${adEvList(p,r.end)}`;
   if(step===1){const app=r.end==='APP'||r.end==='SHELL',evs=evFor(p,r.end);
    b+=(p.test==='code'?F([p.name==='Kwai'?['测试点击编号','<input class="inp tcode" placeholder="从 Kwai 后台复制" style="min-width:0;width:100%">']:['Test Event Code',`<input class="inp tcode" placeholder="如 TEST12345，从 ${p.name} 后台的「Test Events」页复制" style="min-width:0;width:100%">`]],140):'')+
@@ -2161,7 +2161,7 @@ UPS.forEach(u=>{if(u&&!Array.isArray(u)){if(u.how==='安装包')u.how='安装包
 
 
 /* 30：渠道只在渠道管理里绑配置 */
-TIPS['关联渠道']='用这份配置的渠道，只能在渠道管理里绑。一份配置只给一个渠道用。';
+TIPS['关联渠道']='一份配置只给一个渠道用。这里和渠道管理都能绑，哪边改了另一边跟着变。下拉只列投放端、平台都对得上，还没绑配置的渠道。';
 {const _cfo7=chCfgOpts;chCfgOpts=function(){const L=_cfo7().filter(x=>x.startsWith('不接广告平台')||x.startsWith('没有')||!CHANNELS.some(c=>c.cfg===x&&c.id!==CHE));return L.length?L:['没有空闲的配置，先去「广告接入」新建']}}
 {const h=location.hash.slice(1);if(PAGES[h])go(h);else render()}
 </script>
