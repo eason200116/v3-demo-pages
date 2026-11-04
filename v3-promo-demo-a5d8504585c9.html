@@ -1666,11 +1666,10 @@ Object.assign(TIPS,{
 TIPS['Test Event Code']=TIPS['Test Event Code'].replace('Facebook、TikTok、Kwai 都有','Facebook、TikTok 有；Kwai 用「测试点击编号」');
 PL.find(x=>x.name==='Kwai').testTxt='支持测试点击编号（从 Kwai 后台复制）';
 function chPopSet(){const on=!!$('#chPop')?.classList.contains('on');['展示哪些下载','能不能关','弹给谁','装不了时改装'].forEach(k=>{const f=chFr(k);if(f)f.style.display=on?'':'none'})}
-{const _ce=chEdit;chEdit=function(id){const res=_ce.apply(this,arguments);if(!document.querySelector('#modal.on')||!chFr('渠道类型')||chFr('进站语言'))return res;
+{const _ce=chEdit;chEdit=function(id){const res=_ce.apply(this,arguments);if(!document.querySelector('#modal.on')||!chFr('渠道类型')||chFr('领取条件'))return res;
  const r=(CHANNELS.find(x=>x.id===id)||{}).cx||CHX0,ad=chFr('广告接入配置'),g=ad.parentElement,bm=chFr('赠送打码倍数');
  const mk=fs=>{const d=document.createElement('div');d.innerHTML=F(fs,110);return [...d.firstElementChild.children]};
  const num=v=>`<input class="inp" type="number" min="0" value="${v}" style="width:64px;min-width:0">`;
- mk([['进站语言',S(r.lang)],['绑定币种',S(r.cur)]]).forEach(f=>ad.before(f));
  mk([['领取条件',R(['正式账号','仅已首充'],r.claim)],['领取限制',`<span class="sw ${r.once?'on':''}"></span><span class="note" style="margin-left:8px">同设备、同 IP 只能领一次</span>`]]).reverse().forEach(f=>bm.after(f));
  const sec=document.createElement('div');sec.className='sec full';sec.style.margin='4px 0 -4px';sec.textContent='下载引导';g.appendChild(sec);
  mk([['展示下载入口',R(['跟主站','开','关'],r.dlIn)],['App 下载弹窗',`<span class="sw ${r.pop?'on':''}" id="chPop" onclick="setTimeout(chPopSet,0)"></span>`],
@@ -1682,8 +1681,8 @@ function chPopSet(){const on=!!$('#chPop')?.classList.contains('on');['展示哪
 {const _cs=chSave;chSave=function(ed){const id=CHE,fr=k=>chFr(k),rv=k=>fr(k)?.querySelector('.radio .on')?.textContent,dv=k=>fr(k)?.querySelector('div.inp')?.textContent.trim();
  const pop=!!$('#chPop')?.classList.contains('on'),ends=[...(fr('展示哪些下载')?.querySelectorAll('.ck input')||[])].filter(x=>x.checked).map(x=>x.parentElement.textContent.trim());
  const nv=[...(fr('弹给谁')?.querySelectorAll('input')||[])].map(x=>Math.max(0,parseInt(x.value,10)||0));
- const v={lang:dv('进站语言'),cur:dv('绑定币种'),dlIn:rv('展示下载入口'),pop:pop?1:0,ends,close:rv('能不能关'),reg:nv[0]||0,dep:nv[1]||0,wd:nv[2]||0,fb:dv('装不了时改装'),claim:rv('领取条件'),once:fr('领取限制')?.querySelector('.sw.on')?1:0};
- const res=_cs.apply(this,arguments);if(!document.querySelector('#modal.on')&&ed&&id){const c=CHANNELS.find(x=>x.id===id);if(c&&v.lang)c.cx={...c.cx,...v}}return res}}
+ const v={dlIn:rv('展示下载入口'),pop:pop?1:0,ends,close:rv('能不能关'),reg:nv[0]||0,dep:nv[1]||0,wd:nv[2]||0,fb:dv('装不了时改装'),claim:rv('领取条件'),once:fr('领取限制')?.querySelector('.sw.on')?1:0};
+ const res=_cs.apply(this,arguments);if(!document.querySelector('#modal.on')&&ed&&id){const c=CHANNELS.find(x=>x.id===id);if(c&&v.claim)c.cx={...c.cx,...v}}return res}}
 
 const UA_A='Mozilla/5.0 (Linux; Android 13; SM-A536E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36';
 const FBAPI='Facebook Conversions API · POST graph.facebook.com/v21.0/{Pixel ID}/events';
@@ -2140,7 +2139,7 @@ function chDetail(id){const r=CHANNELS.find(x=>x.id===id);if(!r)return;const x=r
   ((r.to||'落地页')==='落地页'?['落地页',sp(r.lp||'--')]:['版面配置',sp(layHtml(r.lay||DLAY))]),
   ['分享卡片',sp('用默认')],['广告接入配置',sp(r.cfg&&r.cfg!=='--'?r.cfg:'--')],['跳转域名',sp(r.jp||'用默认（公共池轮换）')],
   ...(app||r.end==='PWA'?[['防封下载页',sp(r.sf||'用默认（公共池）')]]:[]),
-  ['进站语言',sp(x.lang)],['绑定币种',sp(x.cur)],['注册赠送金额',sp('₹ '+(r.gift||0))],['赠送打码倍数',sp(r.giftx||0)],['领取条件',sp(x.claim)],['领取限制',sp(x.once?'同设备、同 IP 只能领一次':'不限')],
+  ['注册赠送金额',sp('₹ '+(r.gift||0))],['赠送打码倍数',sp(r.giftx||0)],['领取条件',sp(x.claim)],['领取限制',sp(x.once?'同设备、同 IP 只能领一次':'不限')],
   ['展示下载入口',sp(x.dlIn)],['App 下载弹窗',sp(x.pop?'开':'关')],
   ...(x.pop?[['展示哪些下载',sp(x.ends.join('、')||'--')],['能不能关',sp(x.close)],['弹给谁',sp(`注册满 ${x.reg} 天，充值满 ${x.dep} 次，提现满 ${x.wd} 次`)],['装不了时改装',sp(x.fb)]]:[]),
   ['Web 充提限制',sp(r.h5?'开':'关')],['状态',r.state?st('启用','ok'):st('停用','no')],['创建人/时间',r.c||'--'],['最后修改人/时间',r.u||'--'],
