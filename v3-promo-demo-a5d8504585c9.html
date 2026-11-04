@@ -2152,7 +2152,6 @@ CHANNELS.forEach((c,i)=>{if(!c.jp)c.jp=i%2?'https://jump2.1050.test':'https://ju
  const jp=chFr('跳转域名')?.querySelector('.inp')?.textContent.trim(),id=CHE,n=CHANNELS.length;const res=_sv.apply(this,arguments);
  if(!document.querySelector('#modal.on')){const c=ed?CHANNELS.find(x=>x.id===id):CHANNELS.length>n?CHANNELS[CHANNELS.length-1]:null;if(c&&jp)c.jp=jp}return res}}
 {const _cf9=chCfgOpts;chCfgOpts=function(){const L=_cf9().filter(x=>!x.startsWith('不接广告平台'));return L.length?L:['没有匹配的配置']}}
-{const _ce9=chEdit;chEdit=function(id){const res=_ce9.apply(this,arguments);const f=chFr('广告接入配置');if(f&&id&&/^self_/.test(id))f.style.display='none';if(typeof chLay==='function')chLay();return res}}
 /* 表格按住左右拖动 */
 {let D=null,moved=false;const skip='a,button,input,select,textarea,.sw,.inp,[onclick]';
  const mark=()=>document.querySelectorAll('.tw').forEach(w=>w.classList.toggle('cangrab',w.scrollWidth>w.clientWidth+2));
