@@ -1071,7 +1071,7 @@ PAGES.mRpt={end:'m',title:'推广报表',bd:['新',''],tab:0,render(){
    ['EV90021','充值发起','1105022','RC2611010091','₹ 1,000','渠道 C · 安卓壳','15:10:44','服务端',st('成功','ok'),'Facebook AddToCart'+sv('平台已接收'),`<a onclick="evView('EV90021')">查看</a>`],
    ['EV90022','充值','1105022','RC2611010091','₹ 1,000','渠道 C · 安卓壳','15:20:11','服务端',st('成功','ok'),'Facebook Purchase'+sv('平台已接收'),`<a onclick="evView('EV90022')">查看</a>`],
    ['EV90023','首充','1105022','RC2611010091','₹ 1,000','渠道 C · 安卓壳','15:20:11','服务端',st('成功','ok'),'Facebook Subscribe'+sv('平台已接收'),`<a onclick="evView('EV90023')">查看</a>`],
-   ['EV90031','注册','1105024','--','--','A2 · H5','16:11:58','服务端',st('成功','ok'),'TikTok CompleteRegistration'+sv('回传异常','err')+'<span class="sub">平台返回：The access token is invalid or has expired.</span>',(CUR==='aRpt'?`<a onclick="evView('EV90031')">查看</a>`:`<span class="ops"><a onclick="evView('EV90031')">查看</a><a onclick="toast('演示：已重新发送；没收到的先存着，重新授权后补发')">重试</a></span>`)]])+
+   ['EV90031','注册','1105024','--','--','A2 · H5','16:11:58','服务端',st('成功','ok'),'TikTok CompleteRegistration'+sv('回传异常','err'),(CUR==='aRpt'?`<a onclick="evView('EV90031')">查看</a>`:`<span class="ops"><a onclick="evView('EV90031')">查看</a><a onclick="toast('演示：已重新发送；没收到的先存着，重新授权后补发')">重试</a></span>`)]])+
    `<p class="note">首充那笔订单会有两条：一条「充值」、一条「首充」。所有事件都由服务端上报（App、壳包多一个「激活」，就是打开 App），能看到平台接口返回。没拿到点击编号的用户照样发给平台（带 IP 和 UA，Facebook 还带 fbp），由平台匹配，同时按渠道统计；Google 没有 gclid 时改用 Enhanced Conversions（哈希过的手机号或邮箱），都没有就只记我方报表。同一条成功记录重发多次只记一次；充值没到账不算充值成功。</p>`;
   if(t===3)h+=retHtml();
   if(t===4)h+=spHtml();
@@ -1429,7 +1429,7 @@ const _cfo=chCfgOpts;chCfgOpts=function(){return ['不接广告平台（群发�
 
 /* ---- 渠道管理列表：重写列，带安装设置、不接平台、系统渠道 ---- */
 const _mChR=PAGES.mCh.render;PAGES.mCh.render=function(){let h=_mChR.call(this);return h};
-function cfgCell(r){const _c=CONFIGS.find(c=>c.name===r.cfg);if(_c&&(!_c.state||(_c.test&&_c.test[0]==='失败')))return `${r.cfg}<span class="sub" style="color:var(--red)">这份配置${!_c.state?'已关闭':''}${!_c.state&&_c.test[0]==='失败'?'、':''}${_c.test[0]==='失败'?'测试没通过':''}，事件发不出去</span>`;if(_c&&_c.cbErr)return `${r.cfg}<span class="sub" style="color:var(--red)">回传异常${_c.cbFrom?'（'+_c.cbFrom.slice(5,10)+' 起）':''}，先存着，重新授权后补发</span>`;return r.cfg==='--'?`${st('未配置','err')}<span class="sub" style="color:var(--red)">漏选了，请选平台或「不接广告平台」</span>`:r.cfg}
+function cfgCell(r){const _c=CONFIGS.find(c=>c.name===r.cfg);if(_c&&(!_c.state||(_c.test&&_c.test[0]==='失败')))return `${r.cfg}<span class="sub" style="color:var(--red)">这份配置${!_c.state?'已关闭':''}${!_c.state&&_c.test[0]==='失败'?'、':''}${_c.test[0]==='失败'?'测试没通过':''}，事件发不出去</span>`;if(_c&&_c.cbErr)return `${r.cfg}<span class="sub">${st('回传异常','err')}</span>`;return r.cfg==='--'?`${st('未配置','err')}<span class="sub" style="color:var(--red)">漏选了，请选平台或「不接广告平台」</span>`:r.cfg}
 function toCell(r){return (r.to==='落地页'?`<a onclick="go('mLp')">${r.lp}</a><span class="sub">落地页 · 按钮：${BTNOF[r.end].replace(/（.*?）/g,'')}</span>`:`${r.to}<span class="sub">版面配置：${r.lay||DLAY}</span>`)}
 
 /* ---- 新增/编辑渠道：安装设置、分享卡片、不接平台 ---- */
@@ -2068,8 +2068,8 @@ CHANNELS.forEach(c=>{delete c.cid});
 function chCid(r){if(!r.cid){const i=CHANNELS.indexOf(r);const d=(chT(r)||'2026-11-04').slice(0,10).replace(/-/g,'');r.cid='CH'+d+String((i<0?CHANNELS.length:i)+1).padStart(3,'0')}return r.cid}
 function adTR(r,i){const t=(r.test||[])[0];if(t==='已通过')return st('平台已接收','ok');if(t==='失败')return i===0?st('平台没收到','err'):st('平台已接收','ok');return st('未测试','no')}
 function adStat(r){const ex='<span class="sub">先存着，重新授权后补发</span>';
- if(r.plat==='Google Ads')return r.gauth==='ok'?st('已授权','ok'):r.gauth==='exp'?st('回传异常','err')+'<span class="sub">平台返回：The caller does not have permission</span>'+ex:st('未授权','wait');
- if(r.cbErr)return st('回传异常','err')+`<span class="sub">${r.cbFrom?r.cbFrom.slice(5)+' 起 · ':''}平台返回：${r.cbErr}</span>`+ex;
+ if(r.plat==='Google Ads')return r.gauth==='ok'?st('已授权','ok'):r.gauth==='exp'?st('回传异常','err'):st('未授权','wait');
+ if(r.cbErr)return st('回传异常','err');
  return r.auth&&r.auth[0]&&r.auth[0]!=='--'?st(...r.auth):'--'}
 var DOMC={'7000':who('管理员','2026-06-01 09:00'),'7002':who('管理员','2026-06-01 09:00'),'7099':who('管理员','2026-06-01 09:00'),'7001':who('运营-张伟','2026-09-01 10:00'),
  '7010':who('运营-张伟','2026-09-01 10:00'),'7014':who('运营-张伟','2026-09-01 10:00'),'7011':who('运营-李娜','2026-10-30 18:05'),'7012':who('运营-张伟','2026-09-10 10:00'),'7013':who('运营-李娜','2026-10-30 18:00'),
