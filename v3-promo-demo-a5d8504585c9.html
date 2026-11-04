@@ -701,7 +701,7 @@ function table(cols,rows,opt={}){
   const tr=rows.map(r=>`<tr class="${r._cls||''}">${cols.map(c=>`<td class="${c.cls||''} ${c.l?'l':''}">${typeof c.k==='function'?c.k(r):(r[c.k]??'--')}</td>`).join('')}</tr>`).join('');
   return `<div class="tw"><table>${'<thead><tr>'+th+'</tr></thead>'}<tbody>${tr}</tbody></table></div><div class="foot">共 ${opt.total??rows.length} 条 <span class="pg">1</span> <span>20 / 页</span></div>`}
 function tabs(list,cur,fn){return `<div class="ptabs">${list.map((x,i)=>`<span class="${i===cur?'on':''}" onclick="${fn}(${i})">${x}</span>`).join('')}</div>`}
-function chg(kind,text){const k={new:B('新增页面'),chg:B('改动页面','c'),keep:B('沿用 + 小改','c')}[kind];return `<div class="chg">${k}<span>${text}</span></div>`}
+function chg(){return ''}
 const OKF0='<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="closeDrawer();toast(\'演示：已保存\')">确定</button>';
 const CLOSEF='<button class="btn" onclick="closeDrawer()">关闭</button>';
 const OKF='<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="closeDrawer();toast(\'已保存\')">确定</button>';
@@ -1959,7 +1959,7 @@ var UPS=[{id:'UP-1102-01',ver:'安卓壳包 网页内容 v2.4.0',how:'热更（�
  {id:'UP-1027-03',ver:'安卓壳包 v2.3.0',how:'安装包',type:'建议更新',chs:['渠道 C'],sub:'1 / 1 已重建，下载链接不变',app:'1,128 / 1,128',st:['已完成','ok'],by:'运营-张伟',t:'2026-10-27 10:20',note:''}];
 function verPage(){const left=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id)&&CHVER[c.id]!=='v3.1.0'&&!UPS.some(u=>u.ver==='安卓原生 v3.1.0'&&u.st[0]==='更新中'&&u.chs.includes(c.name)));
  return (left.length?`<div class="bar" style="background:#eef4ff;border:1px solid #d6e4ff;border-radius:6px;padding:8px 12px;margin-bottom:10px"><span>${upTag('建议更新')} 安卓原生 v3.1.0 可更新，${left.length} 个渠道待更新</span><button class="btn p sm" style="margin-left:12px" onclick="upSuggest()">更新</button></div>`:'')+
- flt([inp('商户',M,{req:1}),inp('母包'),inp('状态')])+table([{t:'商户',k:()=>pill(M)},{t:'母包版本',k:'ver'},{t:'更新类型',k:r=>upTag(r.type)},{t:'涉及渠道',l:1,k:r=>r.chs.join('、')},{t:'进度',k:'app'},{t:'状态',k:r=>st(r.st[0],r.st[1])+(r.warn?`<span class="sub" style="color:var(--red)">${r.warn}</span>`:'')+(r.iss?`<span class="sub">有 1 个问题，已修复</span>`:'')},{t:'时间',k:'t'},{t:'操作',k:r=>`<a onclick="upView('${r.id}')">明细</a>`}],UPS)}
+ flt([inp('商户',M,{req:1}),inp('母包'),inp('状态')])+table([{t:'商户',k:()=>pill(M)},{t:'母包版本',k:'ver'},{t:'更新类型',k:r=>upTag(r.type)},{t:'涉及渠道',l:1,k:r=>r.chs.join('、')},{t:'进度',k:'app'},{t:'状态',k:r=>st(r.st[0],r.st[1])},{t:'时间',k:'t'},{t:'操作',k:r=>`<a onclick="upView('${r.id}')">明细</a>`}],UPS)}
 function upSave(){const ids=[...document.querySelectorAll('#dbody .upck:checked')].map(x=>x.value);if(!ids.length)return toast('请至少选一个渠道');
  ids.forEach(id=>{CHVER[id]='v3.1.0';SUBS.filter(x=>x.ch===id).forEach(x=>{x.ver='安卓原生 v3.1.0';x.rm='11-03 建议更新时重建'})});
  UPS.unshift({id:'UP-1103-0'+(UPS.length+1),ver:'安卓原生 v3.1.0',how:'安装包',type:'建议更新',chs:ids.map(id=>subCh(id).name),sub:ids.length+' / '+ids.length+' 已重建，下载链接不变',app:'0 / 386',st:['更新中','run'],by:'当前账号',t:'2026-11-03 10:30',note:'充值页改版'});
@@ -1973,7 +1973,7 @@ UPS.unshift({id:'UP-1102-02',ver:'安卓原生 v3.1.0',prev:'安卓原生 v3.0.2
 UPS.sort((a,b)=>a.t<b.t?1:-1);
 function verPage(){const left=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id)&&CHVER[c.id]!=='v3.1.0'&&!UPS.some(u=>u.ver==='安卓原生 v3.1.0'&&u.st[0]==='更新中'&&u.chs.includes(c.name)));
  return (left.length?`<div class="bar" style="background:#eef4ff;border:1px solid #d6e4ff;border-radius:6px;padding:8px 12px;margin-bottom:10px"><span>${upTag('建议更新')} 安卓原生 v3.1.0 可更新，${left.length} 个渠道待更新</span><button class="btn p sm" style="margin-left:12px" onclick="upSuggest()">更新</button></div>`:'')+
- flt([inp('商户',M,{req:1}),inp('母包'),inp('状态')])+table([{t:'商户',k:()=>pill(M)},{t:'母包版本',k:'ver'},{t:'更新类型',k:r=>upTag2(r.type)},{t:'涉及渠道',l:1,k:r=>r.chs.join('、')},{t:'进度',k:'app'},{t:'状态',k:r=>st(r.st[0],r.st[1])+(r.warn?`<span class="sub" style="color:var(--red)">${r.warn}</span>`:'')+(r.iss?`<span class="sub">有 1 个问题，已修复</span>`:'')},{t:'时间',k:'t'},
+ flt([inp('商户',M,{req:1}),inp('母包'),inp('状态')])+table([{t:'商户',k:()=>pill(M)},{t:'母包版本',k:'ver'},{t:'更新类型',k:r=>upTag2(r.type)},{t:'涉及渠道',l:1,k:r=>r.chs.join('、')},{t:'进度',k:'app'},{t:'状态',k:r=>st(r.st[0],r.st[1])},{t:'时间',k:'t'},
   {t:'操作',k:r=>`<span class="ops"><a onclick="upView('${r.id}')">明细</a>${r.type==='建议更新'&&!r.by.startsWith('总控')&&r.prev&&r.st[0]!=='已回滚'&&!/^0 \//.test(r.sub)?`<a onclick="upRollback('${r.id}')">回滚</a>`:''}</span>`}],UPS)}
 function upRollback(id){const r=UPS.find(x=>x.id===id);if(!r)return;
  openDrawer('回滚 '+r.ver,`<div class="alert" style="margin-top:0">选中的渠道用上一版 <b>${r.prev}</b> 重建子包，下载链接不变。之后从子包链接下载的用户装的是 ${r.prev}；没有子包的渠道，用户下载的仍是最新母包。已装的 App 不会自动降级。</div>`+
