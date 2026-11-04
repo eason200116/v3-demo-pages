@@ -993,8 +993,7 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web'
   ['广告接入配置',S(r.cfg&&r.cfg!=='--'?r.cfg:'','只列出和这个渠道匹配的配置'),{req:1}],
   ['状态',`<span class="sw ${id&&r.state?'on':''}" id="chSt" onclick="chStGuard(event)"></span>`],
   ['备注',I(r.rm||'')]],110)+
- (id?'':'<div class="alert">保存后自动生成渠道 code（不能改）、推广链接和二维码，注册、充值都按渠道 code 统计。</div>')+
- '<div class="alert" id="chTip"></div>'+(id?'<div class="alert w">渠道类型、设备类型、推广域名建好后不能改；广告接入配置只能换同一平台的，改了只影响之后的事件和新用户。</div>':''),
+ '<div class="alert" id="chTip" style="display:none"></div>'+(id?'<div class="alert w">渠道类型、设备类型、推广域名建好后不能改；广告接入配置只能换同一平台的，改了只影响之后的事件和新用户。</div>':''),
  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="chSave(${id?1:0})">保存</button>`,860,id?[['渠道 code',r.id]]:null);
  chEndSet(e,0,1);chTypeSet(r.type||'代理');chToSet(to)}
 function chLay(){const ag=($('#chType .on')?.textContent||'')==='代理渠道',lp=($('#chTo .on')?.textContent||'')==='落地页';const rm=chFr('备注');if(rm){const sf=chFr('防封下载页')?.style.display!=='none';rm.classList.toggle('full',((ag?1:0)+(lp?1:0)+(sf?1:0))%2===1)}}
@@ -1660,22 +1659,7 @@ Object.assign(TIPS,{
 TIPS['Test Event Code']=TIPS['Test Event Code'].replace('Facebook、TikTok、Kwai 都有','Facebook、TikTok 有；Kwai 用「测试点击编号」');
 PL.find(x=>x.name==='Kwai').testTxt='支持测试点击编号（从 Kwai 后台复制）';
 function chPopSet(){const on=!!$('#chPop')?.classList.contains('on');['展示哪些下载','能不能关','弹给谁','装不了时改装'].forEach(k=>{const f=chFr(k);if(f)f.style.display=on?'':'none'})}
-{const _ce=chEdit;chEdit=function(id){const res=_ce.apply(this,arguments);if(!document.querySelector('#modal.on')||!chFr('渠道类型')||chFr('展示下载入口'))return res;
- const r=(CHANNELS.find(x=>x.id===id)||{}).cx||CHX0,ad=chFr('广告接入配置'),g=ad.parentElement;
- const mk=fs=>{const d=document.createElement('div');d.innerHTML=F(fs,110);return [...d.firstElementChild.children]};
- const num=v=>`<input class="inp" type="number" min="0" value="${v}" style="width:64px;min-width:0">`;
- const sec=document.createElement('div');sec.className='sec full';sec.style.margin='4px 0 -4px';sec.textContent='下载引导';g.appendChild(sec);
- mk([['展示下载入口',R(['跟主站','开','关'],r.dlIn)],['App 下载弹窗',`<span class="sw ${r.pop?'on':''}" id="chPop" onclick="setTimeout(chPopSet,0)"></span>`],
-  ['展示哪些下载',`<div class="ck">${['PWA','安卓原生','安卓壳包'].map(x=>`<label><input type="checkbox" ${r.ends.includes(x)?'checked':''}> ${x}</label>`).join('')}</div>`,{full:1}],
-  ['能不能关',`<div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px">${R(['能关','装了才能关','不能关'],r.close)}<span class="note">伤体验，慎用</span></div>`,{full:1}],
-  ['弹给谁',`<div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px">注册满${num(r.reg)}天，充值满${num(r.dep)}次，提现满${num(r.wd)}次<span class="note" style="margin-left:6px">0 表示刚注册 / 没充过 / 没提过</span></div>`,{full:1}],
-  ['装不了时改装',S(r.fb),{full:1}]]).forEach(f=>g.appendChild(f));
- chPopSet();chLay();return res}}
-{const _cs=chSave;chSave=function(ed){const id=CHE,fr=k=>chFr(k),rv=k=>fr(k)?.querySelector('.radio .on')?.textContent,dv=k=>fr(k)?.querySelector('div.inp')?.textContent.trim();
- const pop=!!$('#chPop')?.classList.contains('on'),ends=[...(fr('展示哪些下载')?.querySelectorAll('.ck input')||[])].filter(x=>x.checked).map(x=>x.parentElement.textContent.trim());
- const nv=[...(fr('弹给谁')?.querySelectorAll('input')||[])].map(x=>Math.max(0,parseInt(x.value,10)||0));
- const v={dlIn:rv('展示下载入口'),pop:pop?1:0,ends,close:rv('能不能关'),reg:nv[0]||0,dep:nv[1]||0,wd:nv[2]||0,fb:dv('装不了时改装')};
- const res=_cs.apply(this,arguments);if(!document.querySelector('#modal.on')&&ed&&id){const c=CHANNELS.find(x=>x.id===id);if(c&&v.dlIn)c.cx={...c.cx,...v}}return res}}
+/* 下载引导已去掉（11-04） */
 
 const UA_A='Mozilla/5.0 (Linux; Android 13; SM-A536E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36';
 const FBAPI='Facebook Conversions API · POST graph.facebook.com/v21.0/{Pixel ID}/events';
@@ -2133,8 +2117,6 @@ function chDetail(id){const r=CHANNELS.find(x=>x.id===id);if(!r)return;const x=r
   ...((r.to||'落地页')!=='落地页'?[['分享卡片',sp('用默认')]]:[]),['广告接入配置',sp(r.cfg&&r.cfg!=='--'?r.cfg:'--')],['跳转域名',sp(r.jp||'--')],
   ...(app||r.end==='PWA'?[['防封下载页',sp(r.sf||'--')]]:[]),
   ['状态',r.state?st('启用','ok'):st('停用','no')],['备注',sp(r.rm||'--'),{full:1}],
-  ['展示下载入口',sp(r.sys&&x.dlIn==='跟主站'?'开':x.dlIn)],['App 下载弹窗',sp(x.pop?'开':'关')],
-  ...(x.pop?[['展示哪些下载',sp(x.ends.join('、')||'--')],['能不能关',sp(x.close)],['弹给谁',sp(`注册满 ${x.reg} 天，充值满 ${x.dep} 次，提现满 ${x.wd} 次`)],['装不了时改装',sp(x.fb)]]:[]),
   ['创建人/时间',r.c||'--'],['最后修改人/时间',r.u||'--']].map(f=>[f[0],f[1],{...(f[2]||{}),ro:1}]);
  openDrawer('渠道详情',F(fs,110),CLOSEF,760,[['渠道',r.name],['渠道 code',r.id]])}
 {const _cs=chSave;chSave=function(ed){const id=CHE,fr=k=>chFr(k);const sf=fr('防封下载页')?.querySelector('div.inp')?.textContent.trim()||'';
