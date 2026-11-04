@@ -946,7 +946,6 @@ PAGES.mCh={end:'m',title:'渠道管理',bd:['改','c'],from:'渠道管理',rende
    {t:'推广域名',k:r=>`<span style="white-space:nowrap">${mono(hostOf(r))}<a class="cpi" title="复制推广链接" onclick="event.stopPropagation();toast('已复制推广链接')"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M10.5 5V3.5A1.5 1.5 0 0 0 9 2H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5H5"/></svg></a></span>`},
    {t:'落地指向',k:r=>toCell(r)},
    {t:'广告接入配置',k:r=>cfgCell(r)},
-   {t:'Web 充提限制',k:r=>isApp(r.end)?'--':r.sys?(r.h5?'开':'关'):`<span class="sw ${r.h5?'on':''}" onclick="chH5Row(event,'${r.id}')"></span>`},
    {t:'状态',k:r=>chStCell(r)},{t:'创建人/时间',k:'c'},{t:'最后修改人/时间',k:'u'},{t:'备注',k:r=>r.rm||'--'},
    {t:'操作',k:r=>r.sys?`<span class="ops"><a onclick="chDetail('${r.id}')">详情</a></span>`:`<span class="ops"><a onclick="chDetail('${r.id}')">详情</a><a onclick="chEdit('${r.id}')">编辑</a>${r.dm?`<a onclick="chSwap('${r.id}')">换域名</a>`:''}<a onclick="chHis('${r.id}')">换域名记录</a></span>`}
   ],CHANNELS.map(r=>r.cfg==='--'||!hostOk(r)?{...r,_cls:'bad'}:r))}};
@@ -993,8 +992,6 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web'
   ['归属代理',I(r.agent&&r.agent!=='--'?r.agent:'','输入代理 ID 或代理邀请码'),{req:1}],
   ['广告接入配置',S(r.cfg&&r.cfg!=='--'?r.cfg:'','只列出和这个渠道匹配的配置'),{req:1}],
   ['状态',`<span class="sw ${id&&r.state?'on':''}" id="chSt" onclick="chStGuard(event)"></span>`],
-  ['Web 充提限制',`<span class="sw ${r.h5?'on':''}" id="chH5"></span>`],
-  ['下载提示文案',`<textarea class="inp ta" id="chDlt" maxlength="100" placeholder="会员在网页端充值或提现时看到的提示，最多 100 字">${r.dlt||''}</textarea>`,{full:1}],
   ['备注',I(r.rm||'')]],110)+
  (id?'':'<div class="alert">保存后自动生成渠道 code（不能改）、推广链接和二维码，注册、充值都按渠道 code 统计。</div>')+
  '<div class="alert" id="chTip"></div>'+(id?'<div class="alert w">渠道类型、投放端、推广域名建好后不能改；广告接入配置只能换同一平台的，改了只影响之后的事件和新用户。</div>':''),
@@ -1631,7 +1628,7 @@ TIPS['版面配置']='V3 的商户版面（总控「商户版面配置」里给�
 TIPS['绑定渠道']='这个推广域名给了哪个渠道。用户打开后落到哪里（落地页、主站首页、主站注册页），在新增渠道时按链路选，域名这里不设。';
 document.addEventListener('pick',ev=>{const el=ev.target;if(el&&el.dataset&&el.dataset.l==='版面配置'){const n=el.textContent.replace('默认版面','').trim();el.innerHTML=layHtml(n)}});
 function dTo(id){const c=CHANNELS.find(c=>c.id===id)||{};return c.to==='落地页'?'落地页 '+(c.lp||''):(c.to||'--')+' · '+(c.lay||DLAY)}
-{const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','投放端','母包','推广域名','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转域名','防封下载页','状态','注册赠送金额','赠送打码倍数','Web充提限制','下载提示文案','备注'];
+{const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','投放端','母包','推广域名','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转域名','防封下载页','状态','备注'];
  const FULL=['商户','归属代理','落地页','版面配置','广告接入配置'];
  const _ce=chEdit;chEdit=function(id){const r=_ce.apply(this,arguments);const b=$('#dbody');const g=b&&b.querySelector('.fr')?.parentElement;if(!g||!chFr('渠道类型'))return r;
   ORD.forEach(k=>{const f=chFr(k);if(f){g.appendChild(f);if(FULL.includes(k))f.classList.add('full')}});
@@ -2135,7 +2132,7 @@ function chDetail(id){const r=CHANNELS.find(x=>x.id===id);if(!r)return;const x=r
   ((r.to||'落地页')==='落地页'?['落地页',sp(r.lp||'--')]:['版面配置',sp(layHtml(r.lay||DLAY))]),
   ...((r.to||'落地页')!=='落地页'?[['分享卡片',sp('用默认')]]:[]),['广告接入配置',sp(r.cfg&&r.cfg!=='--'?r.cfg:'--')],['跳转域名',sp(r.jp||'用默认（公共池轮换）')],
   ...(app||r.end==='PWA'?[['防封下载页',sp(r.sf||'用默认（公共池）')]]:[]),
-  ['状态',r.state?st('启用','ok'):st('停用','no')],...(app?[]:[['Web 充提限制',sp(r.h5?'开':'关')],['下载提示文案',sp(r.h5&&r.dlt?r.dlt:'--'),{full:1}]]),['备注',sp(r.rm||'--'),{full:1}],
+  ['状态',r.state?st('启用','ok'):st('停用','no')],['备注',sp(r.rm||'--'),{full:1}],
   ['展示下载入口',sp(r.sys&&x.dlIn==='跟主站'?'开':x.dlIn)],['App 下载弹窗',sp(x.pop?'开':'关')],
   ...(x.pop?[['展示哪些下载',sp(x.ends.join('、')||'--')],['能不能关',sp(x.close)],['弹给谁',sp(`注册满 ${x.reg} 天，充值满 ${x.dep} 次，提现满 ${x.wd} 次`)],['装不了时改装',sp(x.fb)]]:[]),
   ['创建人/时间',r.c||'--'],['最后修改人/时间',r.u||'--']].map(f=>[f[0],f[1],{...(f[2]||{}),ro:1}]);
@@ -2159,10 +2156,6 @@ Object.assign(KNAME,{WEB:'Web',APP:'安卓原生',SHELL:'安卓壳包'});
 Object.defineProperty(OPTS,'投放端',{get:()=>CUR==='mCh'?ENDS:Object.values(KNAME),configurable:true});
 TIPS['投放端']='投到哪种端：Web（电脑、手机浏览器打开的是同一条链接）、PWA（装到桌面的网页）、安卓原生、安卓壳包。一个渠道只对应一种；渠道只能选投放端对得上的广告接入配置。';
 TIPS['渠道 code']='系统自动生成、不能改的渠道编号，推广链接都带它，注册、充值都按它统计。格式：类型_投放端_地区_序号，如 FB_WEB_IN_001（Facebook）、agt_WEB_IN_001（代理）、self_WEB_IN_001（自建）。';
-/* App 渠道不显示 Web 充提限制 */
-function chH5Vis(){const e=$('#chEnd .on');if(!e)return;const app=isApp(e.textContent);['Web充提限制','下载提示文案'].forEach(k=>{const f=chFr(k);if(f)f.style.display=app?'none':''});if(app){const h=$('#chH5');if(h)h.classList.remove('on')}}
-{const _es=chEndSet;chEndSet=function(o,lock,init){const r=_es.apply(this,arguments);if(!lock)chH5Vis();return r}}
-{const _ce=chEdit;chEdit=function(){const r=_ce.apply(this,arguments);chH5Vis();return r}}
 /* 表格按住左右拖动 */
 {let D=null,moved=false;const skip='a,button,input,select,textarea,.sw,.inp,[onclick]';
  const mark=()=>document.querySelectorAll('.tw').forEach(w=>w.classList.toggle('cangrab',w.scrollWidth>w.clientWidth+2));
