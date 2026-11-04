@@ -832,7 +832,7 @@ function evTipHtml(pn,n,a){const app=a===''||a==null?null:a;let e=EV[pn].find(x=
 document.addEventListener('mouseover',ev=>{const t=ev.target.closest('.evtip'),b=document.getElementById('evtb');if(!b)return;if(!t){b.style.display='none';return}
  b.innerHTML=evTipHtml(t.dataset.p,t.dataset.n,t.dataset.a);b.style.display='block';const r=t.getBoundingClientRect();let x=Math.max(8,Math.min(r.left,innerWidth-b.offsetWidth-8));let y=r.bottom+6;if(y+b.offsetHeight>innerHeight-8)y=r.top-b.offsetHeight-6;b.style.left=x+'px';b.style.top=y+'px'});
 function adEvList(p,app){const a=evFor(p,app);return `<div class="evlist">${table([{t:'事件',k:e=>evTags(p,[e],app)+`<span class="evq evtip" data-p="${p.name}" data-n="${e.n}" data-a="${KIND(app)||''}">?</span>`,cls:'l'},{t:'什么时候上报',k:e=>evWhen(e,app),cls:'l'},{t:'在哪些端上报',k:e=>endChips(e,app),cls:'l'}],a)}</div>`}
-function adEndSet(o){const r=ST.ad.r,p=ST.ad.p;r.end={Web:'WEB',PWA:'PWA',App:'APP',壳包:'SHELL'}[o];{const d=$('#dbody div.inp[data-l="适用网址/包名"]');const pk={APP:'com.daman.app',SHELL:'com.daman.shell'}[r.end];if(d){if(pk){d.textContent=pk;d.classList.add('v')}else if(/^com\./.test(d.textContent)){d.textContent='选择网址';d.classList.remove('v')}}}document.querySelectorAll('#adEnd span').forEach(x=>x.classList.toggle('on',x.textContent===o));
+function adEndSet(o){const r=ST.ad.r,p=ST.ad.p;r.end={Web:'WEB',PWA:'PWA',App:'APP',壳包:'SHELL','PC / H5':'WEB','安卓原生':'APP','安卓壳':'SHELL'}[o];{const d=$('#dbody div.inp[data-l="适用网址/包名"]');const pk={APP:'com.daman.app',SHELL:'com.daman.shell'}[r.end];if(d){if(pk){d.textContent=pk;d.classList.add('v')}else if(/^com\./.test(d.textContent)){d.textContent='选择网址';d.classList.remove('v')}}}document.querySelectorAll('#adEnd span').forEach(x=>x.classList.toggle('on',x.textContent===o));
  const w=document.querySelector('#dbody .evlist');if(w){w.nextElementSibling.remove();w.outerHTML=adEvList(p,r.end)}}
 function adTab(i){PAGES.mAd.tab=i;render()}
 function adSave(){const r=ST.ad.r;closeDrawer();toast(r.id?'已保存':'已保存。可以在列表里点「测试」检查是否接通')}
@@ -901,7 +901,7 @@ function adTest(){const app=ST.ad.r.end==='APP'||ST.ad.r.end==='SHELL',code=ST.a
  toast(!okIn?'请先填'+tn:'测试事件已发出')}
 function renderAd(){const {r,step,p}=ST.ad;
   let b='';
-  if(step===0)b+=`<div class="banner" style="align-items:flex-start;flex-direction:column;gap:4px;margin-bottom:14px"><div><b>${p.name}</b>　${p.intro}</div><div class="note">要准备：${p.need}　·　测试：${p.testTxt}　·　<a href="${p.doc}" target="_blank" rel="noopener">${p.docT} ↗</a></div></div>`+F([['商户',S(M),{req:1}],['配置名称',I(r.name),{req:1}],['广告平台',r.id?`<b style="font-weight:500">${p.name}</b>`:`<div class="radio">${PL.map(x=>`<span class="${x.name===p.name?'on':''}" onclick="adPlatSet('${x.name}')">${x.name}</span>`).join('')}</div>`,r.id?{ro:1}:{req:1,full:1}],['投放端',`<div class="radio" id="adEnd">${['Web','PWA','App','壳包'].map(o=>`<span class="${o===KNAME[r.end]?'on':''}" onclick="adEndSet('${o}')">${o}</span>`).join('')}</div>`,{req:1,full:1}],
+  if(step===0)b+=`<div class="banner" style="align-items:flex-start;flex-direction:column;gap:4px;margin-bottom:14px"><div><b>${p.name}</b>　${p.intro}</div><div class="note">要准备：${p.need}　·　测试：${p.testTxt}　·　<a href="${p.doc}" target="_blank" rel="noopener">${p.docT} ↗</a></div></div>`+F([['商户',S(M),{req:1}],['配置名称',I(r.name),{req:1}],['广告平台',r.id?`<b style="font-weight:500">${p.name}</b>`:`<div class="radio">${PL.map(x=>`<span class="${x.name===p.name?'on':''}" onclick="adPlatSet('${x.name}')">${x.name}</span>`).join('')}</div>`,r.id?{ro:1}:{req:1,full:1}],['投放端',`<div class="radio" id="adEnd">${Object.values(KNAME).map(o=>`<span class="${o===KNAME[r.end]?'on':''}" onclick="adEndSet('${o}')">${o}</span>`).join('')}</div>`,{req:1,full:1}],
    ['关联渠道',S(adChOf(r)||'','请选择渠道'),{req:1}],...(p.idL?[[p.idL,I(r.pix,p.idPh),{req:1}]]:[]),...(p.name==='Google Ads'?[['Customer ID',I(r.gcid||'','如 123-456-7890（Google Ads 后台右上角）'),{req:1}],['账号授权',gAuthHtml(r),{full:1}]]:[]),...(p.keyL?[[p.keyL,I(r.id?tok(r):'','粘贴平台提供的 Access Token'),{req:1}]]:[]),['状态',`<span class="sw ${!r.id||r.state?'on':''}"></span>`,{full:!p.keyL}],['备注',I(''),{full:1}]],120)+
    `<div class="sec">自动上报以下事件<a href="${p.doc}" target="_blank" rel="noopener" style="margin-left:auto;font-weight:400">${p.docT} ↗</a></div>${adEvList(p,r.end)}`;
   if(step===1){const app=r.end==='APP'||r.end==='SHELL',evs=evFor(p,r.end);
@@ -933,23 +933,22 @@ const MPOF={'安卓原生':'daman 安卓原生 v3.1.0','安卓壳':'daman 安卓
 const PKOF={'安卓原生':'com.daman.app','安卓壳':'com.daman.shell'};
 const BTNOF={'PC':'进入网站','H5':'进入网站','PWA':'弹出「添加到桌面」引导','安卓原生':'下载安装包（下载时写入渠道号）','安卓壳':'下载安装包（下载时写入渠道号）'};
 const mono=t=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px;white-space:normal;word-break:break-all;display:inline-block;width:210px;text-align:left">${t}</span>`;
-const tyTag=t=>`<span class="tag" style="${t==='代理'?'background:#fff4e5;color:#b45309':''}">${t}渠道</span>`;
+const tyTag=t=>`<span class="tag">${t}渠道</span>`;
 PAGES.mCh={end:'m',title:'渠道管理',bd:['改','c'],from:'渠道管理',render(){
-  return chg('chg','名称沿用现有「渠道管理」，在现有页面上扩展。一次投放 = 一个渠道：一个推广域名（入口）+ 一个落地指向 + 一个广告接入配置，跳转域名和防封下载页从公共池里选或用默认。推广域名默认自动生成（渠道 code 作子域名，如 agt-h5-in-001.go1050.test），也可以选一个独立推广域名；一个渠道只用一个推广域名，一个推广域名只属于一个渠道；跳转全程带渠道 code 和点击编号（落地页和主站不在同一个域名，cookie 带不过去，只能靠 URL 透传），所以经过跳转域名也不影响统计。App 只有一个母包，用户下载时系统把渠道号写进去，不重新打包；PWA 的桌面启动链接带渠道号。渠道只分代理渠道和非代理渠道：代理渠道挂一个代理（哪个等级都行），一个代理可以有多个渠道；非代理渠道不挂代理。统计只认渠道 code。')+
-  flt([inp('商户',M,{req:1}),inp('渠道ID/渠道名/渠道code','',{t:1,ph:'多个用逗号、空格或换行分隔'}),inp('渠道类型','',{ph:'全部'}),inp('分组','',{ph:'全部'}),`<div class="mark">${inp('归属代理','',{t:1,ph:'代理ID'})}</div>`,`<div class="mark">${inp('端','',{ph:'全部'})}</div>`])+
-  `<div class="bar"><button class="btn p" onclick="chEdit()">＋ 新增渠道</button><button class="btn" style="margin-left:8px" onclick="grpMgr()">分组管理</button><button class="btn" style="margin-left:8px" onclick="chBatch()">批量更新状态</button><span class="note" style="margin-left:10px">运营只要点「新增渠道」：链接、二维码、安装包都自动有</span></div>`+
+  return flt([inp('商户',M,{req:1}),inp('渠道ID/渠道名/渠道code','',{t:1,ph:'多个用逗号、空格或换行分隔'}),inp('渠道类型','',{ph:'全部'}),inp('分组','',{ph:'全部'}),inp('归属代理','',{t:1,ph:'代理ID'}),inp('投放端','',{ph:'全部'})])+
+  `<div class="bar"><button class="btn p" onclick="chEdit()">＋ 新增渠道</button><button class="btn" style="margin-left:8px" onclick="grpMgr()">分组管理</button><button class="btn" style="margin-left:8px" onclick="chBatch()">批量更新状态</button></div>`+
   table([
    {t:'<input type="checkbox" class="chk0" onclick="chCkAll(this)">',k:r=>r.sys?'':`<input type="checkbox" class="chck" value="${r.id}">`},
-   {t:'商户',k:()=>pill(M)},{t:'渠道ID',k:r=>chCid(r)},{t:'渠道 code',k:r=>`<b style="font-weight:500;font-family:Menlo,Consolas,monospace">${r.id}</b>`},{t:'渠道名',k:'name'},{t:'分组',cls:'newc',k:r=>grpTag(r.grp)},{t:'渠道类型',k:r=>tyTag(r.type)},
-   {t:'归属代理',cls:'newc',k:'agent'},
-   {t:'端',cls:'newc',k:r=>`<span class="tag" style="background:var(--pri-soft);color:var(--pri);font-weight:600">${r.end}</span>`},
-   {t:'推广域名',cls:'newc',k:r=>{const h=DOMHIS.filter(x=>x[0]===r.id).length;return mono(hostOf(r))+(r.sys?'':`<span class="sub">${(r.dm?'独立推广域名':'自动子域名')+' · 跳转：'+(r.jp||'默认池')}</span>`)+(!hostOk(r)?`<span class="sub" style="color:var(--red)">域名打不开</span>`:'')+(isApp(r.end)?chPkg(r):'')}},
-   {t:'落地指向',cls:'newc',k:r=>toCell(r)},
-   {t:'广告接入配置',cls:'newc',k:r=>cfgCell(r)},
-   {t:'H5 充提限制',k:r=>r.sys?'--':`<span class="sw ${r.h5?'on':''}" onclick="chH5Row(event,'${r.id}')"></span>`},{t:'下载提示文案',k:r=>r.h5&&r.dlt?`<span class="ell" title="${r.dlt}">${r.dlt}</span>`:'--'},
-   {t:'状态',k:r=>r.state?st('启用','ok'):st('停用','no')},{t:'创建人/时间',k:'c'},{t:'最后修改人/时间',k:'u'},{t:'备注',k:r=>r.rm||'--'},
+   {t:'商户',k:()=>pill(M)},{t:'渠道 code',k:r=>`<b style="font-weight:500;font-family:Menlo,Consolas,monospace">${r.id}</b>`},{t:'渠道名',k:'name'},{t:'分组',k:r=>r.grp?grpTag(r.grp):'--'},{t:'渠道类型',k:r=>tyTag(r.type)},
+   {t:'归属代理',k:'agent'},
+   {t:'投放端',k:r=>`<span class="tag">${r.end}</span>`},
+   {t:'推广域名',k:r=>mono(hostOf(r))},
+   {t:'落地指向',k:r=>toCell(r)},
+   {t:'广告接入配置',k:r=>cfgCell(r)},
+   {t:'H5 充提限制',k:r=>r.sys?'--':`<span class="sw ${r.h5?'on':''}" onclick="chH5Row(event,'${r.id}')"></span>`},
+   {t:'状态',k:r=>chStCell(r)},{t:'创建人/时间',k:'c'},{t:'最后修改人/时间',k:'u'},{t:'备注',k:r=>r.rm||'--'},
    {t:'操作',k:r=>r.sys?'--':`<span class="ops"><a onclick="chDetail('${r.id}')">详情</a><a onclick="chEdit('${r.id}')">编辑</a><a onclick="toast('演示：已复制')">复制链接</a><a onclick="showQr('${chOut(r)}')">二维码</a>${r.dm?`<a onclick="chSwap('${r.id}')">换域名</a>`:''}<a onclick="chHis('${r.id}')">换域名记录</a></span>`}
-  ],CHANNELS.map(r=>r.cfg==='--'||!hostOk(r)?{...r,_cls:'bad'}:r))+`<p class="note">红底列、虚线框为本次新增；没选广告接入配置、或域名打不开的渠道整行标红。同一个代理（8810021）投两次就建两个渠道（A1、A2），报表里分开看。自动子域名分散在几个根域名下，一个根域名被封时，到「域名管理」对它一键替换，只换它下面的渠道，渠道 code 不变；独立推广域名被封，在这里点「换域名」。跳转域名、防封下载页是公共池，多个渠道共用，被封在「域名管理」按类型替换。</p>`}};
+  ],CHANNELS.map(r=>r.cfg==='--'||!hostOk(r)?{...r,_cls:'bad'}:r))}};
 function chCid(r){if(!r.cid){const i=CHANNELS.indexOf(r);r.cid='CH20261028'+String((i<0?CHANNELS.length:i)+1).padStart(3,'0')}return r.cid}
 function chH5Row(e,id){e.stopPropagation();const r=CHANNELS.find(x=>x.id===id);if(!r.h5&&!r.dlt){toast('打开前先在「编辑」里填下载提示文案');return chEdit(id)}r.h5=r.h5?0:1;render();toast(r.h5?'已开启 H5 充提限制':'已关闭 H5 充提限制')}
 {const _cs=chSave;chSave=function(ed){const h=$('#chH5'),t=$('#chDlt');if(h&&t){const bad=h.classList.contains('on')&&!t.value.trim();vnoMark(t,bad,'打开 H5 充提限制时必须填下载提示文案');if(bad)return toast('下载提示文案未填写')}return _cs.apply(this,arguments)}}
@@ -980,7 +979,7 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'H5';
  openDrawer(id?'编辑渠道':'新增渠道',
  F([['商户',S(M),{req:1}],['渠道ID',id?`<span>${chCid(r)}</span>`:'<span class="note">保存后自动生成</span>',{ro:1}],['渠道名',I(r.name),{req:1}],['分组',S(r.grp||'','选择分组（可不选）')],
   ['渠道类型',`<div class="radio" id="chType">${['代理','非代理'].map(o=>`<span class="${o===(r.type||'代理')?'on':''}" onclick="chTypeSet('${o}',${id?1:0})">${o}渠道</span>`).join('')}</div><span class="note" style="margin-left:10px">代理渠道挂一个代理（哪个等级都行，相当于这个代理的分享），必须填；非代理渠道不挂代理</span>`,{req:1,full:1}],
-  ['端',`<div class="radio" id="chEnd">${ENDS.map(o=>`<span class="${o===e?'on':''}" onclick="chEndSet('${o}',${id?1:0})">${o}</span>`).join('')}</div>`,{req:1,full:1}],
+  ['投放端',`<div class="radio" id="chEnd">${ENDS.map(o=>`<span class="${o===e?'on':''}" onclick="chEndSet('${o}',${id?1:0})">${o}</span>`).join('')}</div>`,{req:1,full:1}],
   ['母包',`<span id="chMp">${MPOF[e]||''}</span><span class="note" style="margin-left:8px">按端自动带出；只有这一个母包，用户下载时系统把渠道号写进去，不重新打包</span>`,{full:1,ro:1}],
   ['落地指向',`<div class="radio" id="chTo">${['落地页','主站首页','主站注册页'].map(o=>`<span class="${o===to?'on':''}" onclick="chToClk('${o}')">${o}</span>`).join('')}</div><span class="note" style="margin-left:10px">用户点广告后先到哪</span>`,{req:1,full:1}],
   ['推广域名',id?`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${hostOf(r).replace('https://','')}</span><span class="note" style="margin-left:8px">${r.dm?'独立推广域名，被封用列表里的「换域名」':'自动子域名，根域名被封到「域名管理」一键替换'}</span>`:
@@ -997,8 +996,8 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'H5';
   ['H5 充提限制',`<span class="sw ${r.h5?'on':''}" id="chH5"></span>`],
   ['下载提示文案',`<textarea class="inp ta" id="chDlt" maxlength="100" placeholder="会员在 H5 / 网页端充值或提现时看到的提示，最多 100 字">${r.dlt||''}</textarea>`,{full:1}],
   ['备注',I(r.rm||'')]],110)+
- (id?`<div class="alert">渠道 code：<b style="font-family:Menlo,Consolas,monospace">${r.id}</b>（系统生成，不能改）。推广链接都带它，用户注册时写到用户身上，之后的充值、首充都按它统计。</div>`:'<div class="alert">保存后系统生成渠道 code（不能改），格式：类型_端_地区_序号，如 FB_H5_IN_001、off_H5_IN_001、self_H5_IN_001、agt_H5_IN_001，同时自动生成推广链接和二维码。推广链接都带它，用户注册时写到用户身上，之后的充值、首充都按它统计。</div>')+
- '<div class="alert" id="chTip"></div>'+(id?'<div class="alert w">建好后再改：换落地指向或落地页马上生效，旧链接直接显示新页面。改广告接入配置，之后的事件按新配置发，已发过的不重发；渠道 code 里带了平台简写，只能换同一平台的配置，要换平台请新建渠道（代理渠道 agt_ 不限平台，官方渠道 off_、自建渠道 self_ 不接广告平台）。改归属代理，只影响之后注册的新用户。渠道类型、端和推广域名建好后不能在这里改。</div>':''),
+ (id?'':'<div class="alert">保存后自动生成渠道 code（不能改）、推广链接和二维码，注册、充值都按渠道 code 统计。</div>')+
+ '<div class="alert" id="chTip"></div>'+(id?'<div class="alert w">渠道类型、投放端、推广域名建好后不能改；广告接入配置只能换同一平台的，改了只影响之后的事件和新用户。</div>':''),
  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="chSave(${id?1:0})">保存</button>`,860,id?[['渠道 code',r.id]]:null);
  chEndSet(e,0,1);chTypeSet(r.type||'代理');chToSet(to)}
 function chLay(){const ag=($('#chType .on')?.textContent||'')==='代理渠道',lp=($('#chTo .on')?.textContent||'')==='落地页';const rm=chFr('备注');if(rm){const sf=chFr('防封下载页')?.style.display!=='none';rm.classList.toggle('full',((ag?1:0)+(lp?1:0)+(sf?1:0))%2===1)}}
@@ -1006,14 +1005,12 @@ function chTypeSet(t,lock){if(lock)return toast('建好后渠道类型不能改�
 function chToSet(t){document.querySelectorAll('#chTo span').forEach(x=>x.classList.toggle('on',x.textContent===t));const r=chFr('落地页');if(r)r.style.display=t==='落地页'?'':'none';chLay();const tp=$('#chTip'),e=$('#chEnd .on');if(tp&&e)tp.textContent=tp.textContent.replace(/^[^。]*。/,chBtnTxt(e.textContent))}
 function chBtnTxt(o){const to=$('#chTo .on')?.textContent||'落地页';return to==='落地页'?'落地页上的按钮会'+BTNOF[o]+'。':isApp(o)?'用户直接到'+to+'，页面上的下载按钮下载安装包（下载时写入渠道号）；主站入口同样读取点击编号，交给服务端。':'用户直接到'+to+'，渠道 code 和点击编号跟着带过去；主站入口同样读取点击编号，交给服务端。'}
 function chDmSet(i){document.querySelectorAll('#chDm span').forEach((x,j)=>x.classList.toggle('on',j===i));$('#chDmPick').style.display=i?'':'none';$('#chDmTip').textContent=i?'只列出没被别的渠道用过、能访问的域名':'保存后生成：渠道 code.'+wildOn()}
-function chEndSet(o,lock,init){if(lock)return toast('建好后端不能改，要投别的端请另建渠道');
+function chEndSet(o,lock,init){if(lock)return toast('建好后投放端不能改，要投别的端请另建渠道');
  document.querySelectorAll('#chEnd span').forEach(x=>x.classList.toggle('on',x.textContent===o));const app=isApp(o);
  const r=chFr('母包');if(r)r.style.display=app?'':'none';const sf=chFr('防封下载页');if(sf)sf.style.display=(app||o==='PWA')?'':'none';chLay();
  if(!init){const c=chFr('广告接入配置').querySelector('.inp');c.textContent='只列出和这个渠道匹配的配置';c.classList.remove('v')}
  const m=$('#chMp');if(m)m.textContent=MPOF[o]||'';
- $('#chTip').textContent=chBtnTxt(o)+
-  (app?'安装包只用这一个母包，不用每个渠道打一次包；用户从这个渠道下载时，系统把渠道 code 写进安装包，装好打开就知道是哪个渠道。':o==='PWA'?'用户加到桌面后，桌面上的名称、图标、启动图用落地页「PWA」里配的，桌面启动链接带渠道 code；用户打开落地页时服务端也先记下这台设备属于哪个渠道，桌面和浏览器存储分开也能认出来。':'')+
-  '一个渠道只对应一个端，建好后端不能改。'}
+ $('#chTip').textContent=chBtnTxt(o)}
 function chSave(ed){const ag=($('#chType .on')?.textContent||'')==='代理渠道',lp=($('#chTo .on')?.textContent||'')==='落地页';
  const v=k=>{const x=chFr(k)?.querySelector('div.inp');return !x||x.classList.contains('v')&&!x.textContent.includes('没有')};
  if(!chFr('渠道名').querySelector('input').value.trim())return toast('请填渠道名');
@@ -1430,7 +1427,7 @@ const _cfo=chCfgOpts;chCfgOpts=function(){return ['不接广告平台（群发�
 
 /* ---- 渠道管理列表：重写列，带安装设置、不接平台、系统渠道 ---- */
 const _mChR=PAGES.mCh.render;PAGES.mCh.render=function(){let h=_mChR.call(this);return h};
-function cfgCell(r){const _c=CONFIGS.find(c=>c.name===r.cfg);if(_c&&(!_c.state||(_c.test&&_c.test[0]==='失败')))return `${r.cfg}<span class="sub" style="color:var(--red)">这份配置${!_c.state?'已关闭':''}${!_c.state&&_c.test[0]==='失败'?'、':''}${_c.test[0]==='失败'?'测试没通过':''}，事件发不出去</span>`;if(_c&&_c.cbErr)return `${r.cfg}<span class="sub">${st('回传异常','err')}</span>`;return r.cfg==='--'?`${st('未配置','err')}<span class="sub" style="color:var(--red)">漏选了，请选平台或「不接广告平台」</span>`:r.cfg}
+function cfgCell(r){if(r.cfg==='--')return st('未配置','err');const c=CONFIGS.find(x=>x.name===r.cfg);if(!c)return r.cfg;const t=c.state?adStat(c):(c.test&&c.test[0]==='失败'?st('测试失败','err'):st('配置已关闭','no'));return `${r.cfg}<span class="sub">${t==='--'?'':t}</span>`}
 function toCell(r){return (r.to==='落地页'?`<a onclick="go('mLp')">${r.lp}</a><span class="sub">落地页 · 按钮：${BTNOF[r.end].replace(/（.*?）/g,'')}</span>`:`${r.to}<span class="sub">版面配置：${r.lay||DLAY}</span>`)}
 
 /* ---- 新增/编辑渠道：安装设置、分享卡片、不接平台 ---- */
@@ -1558,8 +1555,8 @@ TIPS['Access Token']='服务端发事件用的凭证，在广告平台后台生�
 document.addEventListener('pick',ev=>{const d=ev.target;if(!d.closest||!d.closest('#dbody')||d.getAttribute('data-l')!=='适用网址/包名'||!ST.ad)return;ST.ad.site=d.textContent.trim();
  const w=$('#dbody .evlist');if(w&&ST.ad.p){w.nextElementSibling.remove();w.outerHTML=adEvList(ST.ad.p,ST.ad.r.end)}});
 {const t=CONFIGS.find(c=>c.id==='AC1005');CONFIGS.splice(CONFIGS.indexOf(t)+1,0,Object.assign({},t,{id:'AC1008',name:'TikTok-PWA',end:'PWA',test:['已通过','ok'],rm:'渠道 D 在用'}))}
-OPTS['投放端']=['Web','PWA','App','壳包'];OPTS['回传状态']=['未测试','测试失败','回传成功','回传异常'];
-TIPS['投放端']='一条广告接入只对应一种：Web（PC、H5 网页）、PWA（加到桌面的网页）、App（安卓原生）、壳包（安卓壳）。类型决定自动上报哪些事件，渠道管理只能选和自己端一致的配置。';
+OPTS['回传状态']=['未测试','测试失败','回传成功','回传异常'];
+
 {const S={AC1001:'https://agt-h5-in-001.go1050.test',AC1005:'https://agt-h5-in-002.go1050.test',AC1008:'https://agt-pwa-in-001.go1050.test',AC1006:'https://spare1.1050.test'};CONFIGS.forEach(c=>{if(S[c.id])c.site=S[c.id]});
  const i=CONFIGS.findIndex(c=>c.id==='AC1003');if(i>=0)CONFIGS.splice(i,1);
  const fb=CONFIGS.find(c=>c.id==='AC1001');fb.rm='A1 在用';CONFIGS.splice(CONFIGS.indexOf(fb)+1,0,Object.assign({},fb,{id:'AC1009',name:'FB-PC',site:'https://fb-a.1050.test',rm:'Facebook-A 在用',c:who('运营-李娜','2026-10-30 11:20')}));
@@ -1637,7 +1634,7 @@ TIPS['版面配置']='V3 的商户版面（总控「商户版面配置」里给�
 TIPS['绑定渠道']='这个推广域名给了哪个渠道。用户打开后落到哪里（落地页、主站首页、主站注册页），在新增渠道时按链路选，域名这里不设。';
 document.addEventListener('pick',ev=>{const el=ev.target;if(el&&el.dataset&&el.dataset.l==='版面配置'){const n=el.textContent.replace('默认版面','').trim();el.innerHTML=layHtml(n)}});
 function dTo(id){const c=CHANNELS.find(c=>c.id===id)||{};return c.to==='落地页'?'落地页 '+(c.lp||''):(c.to||'--')+' · '+(c.lay||DLAY)}
-{const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','端','母包','推广域名','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转域名','防封下载页','状态','注册赠送金额','赠送打码倍数','H5充提限制','下载提示文案','备注'];
+{const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','投放端','母包','推广域名','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转域名','防封下载页','状态','注册赠送金额','赠送打码倍数','H5充提限制','下载提示文案','备注'];
  const FULL=['商户','归属代理','落地页','版面配置','广告接入配置'];
  const _ce=chEdit;chEdit=function(id){const r=_ce.apply(this,arguments);const b=$('#dbody');const g=b&&b.querySelector('.fr')?.parentElement;if(!g||!chFr('渠道类型'))return r;
   ORD.forEach(k=>{const f=chFr(k);if(f){g.appendChild(f);if(FULL.includes(k))f.classList.add('full')}});
@@ -1764,7 +1761,7 @@ function retHtml(){const _RC=RFOK?RETCH.filter(r=>RFOK.includes(r[1])):RETCH;con
 
 var GROUPS=[{name:'Facebook 组',rm:'Facebook 投放的渠道'},{name:'印度 H5 组',rm:'H5 推广的渠道'},{name:'代理推广组',rm:''},{name:'安卓 App 组',rm:'安卓原生、安卓壳'},{name:'TikTok 组',rm:''},{name:'自然流量组',rm:'不接广告平台的渠道'}];
 {const GM={self_H5_IN_001:'自然流量组',FB_PC_IN_001:'Facebook 组',agt_H5_IN_001:'印度 H5 组',agt_H5_IN_002:'印度 H5 组',agt_PWA_IN_001:'代理推广组',FB_SHELL_IN_001:'安卓 App 组',GG_APK_IN_001:'安卓 App 组'};CHANNELS.forEach(c=>{if(c.grp===undefined)c.grp=GM[c.id]||''})}
-function grpTag(g){return g?`<span class="tag" style="background:#eef4ff;color:#1f5fa8">${g}</span>`:'<span class="note">未分组</span>'}
+function grpTag(g){return g?`<span class="tag">${g}</span>`:'--'}
 Object.defineProperty(OPTS,'分组',{get:()=>['未分组',...GROUPS.map(g=>g.name)],configurable:true});
 TIPS['分组']='自己给渠道归类用的标签，比如「Facebook 组」「印度 H5 组」。一个渠道只能在一个分组里，也可以不分组；分组只用来筛选和汇总，不影响渠道链接、域名和配置。在渠道管理点「分组管理」新建、改名、删除。';
 function grpMgr(){const cnt=g=>CHANNELS.filter(c=>c.grp===g).length;
@@ -2139,10 +2136,10 @@ function motherSave(id){const r=MPS.find(x=>x[0]===id);const b=$('#dbody'),nm=(b
  r[1]=nm;r[6]=b.querySelector('.sw.on')?st('启用','ok'):st('停用','no');r[7]=who('admin01','2026-11-04 16:00');closeDrawer();render();toast('已保存')}
 /* 渠道详情 */
 function chDetail(id){const r=CHANNELS.find(x=>x.id===id);if(!r)return;const x=r.cx||CHX0,app=isApp(r.end),sp=t=>`<span>${t}</span>`;
- const fs=[['商户',sp(M)],['渠道ID',sp(chCid(r))],['渠道 code',sp(r.id)],['渠道名',sp(r.name)],['分组',grpTag(r.grp)],['渠道类型',tyTag(r.type)],['归属代理',sp(r.type==='代理'?r.agent:'--')],['端',sp(r.end)],
+ const fs=[['商户',sp(M)],['渠道ID',sp(chCid(r))],['渠道 code',sp(r.id)],['渠道名',sp(r.name)],['分组',r.grp?grpTag(r.grp):sp('--')],['渠道类型',tyTag(r.type)],['归属代理',sp(r.type==='代理'?r.agent:'--')],['投放端',sp(r.end)],
   ...(app?[['母包',sp(MPOF[r.end]||'--')]]:[]),['推广域名',sp(hostOf(r))],['落地指向',sp(r.to||'落地页')],
   ((r.to||'落地页')==='落地页'?['落地页',sp(r.lp||'--')]:['版面配置',sp(layHtml(r.lay||DLAY))]),
-  ['安装设置',sp(r.ins||'跟主站')],['分享卡片',sp('用默认')],['广告接入配置',sp(r.cfg&&r.cfg!=='--'?r.cfg:'--')],['跳转域名',sp(r.jp||'用默认（公共池轮换）')],
+  ['分享卡片',sp('用默认')],['广告接入配置',sp(r.cfg&&r.cfg!=='--'?r.cfg:'--')],['跳转域名',sp(r.jp||'用默认（公共池轮换）')],
   ...(app||r.end==='PWA'?[['防封下载页',sp(r.sf||'用默认（公共池）')]]:[]),
   ['进站语言',sp(x.lang)],['绑定币种',sp(x.cur)],['注册赠送金额',sp('₹ '+(r.gift||0))],['赠送打码倍数',sp(r.giftx||0)],['领取条件',sp(x.claim)],['领取限制',sp(x.once?'同设备、同 IP 只能领一次':'不限')],
   ['展示下载入口',sp(x.dlIn)],['App 下载弹窗',sp(x.pop?'开':'关')],
@@ -2163,6 +2160,12 @@ UPS.forEach(u=>{if(u&&!Array.isArray(u)){if(u.how==='安装包')u.how='安装包
 TIPS['关联渠道']='必须关联一个渠道，一份配置只给一个渠道用。这里和渠道管理都能绑，哪边改了另一边跟着变。下拉只列投放端、平台都对得上，还没绑配置的渠道。';
 {const _cfo7=chCfgOpts;chCfgOpts=function(){const L=_cfo7().filter(x=>x.startsWith('不接广告平台')||x.startsWith('没有')||!CHANNELS.some(c=>c.cfg===x&&c.id!==CHE));return L.length?L:['没有空闲的配置，先去「广告接入」新建']}}
 /* 每份广告配置一一对应一个渠道 */ CHANNELS.push({id:'KW_H5_IN_001',name:'渠道 E',type:'非代理',agent:'--',end:'H5',to:'落地页',lp:'注册送 500',dm:'',cfg:'Kwai-H5',state:0,c:who('运营-李娜','2026-10-29 15:40'),u:who('运营-李娜','2026-11-01 11:10'),rm:'配置测试没通过，先停着'},{id:'KW_SHELL_IN_001',name:'渠道 F',type:'非代理',agent:'--',end:'安卓壳',to:'落地页',lp:'daman 商城页',dm:'',cfg:'Kwai-安卓壳',mp:'daman 安卓壳 v2.3.1',state:0,c:who('运营-李娜','2026-10-30 09:10'),u:who('运营-李娜','2026-10-30 09:10'),rm:'等配置测试通过再启用'}); {const a=CONFIGS.find(c=>c.id==='AC1006');a.rm='渠道 E 在用';if(typeof hostOf==='function')a.site=hostOf(CHANNELS.find(c=>c.id==='KW_H5_IN_001'));CONFIGS.find(c=>c.id==='AC1007').rm='渠道 F 在用'}
+/* 11-04 渠道管理整理：状态列集中提示、投放端统一叫法 */
+function chStCell(r){let h=r.state?st('启用','ok'):st('停用','no');if(!r.sys&&!hostOk(r))h+=`<span class="sub">${st('域名打不开','err')}</span>`;const x=(window.SUBS||[]).find(y=>y.ch===r.id&&y.st==='ok');if(x&&typeof subRe==='function'&&subRe(x))h+=`<span class="sub">${st('需人工重新上传','err')}</span>`;return h}
+Object.assign(KNAME,{WEB:'PC / H5',APP:'安卓原生',SHELL:'安卓壳'});
+Object.defineProperty(OPTS,'投放端',{get:()=>CUR==='mCh'?ENDS:Object.values(KNAME),configurable:true});
+TIPS['投放端']='投到哪种端：PC、H5（手机浏览器）、PWA（装到桌面的网页）、安卓原生、安卓壳。一个渠道只对应一种；广告接入里 PC 和 H5 合成一项「PC / H5」，渠道只能选投放端对得上的配置。';
+TIPS['渠道 code']='系统自动生成、不能改的渠道编号，推广链接都带它，注册、充值都按它统计。格式：类型_投放端_地区_序号，如 FB_H5_IN_001（Facebook）、agt_H5_IN_001（代理）、self_H5_IN_001（自建）、off_H5_IN_001（主站）。';
 {const h=location.hash.slice(1);if(PAGES[h])go(h);else render()}
 </script>
 
