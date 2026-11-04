@@ -696,7 +696,7 @@ const TIPS={
  '从桌面打开数':'用户从桌面图标打开 PWA 的次数。',
  '平台接入ID':'在广告平台后台拿到的编号，如 Facebook 的 Pixel ID、TikTok 的 Pixel Code；Google 不用，填 Customer ID 并授权。填错了数据就发不到这个平台。',
  'Access Token':'用来把注册、充值结果发给广告平台。只存在服务端，不会出现在网页或安装包里。',
- '归属代理':'填代理 ID。从这个渠道注册的新用户，自动成为这个代理的下级，不用再填邀请码。老用户不会改上级。',
+ '归属代理':'填代理 ID 或代理邀请码，二选一。从这个渠道注册的新用户，自动成为这个代理的下级，不用再填邀请码。老用户不会改上级。',
  '母包':'总控统一做好的安装包，每个端只有一个。新建 App 渠道时按端自动带出；用户从哪个渠道下载，系统就把那个渠道号写进去，不重新打包。',
  '母包名称':'总控统一做好的安装包，每个端只有一个。用户从哪个渠道下载，系统就把那个渠道号写进去，不重新打包。',
  '更新方式':'打开时自动更新：用户不用重装，打开应用就换成新版本。提示下载新包：用户要下载安装新的安装包。',
@@ -937,7 +937,7 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'H5';
   ['安装设置',`<div style="display:flex;align-items:center;white-space:nowrap"><div class="radio" id="chIns">${['跟主站','单独设置'].map(o=>`<span class="${o===(r.ins||'跟主站')?'on':''}" onclick="chInsSet('${o}')">${o}</span>`).join('')}</div><a style="margin-left:10px" onclick="go('mGuide')">看主站默认</a></div><div id="chInsX" style="display:none;margin-top:6px;gap:8px;flex-wrap:wrap;align-items:center;width:100%"><span class="note">引导装</span><div class="inp v" data-l="引导装" style="width:110px">${(r.insv||{}).g||'PWA'}</div><span class="note">弹窗时机</span><div class="inp v" data-l="弹窗时机" style="width:190px">${(r.insv||{}).t||'访问首页'}</div><span class="note">安装奖励 ₹</span><input class="inp" style="width:80px;min-width:0" value="${(r.insv||{}).m||20}"></div>`,{full:1}],
   ['分享卡片',`<div class="radio" id="chShare">${['用默认','单独设置'].map(o=>`<span class="${o==='用默认'?'on':''}" onclick="chShareSet('${o}')">${o}</span>`).join('')}</div><div id="chShareX" style="display:none;margin-top:6px;gap:8px;align-items:center;width:100%"><input class="inp" style="width:200px;min-width:0" placeholder="标题"><input class="inp" style="width:240px;min-width:0" placeholder="描述"><div class="lpup" onclick="this.classList.add('on');this.innerHTML='已上传 ✓'">＋ 分享图</div></div>`,{full:1}],
   ['跳转域名',S(r.jp||'用默认（公共池轮换）'),{}],['防封下载页',S(r.sf||'用默认'),{}],
-  ['归属代理',S(r.agent&&r.agent!=='--'?r.agent:'','输入代理 ID'),{req:1}],
+  ['归属代理',I(r.agent&&r.agent!=='--'?r.agent:'','输入代理 ID 或代理邀请码'),{req:1}],
   ['广告接入配置',S(r.cfg&&r.cfg!=='--'?r.cfg:'','只列出和这个渠道匹配的配置'),{req:1}],
   ['状态',`<span class="sw ${id&&r.state?'on':''}" id="chSt" onclick="chStGuard(event)"></span>`],
   ['注册赠送金额',I('0')],['赠送打码倍数',I('0')],['备注',I(r.rm||'')]],110)+
@@ -963,7 +963,7 @@ function chSave(ed){const ag=($('#chType .on')?.textContent||'')==='代理渠道
  if(!chFr('渠道名').querySelector('input').value.trim())return toast('请填渠道名');
  if(!ed&&$('#chDm span:last-child').classList.contains('on')&&!v('推广域名'))return toast('请选独立推广域名，或改用自动生成');
  if(lp&&!v('落地页'))return toast('请选落地页');
- if(ag&&!v('归属代理'))return toast('代理渠道要填归属代理');
+ if(ag&&!chFr('归属代理').querySelector('input').value.trim())return toast('代理渠道要填归属代理（代理 ID 或代理邀请码）');
  const c=chFr('广告接入配置').querySelector('.inp');if(!c.classList.contains('v'))return toast('请选广告接入配置；不投广告平台就选「不接广告平台」');
  closeDrawer();toast(ed?'已保存':'已保存，推广链接和二维码已生成')}
 function showQr(u){openDrawer('推广二维码',`<div style="display:flex;gap:16px;align-items:center;padding-top:4px"><div class="qr"></div><div style="min-width:0;word-break:break-all"><div>${u}</div><p class="note">扫码打开，会自动带上渠道 code</p></div></div>`,'<button class="btn" onclick="closeDrawer()">关闭</button><button class="btn p" onclick="toast(\'演示：已下载\')">下载二维码</button>',440)}
