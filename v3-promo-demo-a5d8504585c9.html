@@ -857,21 +857,21 @@ function adSend(){const ok=document.querySelector('#dbody .tcode');const v=ok?ok
  const tb=document.querySelector('#dbody .testT tbody');const now=new Date().toTimeString().slice(0,8);
  const row=v&&v.trim()&&!v.includes('请输入')?`<tr><td>2026-11-02 ${now}</td><td>CompleteRegistration</td><td>${st('已发出','ok')}</td><td>${st('已接收','ok')}</td></tr>`:`<tr><td>2026-11-02 ${now}</td><td>CompleteRegistration</td><td>${st('已发出','ok')}</td><td>${st('报错：缺少 Test Event Code','err')}</td></tr>`;
  tb.insertAdjacentHTML('afterbegin',row);toast('测试事件已发出')}
-function adTest(){const app=ST.ad.r.end==='APP'||ST.ad.r.end==='SHELL',code=ST.ad.p.test==='code';const need=document.querySelector('#dbody .tcode');const okIn=!need||need.value.trim();
+function adTest(){const app=ST.ad.r.end==='APP'||ST.ad.r.end==='SHELL',code=ST.ad.p.test==='code';const tn=ST.ad.p.name==='Kwai'?'测试点击编号':' Test Event Code';const need=document.querySelector('#dbody .tcode');const okIn=!need||need.value.trim();
  document.querySelectorAll('#dbody .testT .tr').forEach(c=>{const sv=c.dataset.sv==='1',zh=c.dataset.zh;
-  c.innerHTML=!okIn?st('先填 Test Event Code','err'):!sv?'<span class="note">用带 Test Event Code 的链接打开页面后出现</span>':zh==='激活'?`<span class="note">${app?'装好打开后出现':'PWA 装到桌面后从桌面启动才会发'}</span>`:code?st('平台已接收','ok'):st('已发出，去平台后台核对','wait')});
- toast(!okIn?'请先填 Test Event Code':'测试事件已发出')}
+  c.innerHTML=!okIn?st('先填'+tn,'err'):!sv?'<span class="note">用测试链接打开页面后出现</span>':zh==='激活'?`<span class="note">${app?'装好打开后出现':'PWA 装到桌面后从桌面启动才会发'}</span>`:code?st('平台已接收','ok'):st('已发出，去平台后台核对','wait')});
+ toast(!okIn?'请先填'+tn:'测试事件已发出')}
 function renderAd(){const {r,step,p}=ST.ad;
   let b='';
   if(step===0)b+=`<div class="banner" style="align-items:flex-start;flex-direction:column;gap:4px;margin-bottom:14px"><div><b>${p.name}</b>　${p.intro}</div><div class="note">要准备：${p.need}　·　测试：${p.testTxt}　·　<a href="${p.doc}" target="_blank" rel="noopener">${p.docT} ↗</a></div></div>`+F([['商户',S(M),{req:1}],['配置名称',I(r.name),{req:1}],['广告平台',r.id?`<b style="font-weight:500">${p.name}</b>`:`<div class="radio">${PL.map(x=>`<span class="${x.name===p.name?'on':''}" onclick="adPlatSet('${x.name}')">${x.name}</span>`).join('')}</div>`,r.id?{ro:1}:{req:1,full:1}],['接入端',`<div class="radio" id="adEnd">${['Web','PWA','App','壳包'].map(o=>`<span class="${o===KNAME[r.end]?'on':''}" onclick="adEndSet('${o}')">${o}</span>`).join('')}</div>`,{req:1,full:1}],
    (r.id?['关联渠道',`<span>${adChOf(r)||'<span class="note">未关联</span>'}</span><span class="note" style="margin-left:8px">要换渠道到渠道管理里改</span>`,{ro:1}]:['关联渠道',S('','选择渠道（可不选）')]),...(p.idL?[[p.idL,I(r.pix,p.idPh),{req:1}]]:[]),...(p.name==='Google Ads'?[['Customer ID',I(r.gcid||'','如 123-456-7890（Google Ads 后台右上角）'),{req:1}],['账号授权',gAuthHtml(r),{full:1}]]:[]),...(p.keyL?[[p.keyL,I(r.id?'••••••••••••':'','粘贴平台提供的 Access Token'),{req:1}]]:[]),['状态','<span class="sw on"></span>',{full:!p.keyL}],['备注',I(''),{full:1}]],120)+
    `<div class="sec">自动上报以下事件 <span class="note">不用配置，事件名和发送的字段都是各平台官方叫法</span><a href="${p.doc}" target="_blank" rel="noopener" style="margin-left:auto;font-weight:400">${p.docT} ↗</a></div>${adEvList(p,r.end)}`;
   if(step===1){const app=r.end==='APP'||r.end==='SHELL',evs=evFor(p,r.end);
-   b+=(p.test==='code'?F([['Test Event Code',`<input class="inp tcode" placeholder="如 TEST12345，从 ${p.name} 后台的「Test Events」页复制" style="min-width:0;width:100%">`]],140):'')+
+   b+=(p.test==='code'?F([p.name==='Kwai'?['测试点击编号','<input class="inp tcode" placeholder="从 Kwai 后台复制" style="min-width:0;width:100%">']:['Test Event Code',`<input class="inp tcode" placeholder="如 TEST12345，从 ${p.name} 后台的「Test Events」页复制" style="min-width:0;width:100%">`]],140):'')+
     F([['测试渠道',`<span>${adChOf(r)||'<span class="note">还没关联渠道，事件不带渠道</span>'}${(CHANNELS.find(c=>c.cfg===r.name)||{state:1}).state?'':' '+st('已停用','no')+'<span class="note" style="margin-left:8px">正式事件不发，测试事件照发</span>'}</span>`,{ro:1,full:1}]],140)+
-    `<div class="bar" style="margin-top:12px"><button class="btn p" onclick="adTest()">${p.name==='Google Ads'?'发送测试转化':'发送 Test Event'}</button><span class="note">服务端事件马上发出</span></div>`+
+    `<div class="bar" style="margin-top:12px"><button class="btn p" onclick="adTest()">${p.name==='Google Ads'?'发送测试转化':'发送 Test Event'}</button><span class="note">服务端事件马上发出</span>${p.test==='code'?'<button class="btn" style="margin-left:8px" onclick="adTestLink()">生成测试链接</button>':''}</div>${p.test==='code'?'<div id="tlink"></div>':''}`+
     `<div class="testT">`+table([{t:'事件',k:e=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${e.n}</span><span class="sub">${e.zh}</span>`},{t:'结果',k:e=>`<span class="tr" data-sv="${e.how!=='Pixel'&&e.how!==CL?1:0}" data-zh="${e.zh}">${st('未测试','no')}</span>`}],evs)+`</div>`;
-   if(p.test==='code')b+='<p class="note">带 Test Event Code 的事件只显示在平台的「Test Events」页，不计入正式数据。测试码关掉弹窗就清空。</p>';
+   if(p.test==='code')b+=p.name==='Kwai'?'<p class="note">带测试点击编号的事件只用于测试，不计入正式数据。测试点击编号关掉弹窗就清空。</p>':'<p class="note">带 Test Event Code 的事件只显示在平台的「Test Events」页，不计入正式数据。测试码关掉弹窗就清空。</p>';
    if(p.test==='real')b+='<div class="alert w">Google Ads 没有测试接口，转化上传后要几个小时才在后台显示，请过几个小时到 Google Ads 后台核对。</div>';
   }
   openDrawer(step===1?`测试 ${p.name} 配置`:r.id?`编辑 ${p.name} 配置`:'新增广告接入配置',b,step===1?CLOSEF:`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="adSave()">保存</button>`,720,r.id?[['配置ID',r.id],['配置名称',r.name]]:null)}
@@ -982,13 +982,13 @@ function appTab(i){PAGES.mApp.tab=i;render()}
 /* ---- 商户 · 推广报表 ---- */
 const chLabel=c=>`${c.id} · ${c.name}`;
 PAGES.mRpt={end:'m',title:'推广报表',bd:['新',''],tab:0,render(){
-  const t=this.tab;let h=(CUR==='aRpt'?chg('new',ARPTCHG):chg('new','分两张报表：「新增报表」看用户从哪个渠道进来，一行一个渠道；「留存报表」看各渠道用户的质量（回不回来、付不付费）。统计只认渠道 code：用户注册时写到用户身上，之后的充值、首充都按它算，域名不参与统计。注册按注册日期算（哪天注册算哪天，算进注册时的渠道，没有归因有效期）；首充、充值人数和金额按到账日期算（1 号注册、3 号到账算 3 号）；金额只算实付，不含赠送。筛选：商户、日期、渠道类型、代理、分组、渠道、广告平台；选了代理，渠道下拉只剩他名下的渠道。'))+
-  tabs2(['新增报表','留存报表','用户来源','事件记录'],[0,3,1,2],t,'rptTab')+
-  flt([...(CUR==='aRpt'?[inp('集团','亚太集团')]:[]),inp('商户',M,CUR==='aRpt'?{}:{req:1}),...(t===1?[]:[t===3?inp('注册日期','2026-10-01 ~ 2026-10-31',{w:200}):inp(t===2?'发生时间':'统计日期','2026-11-01 ~ 2026-11-01',{w:200}),`<div class="quick"><span>今天</span><span class="${t===3?'':'on'}">昨天</span><span>本周</span><span>本月</span></div>`]),inp('渠道类型','',{ph:'全部'}),inp('代理','',{ph:'全部'}),inp('分组','',{ph:'全部'}),inp('渠道','',{ph:'全部',w:200}),inp('广告平台','',{ph:'全部'})].concat(t===1?[inp('会员ID/手机号','',{t:1,ph:'请输入'}),inp('注册时间','2026-11-01 ~ 2026-11-01',{w:200}),inp('首充时间','',{w:200,ph:'请选择'}),inp('是否充值','',{ph:'全部'})]:[]));
+  const t=this.tab;let h=(CUR==='aRpt'?chg('new',ARPTCHG):chg('new','分三张报表：「新增报表」看用户从哪个渠道进来，一行一个渠道；「留存报表」看各渠道用户的质量（回不回来、付不付费）；「花费与回本」录入各渠道的推广花费，看注册成本和多久回本。统计只认渠道 code：用户注册时写到用户身上，之后的充值、首充都按它算，域名不参与统计。注册按注册日期算（哪天注册算哪天，算进注册时的渠道，没有归因有效期）；首充、充值人数和金额按到账日期算（1 号注册、3 号到账算 3 号）；金额只算实付，不含赠送。筛选：商户、日期、渠道类型、代理、分组、渠道、广告平台；选了代理，渠道下拉只剩他名下的渠道。'))+
+  tabs2(['新增报表','留存报表','花费与回本','用户来源','事件记录'],[0,3,4,1,2],t,'rptTab')+
+  flt([...(CUR==='aRpt'?[inp('集团','亚太集团')]:[]),inp('商户',M,CUR==='aRpt'?{}:{req:1}),...(t===1?[]:[t>=3?inp('注册日期','2026-10-01 ~ 2026-10-31',{w:200}):inp(t===2?'发生时间':'统计日期','2026-11-01 ~ 2026-11-01',{w:200}),`<div class="quick"><span>今天</span><span class="${t>=3?'':'on'}">昨天</span><span>本周</span><span>本月</span></div>`]),inp('渠道类型','',{ph:'全部'}),...(t===4?[]:[inp('代理','',{ph:'全部'})]),inp('分组','',{ph:'全部'}),inp('渠道','',{ph:'全部',w:200}),...(t===4?[]:[inp('广告平台','',{ph:'全部'})])].concat(t===1?[inp('会员ID/手机号','',{t:1,ph:'请输入'}),inp('注册时间','2026-11-01 ~ 2026-11-01',{w:200}),inp('首充时间','',{w:200,ph:'请选择'}),inp('是否充值','',{ph:'全部'})]:[]));
   const nn=(v,tab)=>v==='--'?'--':n(v,tab);
   if(t===0)h+=`<div class="kpis">${[['落地页浏览','7,190'],['点按钮数','4,077'],['注册','741'],['首充人数','240'],['充值金额','₹ 416,700']].map(k=>`<div class="kpi"><span>${k[0]} ${hi(k[0])}</span><b>${k[1]}</b></div>`).join('')}</div>`+
    `<div class="sec">渠道数据 <span class="note">时区 UTC+5:30 · 人数、次数、金额分开统计 · 落地指向不是落地页的渠道（主站各端、A2、Facebook-A）没有落地页浏览和点按钮数</span></div>`+table([
-   ...JTC(),{t:'商户',k:()=>pill(M)},{t:'统计日期',k:()=>'2026-11-01'},{t:'渠道',l:1,k:r=>`${r[0]}<span class="sub" style="font-family:Menlo,Consolas,monospace">${r[13]}</span>`},{t:'分组',cls:'newc',k:r=>grpTag((CHANNELS.find(c=>c.id===r[13])||{}).grp)},{t:'渠道类型',k:r=>tyTag(r[12])},{t:'端',k:1},{t:'代理',k:2},{t:'广告平台',k:r=>platOf(r[13])},{t:'落地页浏览',k:r=>nn(r[3],2)},{t:'点按钮数',k:r=>r[14]},{t:'注册',k:r=>n(r[5],1)},{t:'首充人数',k:r=>n(r[6],2)},{t:'充值人数',k:r=>n(r[7],2)},{t:'充值金额',k:8},{t:'提现金额',k:9},{t:'装到桌面数',cls:'newc',k:10},{t:'从桌面打开数',cls:'newc',k:11}],[
+   ...JTC(),{t:'商户',k:()=>pill(M)},{t:'统计日期',k:()=>'2026-11-01'},{t:'渠道',l:1,k:r=>`${r[0]}<span class="sub" style="font-family:Menlo,Consolas,monospace">${r[13]}</span>`},{t:'分组',cls:'newc',k:r=>grpTag((CHANNELS.find(c=>c.id===r[13])||{}).grp)},{t:'渠道类型',k:r=>tyTag(r[12])},{t:'端',k:1},{t:'代理',k:2},{t:'广告平台',k:r=>platOf(r[13])},{t:'落地页浏览',k:r=>nn(r[3],2)},{t:'点按钮数',k:r=>r[14]+rxF(r[14],r[3],'点按钮','浏览')},{t:'激活数',cls:'newc',k:r=>{const a=rxAct(r);return a==null?'--':a.toLocaleString('en-US')+rxF(a,r[14],'激活','点按钮')}},{t:'注册',k:r=>{const p=rxPrev(r);return n(r[5],1)+rxF(r[5],p[0],'注册',p[1])}},{t:'首充人数',k:r=>n(r[6],2)+rxF(r[6],r[5],'首充','注册')},{t:'首充金额',cls:'newc',k:r=>rxM(rxX(r)[1])},{t:'当天注册当天首充',cls:'newc',k:r=>rxX(r)[2]},{t:'充值人数',k:r=>n(r[7],2)},{t:'充值金额',k:8},{t:'提现金额',k:9},{t:'充提差',cls:'newc',k:r=>rxM(rxN(r[8])-rxN(r[9]))},{t:'奖励金额',cls:'newc',k:r=>rxM(rxX(r)[3])},{t:'装到桌面数',cls:'newc',k:r=>r[10]+rxF(r[10],r[14],'装到桌面','点按钮')},{t:'从桌面打开数',cls:'newc',k:11}],[
    ['主站 · PC','PC','--','--','--',18,5,6,'₹ 8,200','₹ 1,900','--','--','非代理','off_PC_IN_001','--',380],
    ['主站 · H5','H5','--','--','--',41,12,15,'₹ 18,900','₹ 3,800','--','--','非代理','off_H5_IN_001','--',760],
    ['主站 · PWA','PWA','--','--','--',12,4,5,'₹ 7,100','₹ 1,500','96','210','非代理','off_PWA_IN_001','--',210],
@@ -1018,6 +1018,7 @@ PAGES.mRpt={end:'m',title:'推广报表',bd:['新',''],tab:0,render(){
    ['EV90031','注册','1105024','--','--','A2 · H5','16:11:58','服务端',st('成功','ok'),'TikTok CompleteRegistration'+sv('失败','err')+'<span class="sub">Access Token 过期</span>',`<span class="ops"><a onclick="evView('EV90031')">查看</a><a onclick="toast('演示：已重新发送，等平台返回')">重试</a></span>`]])+
    `<p class="note">首充那笔订单会有两条：一条「充值」、一条「首充」。所有事件都由服务端上报（App、壳包多一个「激活」，就是打开 App），能看到平台接口返回。没拿到点击编号的用户照样发给平台（带 IP 和 UA，Facebook 还带 fbp），由平台匹配，同时按渠道统计；Google 没有 gclid 时改用 Enhanced Conversions（哈希过的手机号或邮箱），都没有就只记我方报表。同一条成功记录重发多次只记一次；充值没到账不算充值成功。</p>`;
   if(t===3)h+=retHtml();
+  if(t===4)h+=spHtml();
   return h}};
 function n(v,tab){return `<span class="num" onclick="rptTab(${tab})">${v.toLocaleString()}</span>`}
 function rptTab(i){PAGES[CUR==='aRpt'?'aRpt':'mRpt'].tab=i;RFOK=null;render()}
@@ -1410,9 +1411,9 @@ function domSave(ed){const t=$('#domF div.inp[data-l="域名类型"]');if(!t.cla
  const v=d.value.trim().replace(/^https?:\/\//,'');openDrawer('请添加 DNS 解析',table([{t:'记录类型',k:0},{t:'主机记录',k:1},{t:'记录值',k:2}],[['CNAME',v.startsWith('*.')?'*':'@','edge-1050.v3cdn.test']])+'<div class="alert">到域名服务商后台加上面这条解析。系统每 10 分钟检测一次，生效后状态自动变「已生效」；检测结果在「解析检测记录」里看。</div>',CLOSEF,600,[['域名',v],['状态','检测中']])}
 
 /* ---- 广告接入测试：生成测试链接和二维码 ---- */
-function adTestLink(){const c=$('#dbody div.inp[data-l="测试渠道"]');const ch=c&&c.classList.contains('v')?CHANNELS.find(x=>x.id===c.textContent.split(' · ')[0]):null;const code=$('#dbody .tcode');if(code&&!code.value.trim())return toast('请先填 Test Event Code');
- const base=ch?chOut(ch):'https://test-'+((ST.ad&&ST.ad.r&&ST.ad.r.id)||'AC').toLowerCase()+'.go1050.test';const u=base+(base.includes('?')?'&':'?')+(code?'test_code='+code.value.trim():'test=1');
- $('#tlink').innerHTML=`<div style="display:flex;gap:12px;align-items:center;margin-top:8px"><div class="qr" style="width:84px;height:84px"></div><div style="min-width:0;flex:1"><span style="font-family:Menlo,Consolas,monospace;font-size:12px;word-break:break-all">${u}</span><div class="note">手机扫码打开，注册、充值走一遍，事件会进平台的 Test Events 页。${ch?'':'没选渠道：这是系统临时生成的测试链接，只按这份配置报事件，不属于任何渠道。'}测试链接产生的数据标「测试」，不算进推广报表。</div><a onclick="toast('演示：已复制')">复制链接</a></div></div>`}
+function adTestLink(){const r=ST.ad&&ST.ad.r,p=ST.ad&&ST.ad.p;if(!p||p.test!=='code')return;const kw=p.name==='Kwai';const ch=r&&r.name?CHANNELS.find(x=>x.cfg===r.name):null;const code=$('#dbody .tcode');if(!code||!code.value.trim())return toast(kw?'请先填测试点击编号':'请先填 Test Event Code');
+ const base=ch?chOut(ch):'https://test-'+((r&&r.id)||'AC').toLowerCase()+'.go1050.test';const u=base+(base.includes('?')?'&':'?')+(kw?'kwaiTestClickId=':'test_event_code=')+encodeURIComponent(code.value.trim());
+ $('#tlink').innerHTML=`<div style="display:flex;gap:12px;align-items:center;margin-top:8px"><div class="qr" style="width:84px;height:84px"></div><div style="min-width:0;flex:1"><span style="font-family:Menlo,Consolas,monospace;font-size:12px;word-break:break-all">${u}</span><div class="note">测试链接＝渠道链接＋平台测试参数，手机扫码走一遍注册、充值；测试数据标「测试」，不进推广报表。${ch?'':'还没关联渠道：这是系统临时生成的测试链接，只按这份配置报事件，不属于任何渠道。'}</div><a onclick="toast('演示：已复制')">复制链接</a></div></div>`}
 OPTS['首充时间']=['2026-11-01 ~ 2026-11-01','2026-10-26 ~ 2026-11-01'];
 const _ds2=doSearch;doSearch=function(btn){_ds2(btn);if(!/^[am]Rpt$/.test(CUR)||PAGES[CUR].tab!==1)return;const f=btn.closest('.flt');
  const fi=k=>[...f.querySelectorAll('.fi')].find(x=>x.querySelector('label').textContent.replace(/[?*\s]/g,'')===k);
@@ -1533,6 +1534,48 @@ function dTo(id){const c=CHANNELS.find(c=>c.id===id)||{};return c.to==='落地�
   const t=$('#chTo .on');if(t)chToSet(t.textContent);return r}}
 {const _ts=chToSet;chToSet=function(t){const r=_ts.apply(this,arguments);const f=chFr('版面配置');if(f)f.style.display=t==='落地页'?'none':'';chLay();return r}}
 chLay=function(){const rm=chFr('备注');if(!rm)return;const ff=chFr('跳转域名')?.parentElement;if(!ff)return;const L=['跳转域名','防封下载页','状态','注册赠送金额','赠送打码倍数'].filter(k=>{const f=chFr(k);return f&&f.style.display!=='none'&&!f.classList.contains('full')}).length;rm.classList.toggle('full',L%2===0)};
+/* ---- 11-04 渠道：进站语言、绑定币种、领奖条件、下载引导；广告接入测试：Kwai 用测试点击编号 ---- */
+const CHX0={lang:'跟手机语言',cur:'INR',dlIn:'跟主站',pop:0,ends:['PWA'],close:'能关',reg:0,dep:0,wd:0,fb:'安卓壳',claim:'正式账号',once:1};
+CHANNELS.forEach(c=>{c.cx={...CHX0,ends:[...CHX0.ends],...(c.cx||{})}});
+{const X=(id,o)=>{const c=CHANNELS.find(x=>x.id===id);if(c)Object.assign(c.cx,o)};
+ X('agt_H5_IN_001',{pop:1,ends:['PWA','安卓壳'],close:'装了才能关',dep:1});
+ X('agt_PWA_IN_001',{dlIn:'开',pop:1,ends:['安卓原生','安卓壳'],reg:3,fb:'不改装'});
+ X('GG_APK_IN_001',{lang:'हिन्दी',dlIn:'关'});
+ X('agt_H5_IN_002',{claim:'仅已首充'})}
+OPTS['进站语言']=['跟手机语言',...OPTS['语言']];OPTS['绑定币种']=['INR','USDT'];OPTS['装不了时改装']=['安卓壳','安卓原生','不改装'];
+Object.assign(TIPS,{
+ '进站语言':'从这个渠道进来的用户第一次进主站用的语言（之后还能自己切），选「跟手机语言」就按手机系统语言。',
+ '绑定币种':'从这个渠道注册的用户锁定用这个币种、自己不能改，默认是商户默认币种；商户只有一个币种时固定，不能改。',
+ '领取条件':'谁能领注册赠送：正式账号就能领，或者首充过才能领。',
+ '领取限制':'打开后，同一台设备、同一个 IP 只能领一次注册赠送，防批量注册薅奖励。',
+ '展示下载入口':'从这个渠道进来的网页用户，主站页面上显不显示「下载 App」入口；跟主站就用主站的设置。',
+ 'App 下载弹窗':'这个渠道专用的下载弹窗，打开后按下面的条件弹给这个渠道的用户，不受主站其它下载设置影响。',
+ '展示哪些下载':'弹窗里给用户哪几种下载，可以多选。',
+ '能不能关':'能关：用户可以直接关掉；装了才能关：装好后才能关；不能关：一直弹，只能用 App。',
+ '弹给谁':'注册天数、充值次数、提现次数三项都满足才弹。',
+ '装不了时改装':'用户手机装不了 PWA 时，弹窗改成下载这里选的安装包；选「不改装」就不给别的下载。',
+ '测试点击编号':'从 Kwai 后台复制的测试编号，拼在测试链接上（参数 kwaiTestClickId），带上它的事件只用于测试；只在测试时用，不保存。'});
+TIPS['Test Event Code']=TIPS['Test Event Code'].replace('Facebook、TikTok、Kwai 都有','Facebook、TikTok 有；Kwai 用「测试点击编号」');
+PL.find(x=>x.name==='Kwai').testTxt='支持测试点击编号（从 Kwai 后台复制）';
+function chPopSet(){const on=!!$('#chPop')?.classList.contains('on');['展示哪些下载','能不能关','弹给谁','装不了时改装'].forEach(k=>{const f=chFr(k);if(f)f.style.display=on?'':'none'})}
+{const _ce=chEdit;chEdit=function(id){const res=_ce.apply(this,arguments);if(!document.querySelector('#modal.on')||!chFr('渠道类型')||chFr('进站语言'))return res;
+ const r=(CHANNELS.find(x=>x.id===id)||{}).cx||CHX0,ad=chFr('广告接入配置'),g=ad.parentElement,bm=chFr('赠送打码倍数');
+ const mk=fs=>{const d=document.createElement('div');d.innerHTML=F(fs,110);return [...d.firstElementChild.children]};
+ const num=v=>`<input class="inp" type="number" min="0" value="${v}" style="width:64px;min-width:0">`;
+ mk([['进站语言',S(r.lang)],['绑定币种',S(r.cur)]]).forEach(f=>ad.before(f));
+ mk([['领取条件',R(['正式账号','仅已首充'],r.claim)],['领取限制',`<span class="sw ${r.once?'on':''}"></span><span class="note" style="margin-left:8px">同设备、同 IP 只能领一次</span>`]]).reverse().forEach(f=>bm.after(f));
+ const sec=document.createElement('div');sec.className='sec full';sec.style.margin='4px 0 -4px';sec.textContent='下载引导';g.appendChild(sec);
+ mk([['展示下载入口',R(['跟主站','开','关'],r.dlIn)],['App 下载弹窗',`<span class="sw ${r.pop?'on':''}" id="chPop" onclick="setTimeout(chPopSet,0)"></span>`],
+  ['展示哪些下载',`<div class="ck">${['PWA','安卓原生','安卓壳'].map(x=>`<label><input type="checkbox" ${r.ends.includes(x)?'checked':''}> ${x}</label>`).join('')}</div>`,{full:1}],
+  ['能不能关',`<div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px">${R(['能关','装了才能关','不能关'],r.close)}<span class="note">伤体验，慎用</span></div>`,{full:1}],
+  ['弹给谁',`<div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px">注册满${num(r.reg)}天，充值满${num(r.dep)}次，提现满${num(r.wd)}次<span class="note" style="margin-left:6px">0 表示刚注册 / 没充过 / 没提过</span></div>`,{full:1}],
+  ['装不了时改装',S(r.fb),{full:1}]]).forEach(f=>g.appendChild(f));
+ chPopSet();chLay();return res}}
+{const _cs=chSave;chSave=function(ed){const id=CHE,fr=k=>chFr(k),rv=k=>fr(k)?.querySelector('.radio .on')?.textContent,dv=k=>fr(k)?.querySelector('div.inp')?.textContent.trim();
+ const pop=!!$('#chPop')?.classList.contains('on'),ends=[...(fr('展示哪些下载')?.querySelectorAll('.ck input')||[])].filter(x=>x.checked).map(x=>x.parentElement.textContent.trim());
+ const nv=[...(fr('弹给谁')?.querySelectorAll('input')||[])].map(x=>Math.max(0,parseInt(x.value,10)||0));
+ const v={lang:dv('进站语言'),cur:dv('绑定币种'),dlIn:rv('展示下载入口'),pop:pop?1:0,ends,close:rv('能不能关'),reg:nv[0]||0,dep:nv[1]||0,wd:nv[2]||0,fb:dv('装不了时改装'),claim:rv('领取条件'),once:fr('领取限制')?.querySelector('.sw.on')?1:0};
+ const res=_cs.apply(this,arguments);if(!document.querySelector('#modal.on')&&ed&&id){const c=CHANNELS.find(x=>x.id===id);if(c&&v.lang)c.cx={...c.cx,...v}}return res}}
 
 const UA_A='Mozilla/5.0 (Linux; Android 13; SM-A536E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36';
 const FBAPI='Facebook Conversions API · POST graph.facebook.com/v21.0/{Pixel ID}/events';
@@ -1637,6 +1680,64 @@ function grpDel(i){const g=GROUPS[i],n=CHANNELS.filter(c=>c.grp===g.name).length
  Object.keys(A).forEach(k=>{EV[k]=EV[k].filter(e=>e.zh!=='激活');EV[k].unshift({...A[k],zh:'激活',how:SV,std:1,tip:AT+(k==='Google Ads'?'Google 用我方提前建好的 DOWNLOAD 类别 Conversion Action。':'')})});
  EVWHEN['激活']='第一次打开 App（每台设备一次）';}
 
+/* ---- 推广报表 · 新增报表新列 + 花费与回本（patchC） ---- */
+/* 新增报表（11-01）按渠道 code：[激活数, 首充金额, 当天注册当天首充, 奖励金额]；激活只有安卓原生、安卓壳；最低充值按 ₹100 */
+var RXNEW={off_PC_IN_001:[null,2600,3,300],off_H5_IN_001:[null,5400,8,900],off_PWA_IN_001:[null,2400,2,200],off_APK_IN_001:[16,1400,1,100],off_SHELL_IN_001:[11,1000,1,100],
+ self_H5_IN_001:[null,43700,52,39000],agt_H5_IN_001:[null,25500,26,18500],agt_H5_IN_002:[null,1200,2,0],agt_PWA_IN_001:[null,12200,11,2850],
+ FB_SHELL_IN_001:[760,29500,29,6150],GG_APK_IN_001:[205,13000,10,8000],FB_PC_IN_001:[null,15000,13,3000]};
+/* 花费与回本（10 月注册的这批人，和留存报表同一批）：10 月花费 ₹；主站系统渠道、不接广告平台的（含渠道 A）没有花费。单个注册成本：A1 340、A2 520、D 400、C 680、B 890、Facebook-A 75 */
+var RXSP={agt_H5_IN_001:520200,agt_H5_IN_002:135200,agt_PWA_IN_001:328000,FB_SHELL_IN_001:1332800,GG_APK_IN_001:658600,FB_PC_IN_001:66000};
+/* 提现占充值的比例，取自新增报表同一渠道的 [充值金额, 提现金额] */
+var RXCW={agt_H5_IN_001:[70500,12000],agt_H5_IN_002:[6300,0],agt_PWA_IN_001:[28400,5100],FB_SHELL_IN_001:[48600,9800],GG_APK_IN_001:[31200,7450],FB_PC_IN_001:[38900,6200]};
+const rxM=v=>'₹ '+Math.round(v).toLocaleString('en-US');
+const rxN=v=>v==null||v==='--'?null:+String(v).replace(/[^\d.]/g,'');
+const rxF=(a,b,na,nb)=>{const x=rxN(a),y=rxN(b);return x==null||!y?'':`<span class="sub" style="white-space:nowrap">${na} / ${nb} ${Math.round(x/y*100)}%</span>`};
+const rxX=r=>RXNEW[r[13]]||[];
+const rxAct=r=>/^安卓/.test(r[1])&&rxX(r)[0]!=null?rxX(r)[0]:null;
+function rxPrev(r){const a=rxAct(r);if(a!=null)return [a,'激活'];if(rxN(r[10])!=null)return [r[10],'装到桌面'];return [r[14],'点按钮']}
+TIPS['激活数']='App 装好后第一次打开的设备数，每台设备只算一次。只有安卓原生、安卓壳渠道有，其它显示「--」。';
+TIPS['首充金额']='这天到账的首充订单金额加起来，只算实付，不含赠送。';
+TIPS['当天注册当天首充']='这天注册、并且同一天首充到账的人数，是首充人数里的一部分。';
+TIPS['充提差']='充值金额 − 提现金额。';
+TIPS['奖励金额']='这天发给这个渠道用户的钱加起来，如注册赠送、活动彩金。';
+TIPS['花费']='这个渠道在所选日期里记录的推广花费（₹）。一笔花费按天数平均摊到每天。';
+TIPS['总花费']='筛选出来的渠道花费加起来（₹）。';
+TIPS['注册人数']='所选日期里注册的新用户数，按注册日期算。';
+TIPS['首充人数']='首充了的人数。新增报表按首充到账日期算；花费与回本按注册日期算，是这批注册用户里已经首充的人。';
+TIPS['单个注册成本']='花费 ÷ 注册人数。顶部卡片只算有花费的渠道。';
+TIPS['首充成本']='花费 ÷ 首充人数。顶部卡片只算有花费的渠道。';
+[3,7,15,30].forEach(N=>TIPS[N+' 日回本']=`这批注册用户注册后 ${N} 天内的（充值 − 提现）÷ 花费，满 100% 标绿。只算注册满 ${N} 天的人，花费也只算这些人注册那几天的；没有满的显示「--」。`);
+Object.defineProperty(OPTS,'投放渠道',{get:()=>CHANNELS.filter(c=>!c.sys&&platOf(c.id)!=='不接平台').map(chLabel),configurable:true});
+function spRow(r){const id=r[1],reg=r[5],rt=r[6],bs=retBs(reg),c=CHANNELS.find(x=>x.id===id)||{};const sp=!c.sys&&platOf(id)!=='不接平台'?(RXSP[id]??null):null;
+ const w=RXCW[id]?RXCW[id][1]/RXCW[id][0]:0,f15=1+.6*rt[3]/rt[2],f=[0,.7,1,f15,f15+.9*rt[4]/rt[2]];
+ const pb=RETN.map((N,i)=>{if(!i||sp==null||!bs[i])return null;const dep=Math.round(bs[i]*r[8]*f[i]/100)*100,wd=Math.round(dep*w/100)*100,cost=sp*RETD[i]/31;return {N,b:bs[i],dep,wd,cost,rate:(dep-wd)/cost*100}});
+ return {name:r[0],id,grp:c.grp,reg,fp:Math.round(reg*r[7]/100),sp,pb}}
+function spCell(p,reg){if(!p)return '<span class="note">--</span>';const ok=p.rate>=100;
+ return `<span style="display:inline-block;padding:0 6px;border-radius:4px;font-weight:600;${ok?'background:var(--green-soft);color:var(--green)':''}">${p.rate.toFixed(1)}%</span><span class="sub" style="white-space:nowrap">充 ${rxM(p.dep)} · 提 ${rxM(p.wd)}</span>${p.b<reg?`<span class="sub" style="white-space:nowrap">满 ${p.N} 天 ${p.b.toLocaleString('en-US')} 人</span>`:''}`}
+function spHtml(){const L=(RFOK?RETCH.filter(r=>RFOK.includes(r[1])):RETCH).map(spRow),SL=L.filter(x=>x.sp!=null);
+ const bar=`<div class="bar"><button class="btn p" onclick="spRec()">＋ 记录花费</button><button class="btn" style="margin-left:8px" onclick="spImp()">批量导入</button></div>`;
+ if(!L.length)return '<div id="spBox">'+bar+'<div class="tw"><table><tbody><tr class="empty"><td colspan="99" style="color:var(--mut);padding:24px">没有符合条件的数据</td></tr></tbody></table></div></div>';
+ const sum=g=>SL.reduce((a,x)=>a+g(x),0),tot=sum(x=>x.sp),reg=sum(x=>x.reg),fp=sum(x=>x.fp),c7=sum(x=>x.pb[2].cost),n7=sum(x=>x.pb[2].dep-x.pb[2].wd),b7=sum(x=>x.pb[2].b);
+ const kp=[['总花费',SL.length?rxM(tot):'--'],['单个注册成本',reg?rxM(tot/reg):'--'],['首充成本',fp?rxM(tot/fp):'--'],['7 日回本',c7?(n7/c7*100).toFixed(1)+'%'+`<small style="display:block;font-size:12px;font-weight:400">只算 10-25 及以前注册的 ${b7.toLocaleString('en-US')} 人</small>`:'--']];
+ const no='<span class="note">--</span>';
+ return '<div id="spBox">'+bar+`<div class="kpis">${kp.map(k=>`<div class="kpi"><span>${k[0]} ${hi(k[0])}</span><b>${k[1]}</b></div>`).join('')}</div>`+
+  table([...JTC(),{t:'商户',k:()=>pill(M)},{t:'渠道',l:1,k:r=>`${r.name}<span class="sub" style="font-family:Menlo,Consolas,monospace">${r.id}</span>`},{t:'分组',k:r=>grpTag(r.grp)},
+   {t:'花费',k:r=>r.sp==null?no:rxM(r.sp)},{t:'注册人数',k:r=>n(r.reg,1)},{t:'单个注册成本',k:r=>r.sp==null?no:rxM(r.sp/r.reg)},{t:'首充人数',k:r=>r.fp.toLocaleString('en-US')},{t:'首充成本',k:r=>r.sp==null||!r.fp?no:rxM(r.sp/r.fp)},
+   ...[1,2,3,4].map(i=>({t:RETN[i]+' 日回本',k:r=>spCell(r.pb[i],r.reg)}))],L)+'</div>'}
+function spRec(){openDrawer('记录花费',F([['渠道','<div data-l="投放渠道" class="inp">请选择</div>',{req:1}],['日期范围',S('','请选择'),{req:1}],['花费金额（₹）',I('','请输入'),{req:1}],['备注',I('','选填')]],110)+'<div class="alert">系统按天数把金额平摊到每天。</div>',
+ `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="spSave()">确定</button>`,520)}
+function spSave(){const b=$('#dbody'),d=[...b.querySelectorAll('div.inp')],v=x=>x&&x.classList.contains('v')?x.textContent.trim():'';const ch=v(d[0]),dt=v(d[1]);const amt=parseFloat((b.querySelector('input.inp').value||'').replace(/[,，\s₹]/g,''));
+ if(!ch)return toast('请选择渠道');if(!dt)return toast('请选择日期范围');if(!(amt>0))return toast('请填花费金额');
+ const [a,z]=dt.split(' ~ ').map(x=>new Date(x+'T00:00:00Z'));const days=Math.round((z-a)/864e5)+1;
+ closeDrawer();toast(`演示：已记录 ${ch.split(' · ').pop()} 花费 ${rxM(amt)}，按 ${days} 天平摊，每天 ${rxM(amt/days)}`)}
+function spImp(){openDrawer('批量导入花费',F([['下载模板',`<a onclick="toast('演示：开始下载模板')">花费导入模板.xlsx</a>`],['上传文件','<button class="btn sm">选择文件</button>',{req:1}]],96)+'<div class="alert">模板一行一笔：渠道 code、开始日期、结束日期、花费金额（₹）、备注。导入后同样按天数平摊到每天。</div>',
+ `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="closeDrawer();toast('演示：已导入')">确定</button>`,520)}
+{const _ds9=doSearch;doSearch=function(btn){const r=_ds9.apply(this,arguments);if(!/^[am]Rpt$/.test(CUR)||PAGES[CUR].tab!==4)return r;const f=btn.closest('.flt');
+ const g=k=>{const fi=[...f.querySelectorAll('.fi')].find(x=>x.querySelector('label').textContent.replace(/[?*\s]/g,'')===k);const d=fi&&fi.querySelector('div.inp.v');return d?d.textContent.trim():''};
+ const ty=g('渠道类型'),ch=g('渠道').split(' · ')[0],gp=g('分组');const any=[ty,ch,gp].some(v=>v&&!PH_SKIP.includes(v));
+ RFOK=any?CHANNELS.filter(c=>(!gp||(c.grp||'未分组')===gp)&&(!ty||ty===c.type+'渠道')&&(!ch||c.id===ch)).map(c=>c.id):null;
+ const bx=document.getElementById('spBox');if(bx)bx.outerHTML=spHtml();return r}}
+
 var RFOK=null;
 {const _rh0=retHtml;retHtml=function(){return '<div id="retBox">'+_rh0()+'</div>'}}
 {const _g7=go;go=function(){RFOK=null;return _g7.apply(this,arguments)}}
@@ -1739,7 +1840,7 @@ const PFX={FB:'Facebook',TT:'TikTok',KW:'Kwai',GG:'Google Ads'};const pfxOf=id=>
 const JTC=()=>CUR==='aRpt'?[{t:'集团',k:()=>'亚太集团'}]:[];
 const platOf=id=>{const c=CHANNELS.find(x=>x.id===id);const g=c&&CONFIGS.find(y=>y.name===c.cfg);return g?g.plat:'不接平台'};
 const evCh=x=>CHANNELS.find(c=>c.name===String(x).split(' · ')[0])||{};
-const ARPTCHG='总控的推广报表和商户端完全一样：同样 4 个页签（新增报表、留存报表、用户来源、事件记录），同样的列、筛选和统计口径，只多了「集团」筛选和「集团」列，可以按集团、商户查。原来的「汇总统计」「运行记录」去掉：汇总看新增报表，发送失败看事件记录，写入渠道号失败看「应用与版本」里的版本问题。';
+const ARPTCHG='总控的推广报表和商户端完全一样：同样 5 个页签（新增报表、留存报表、花费与回本、用户来源、事件记录），同样的列、筛选和统计口径，只多了「集团」筛选和「集团」列，可以按集团、商户查。原来的「汇总统计」「运行记录」去掉：汇总看新增报表，发送失败看事件记录，写入渠道号失败看「应用与版本」里的版本问题。';
 TIPS['统计日期']=TIPS['日期'];TIPS['发生时间']='事件发生的时间，按这个时间筛选。';TIPS['问题类型']='这个版本上报过的问题类型，点「问题」看明细。';TIPS['进度']='已装 App 里已更新的台数 / 总台数。App 启动时检查版本并提示更新。';
 {const G=PL.find(x=>x.name==='Google Ads');G.idL='';G.need='账号授权、Customer ID';G.intro='先点「授权 Google 账号」，再填 Customer ID。授权后我方在这个账号里自动建好要用的 Conversion Action，事件用 Google Ads API 上传，不用填 Conversion ID。没有 gclid 的用户改用 Enhanced Conversions（哈希过的手机号或邮箱）匹配，都没有就只记我方报表。'}
 /* 商户 · 版本更新：简化 */
