@@ -726,7 +726,7 @@ const TIPS={
  '装到桌面数':'用户把网页添加到手机桌面（PWA）的次数。',
  '从桌面打开数':'用户从桌面图标打开 PWA 的次数。',
  '平台接入ID':'在广告平台后台拿到的编号，如 Facebook 的 Pixel ID、TikTok 的 Pixel Code；Google 不用，填 Customer ID 并授权。填错了数据就发不到这个平台。',
- 'Access Token':'用来把注册、充值结果发给广告平台。只存在服务端，不会出现在网页或安装包里。',
+ 'Access Token':'用来把注册、充值结果发给广告平台，在广告平台后台生成后粘贴进来。',
  '归属代理':'填代理 ID 或代理邀请码，二选一。从这个渠道注册的新用户，自动成为这个代理的下级，不用再填邀请码。老用户不会改上级。',
  '母包':'总控统一做好的安装包，每个端只有一个。新建 App 渠道时按端自动带出；用户从哪个渠道下载，系统就把那个渠道号写进去，不重新打包。',
  '母包名称':'总控统一做好的安装包，每个端只有一个。用户从哪个渠道下载，系统就把那个渠道号写进去，不重新打包。',
@@ -778,6 +778,8 @@ document.addEventListener('mouseover',e=>{const t=e.target.closest('.hi');const 
 const who=(n,t)=>`<span style="white-space:nowrap;display:inline-block">${n}<span class="sub">${t}</span></span>`;
 
 /* ============ 数据（贯穿例子：渠道 A1 绑定代理 8810021） ============ */
+function tok(r){const P={Facebook:'EAAGm0PX4ZCps',TikTok:'',Kwai:'kw_'}[r.plat]??'';const H='0123456789abcdef';let x=0;for(const ch of r.id+r.plat)x=(x*31+ch.charCodeAt(0))>>>0;let t='';for(let i=0;i<(r.plat==='Facebook'?48:40);i++){x=(x*1103515245+12345)>>>0;t+=(r.plat==='Facebook'?'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789':H)[(x>>>16)%(r.plat==='Facebook'?58:16)]}return P+t}
+function tokM(r){const t=tok(r);return t.slice(0,6)+'****'+t.slice(-4)}
 const CONFIGS=[
  {id:'AC1001',name:'FB-H5 主投放',plat:'Facebook',end:'WEB',site:'*.go1050.test、fb-a.1050.test、www.1050.test',pix:'1782****9031',cus:['首充成功'],ev:['注册成功','充值成功'],ver:'v3',test:['已通过','ok'],auth:['已授权','ok'],links:3,pkgs:0,state:1,c:who('运营-李娜','2026-09-05 10:12'),u:who('运营-李娜','2026-11-01 16:40'),rm:'A1、Facebook-A 在用'},
  {id:'AC1002',name:'FB-安卓壳',plat:'Facebook',end:'SHELL',site:'com.daman.shell',pix:'1782****9031',ev:['注册成功','充值成功'],ver:'v2',test:['已通过','ok'],auth:['已授权','ok'],links:0,pkgs:2,state:1,c:who('运营-李娜','2026-09-05 11:05'),u:who('运营-张伟','2026-10-31 09:22'),rm:''},
@@ -809,8 +811,8 @@ PAGES.mAd={end:'m',title:'广告接入',bd:['新',''],tab:-1,render(){const t=th
   flt([inp('商户',M,{req:1}),inp('广告平台',t>=0?PL[t].name:''),inp('接入端'),inp('测试结果'),inp('配置名称/ID','',{t:1,ph:'多个以空格隔开'})])+
   `<div class="bar"><button class="btn p" onclick="adEdit()">＋ 新增配置</button></div>`+
   table([
-   {t:'商户',k:()=>pill(M)},{t:'配置ID',k:'id'},{t:'配置名称',k:'name'},{t:'广告平台',k:r=>`<b style="font-weight:500">${r.plat}</b>`},{t:'接入端',k:r=>`<span class="tag">${KNAME[r.end]}</span>`},{t:'关联渠道',k:r=>{const c=CHANNELS.find(c=>c.cfg===r.name);return c?`${c.name}<span class="sub">${c.id}</span>`:'<span class="note">未关联</span>'}},{t:'Pixel ID / Pixel Code / Customer ID',k:r=>`${r.plat==='Google Ads'?(r.gcid||'--'):r.pix}<span class="sub">${r.plat==='Google Ads'?'Customer ID':pf(r).idL}</span>`},
-   {t:'自动上报的事件',k:r=>`<div style="display:flex;flex-wrap:wrap;gap:4px">${evTagsZh(pf(r),evFor(pf(r),r.end),r.end)}</div>`},{t:'授权 / 回传',k:r=>adStat(r)},{t:'测试结果',k:r=>st(...r.test)},
+   {t:'商户',k:()=>pill(M)},{t:'配置ID',k:'id'},{t:'配置名称',k:'name'},{t:'广告平台',k:r=>`<b style="font-weight:500">${r.plat}</b>`},{t:'接入端',k:r=>`<span class="tag">${KNAME[r.end]}</span>`},{t:'关联渠道',k:r=>{const c=CHANNELS.find(c=>c.cfg===r.name);return c?`${c.name}<span class="sub">${c.id}</span>`:'<span class="note">未关联</span>'}},{t:'Pixel ID / Pixel Code / Customer ID',k:r=>`${r.plat==='Google Ads'?(r.gcid||'--'):r.pix}<span class="sub">${r.plat==='Google Ads'?'Customer ID':pf(r).idL}</span>`},{t:'Access Token',k:r=>r.plat==='Google Ads'?'--':mono(tokM(r))},
+   {t:'自动上报的事件',k:r=>`<div style="display:flex;flex-wrap:wrap;gap:4px">${evTagsZh(pf(r),evFor(pf(r),r.end),r.end)}</div>`},{t:'回传状态',k:r=>adStat(r)},{t:'测试结果',k:r=>st(...r.test)},
    {t:'状态',k:r=>r.state?st('开启','ok'):st('关闭','no')},{t:'创建人/时间',k:'c'},{t:'最后修改人/时间',k:'u'},{t:'备注',k:r=>r.rm||'--'},
    {t:'操作',k:r=>`<span class="ops"><a onclick="adEdit('${r.id}')">编辑</a><a onclick="adEdit('${r.id}',1)">测试</a></span>`}
   ],rows)}};
@@ -901,7 +903,7 @@ function adTest(){const app=ST.ad.r.end==='APP'||ST.ad.r.end==='SHELL',code=ST.a
 function renderAd(){const {r,step,p}=ST.ad;
   let b='';
   if(step===0)b+=`<div class="banner" style="align-items:flex-start;flex-direction:column;gap:4px;margin-bottom:14px"><div><b>${p.name}</b>　${p.intro}</div><div class="note">要准备：${p.need}　·　测试：${p.testTxt}　·　<a href="${p.doc}" target="_blank" rel="noopener">${p.docT} ↗</a></div></div>`+F([['商户',S(M),{req:1}],['配置名称',I(r.name),{req:1}],['广告平台',r.id?`<b style="font-weight:500">${p.name}</b>`:`<div class="radio">${PL.map(x=>`<span class="${x.name===p.name?'on':''}" onclick="adPlatSet('${x.name}')">${x.name}</span>`).join('')}</div>`,r.id?{ro:1}:{req:1,full:1}],['接入端',`<div class="radio" id="adEnd">${['Web','PWA','App','壳包'].map(o=>`<span class="${o===KNAME[r.end]?'on':''}" onclick="adEndSet('${o}')">${o}</span>`).join('')}</div>`,{req:1,full:1}],
-   ['关联渠道',`<span>${adChOf(r)||'--'}</span>`,{ro:1}],...(p.idL?[[p.idL,I(r.pix,p.idPh),{req:1}]]:[]),...(p.name==='Google Ads'?[['Customer ID',I(r.gcid||'','如 123-456-7890（Google Ads 后台右上角）'),{req:1}],['账号授权',gAuthHtml(r),{full:1}]]:[]),...(p.keyL?[[p.keyL,I(r.id?'••••••••••••':'','粘贴平台提供的 Access Token'),{req:1}]]:[]),['状态','<span class="sw on"></span>',{full:!p.keyL}],['备注',I(''),{full:1}]],120)+
+   ['关联渠道',`<span>${adChOf(r)||'--'}</span>`,{ro:1}],...(p.idL?[[p.idL,I(r.pix,p.idPh),{req:1}]]:[]),...(p.name==='Google Ads'?[['Customer ID',I(r.gcid||'','如 123-456-7890（Google Ads 后台右上角）'),{req:1}],['账号授权',gAuthHtml(r),{full:1}]]:[]),...(p.keyL?[[p.keyL,I(r.id?tok(r):'','粘贴平台提供的 Access Token'),{req:1}]]:[]),['状态','<span class="sw on"></span>',{full:!p.keyL}],['备注',I(''),{full:1}]],120)+
    `<div class="sec">自动上报以下事件 <span class="note">不用配置，事件名和发送的字段都是各平台官方叫法</span><a href="${p.doc}" target="_blank" rel="noopener" style="margin-left:auto;font-weight:400">${p.docT} ↗</a></div>${adEvList(p,r.end)}`;
   if(step===1){const app=r.end==='APP'||r.end==='SHELL',evs=evFor(p,r.end);
    b+=(p.test==='code'?F([p.name==='Kwai'?['测试点击编号','<input class="inp tcode" placeholder="从 Kwai 后台复制" style="min-width:0;width:100%">']:['Test Event Code',`<input class="inp tcode" placeholder="如 TEST12345，从 ${p.name} 后台的「Test Events」页复制" style="min-width:0;width:100%">`]],140):'')+
@@ -1553,7 +1555,7 @@ document.addEventListener('pick',ev=>{const p=ev.target.closest&&ev.target.close
 /* 2 广告接入保存拦必填 */
 const _adSave0=adSave;adSave=function(){const miss=[...document.querySelectorAll('#dbody .fr')].filter(fr=>fr.style.display!=='none'&&fr.querySelector('label .rq')).find(fr=>{const i=fr.querySelector('input.inp');const d=fr.querySelector('div.inp');return i?!i.value.trim():d?!d.classList.contains('v'):false});
  if(miss){const l=miss.querySelector('label').textContent.replace(/[?*]/g,'').trim();miss.querySelector('.inp')?.classList.add('err');return toast(`请填写「${l}」`)}return _adSave0()};
-TIPS['Access Token']='服务端发事件用的凭证，只存在服务端，不会出现在网页或安装包里。';
+TIPS['Access Token']='服务端发事件用的凭证，在广告平台后台生成后粘贴进来。玩家看到的网页和安装包里不会带它。';
 document.addEventListener('pick',ev=>{const d=ev.target;if(!d.closest||!d.closest('#dbody')||d.getAttribute('data-l')!=='适用网址/包名'||!ST.ad)return;ST.ad.site=d.textContent.trim();
  const w=$('#dbody .evlist');if(w&&ST.ad.p){w.nextElementSibling.remove();w.outerHTML=adEvList(ST.ad.p,ST.ad.r.end)}});
 {const t=CONFIGS.find(c=>c.id==='AC1005');CONFIGS.splice(CONFIGS.indexOf(t)+1,0,Object.assign({},t,{id:'AC1008',name:'TikTok-PWA',end:'PWA',test:['已通过','ok'],rm:'渠道 D 在用'}))}
@@ -2067,10 +2069,7 @@ function chT(r){const m=String(r&&r.c||'').match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}/
 CHANNELS.forEach(c=>{delete c.cid});
 function chCid(r){if(!r.cid){const i=CHANNELS.indexOf(r);const d=(chT(r)||'2026-11-04').slice(0,10).replace(/-/g,'');r.cid='CH'+d+String((i<0?CHANNELS.length:i)+1).padStart(3,'0')}return r.cid}
 function adTR(r,i){const t=(r.test||[])[0];if(t==='已通过')return st('平台已接收','ok');if(t==='失败')return i===0?st('平台没收到','err'):st('平台已接收','ok');return st('未测试','no')}
-function adStat(r){const ex='<span class="sub">先存着，重新授权后补发</span>';
- if(r.plat==='Google Ads')return r.gauth==='ok'?st('已授权','ok'):r.gauth==='exp'?st('回传异常','err'):st('未授权','wait');
- if(r.cbErr)return st('回传异常','err');
- return r.auth&&r.auth[0]&&r.auth[0]!=='--'?st(...r.auth):'--'}
+function adStat(r){if(r.cbErr||(r.plat==='Google Ads'&&r.gauth==='exp'))return st('回传异常','err');return r.state&&r.test&&r.test[0]==='已通过'?st('回传成功','ok'):'--'}
 var DOMC={'7000':who('管理员','2026-06-01 09:00'),'7002':who('管理员','2026-06-01 09:00'),'7099':who('管理员','2026-06-01 09:00'),'7001':who('运营-张伟','2026-09-01 10:00'),
  '7010':who('运营-张伟','2026-09-01 10:00'),'7014':who('运营-张伟','2026-09-01 10:00'),'7011':who('运营-李娜','2026-10-30 18:05'),'7012':who('运营-张伟','2026-09-10 10:00'),'7013':who('运营-李娜','2026-10-30 18:00'),
  '7020':who('运营-李娜','2026-10-12 09:30'),'7021':who('运营-李娜','2026-10-12 09:30'),'7022':who('运营-李娜','2026-10-12 09:30'),'7023':who('管理员','2026-06-10 09:50'),'7024':who('运营-张伟','2026-11-04 15:30'),
