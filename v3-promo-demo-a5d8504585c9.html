@@ -807,8 +807,7 @@ const ST={};
 /* ---- 商户 · 广告接入 ---- */
 PAGES.mAd={end:'m',title:'广告接入',bd:['新',''],tab:-1,render(){const t=this.tab;
   const rows=t>=0?CONFIGS.filter(r=>r.plat===PL[t].name):CONFIGS,pf=r=>PL.find(x=>x.name===r.plat);
-  return 
-  flt([inp('商户',M,{req:1}),inp('广告平台',t>=0?PL[t].name:''),inp('投放端'),inp('回传状态'),inp('配置名称/ID','',{t:1,ph:'多个以空格隔开'})])+
+  return flt([inp('商户',M,{req:1}),inp('广告平台',t>=0?PL[t].name:''),inp('投放端'),inp('回传状态'),inp('配置名称/ID','',{t:1,ph:'多个以空格隔开'})])+
   `<div class="bar"><button class="btn p" onclick="adEdit()">＋ 新增配置</button></div>`+
   table([
    {t:'商户',k:()=>pill(M)},{t:'配置ID',k:'id'},{t:'配置名称',k:'name'},{t:'广告平台',k:r=>`<b style="font-weight:500">${r.plat}</b>`},{t:'投放端',k:r=>`<span class="tag">${KNAME[r.end]}</span>`},{t:'关联渠道',k:r=>{const c=CHANNELS.find(c=>c.cfg===r.name);return c?`${c.name}<span class="sub">${c.id}</span>`:'<span class="note">未关联</span>'}},{t:'平台账号 ID',k:r=>`${r.plat==='Google Ads'?(r.gcid||'--'):r.pix}<span class="sub">${r.plat==='Google Ads'?'Customer ID':pf(r).idL}</span>`},{t:'Access Token',k:r=>r.plat==='Google Ads'?'--':mono(tokM(r))},
@@ -2163,6 +2162,7 @@ UPS.forEach(u=>{if(u&&!Array.isArray(u)){if(u.how==='安装包')u.how='安装包
 /* 30：渠道只在渠道管理里绑配置 */
 TIPS['关联渠道']='必须关联一个渠道，一份配置只给一个渠道用。这里和渠道管理都能绑，哪边改了另一边跟着变。下拉只列投放端、平台都对得上，还没绑配置的渠道。';
 {const _cfo7=chCfgOpts;chCfgOpts=function(){const L=_cfo7().filter(x=>x.startsWith('不接广告平台')||x.startsWith('没有')||!CHANNELS.some(c=>c.cfg===x&&c.id!==CHE));return L.length?L:['没有空闲的配置，先去「广告接入」新建']}}
+/* 每份广告配置一一对应一个渠道 */ CHANNELS.push({id:'KW_H5_IN_001',name:'渠道 E',type:'非代理',agent:'--',end:'H5',to:'落地页',lp:'注册送 500',dm:'',cfg:'Kwai-H5',state:0,c:who('运营-李娜','2026-10-29 15:40'),u:who('运营-李娜','2026-11-01 11:10'),rm:'配置测试没通过，先停着'},{id:'KW_SHELL_IN_001',name:'渠道 F',type:'非代理',agent:'--',end:'安卓壳',to:'落地页',lp:'daman 商城页',dm:'',cfg:'Kwai-安卓壳',mp:'daman 安卓壳 v2.3.1',state:0,c:who('运营-李娜','2026-10-30 09:10'),u:who('运营-李娜','2026-10-30 09:10'),rm:'等配置测试通过再启用'}); {const a=CONFIGS.find(c=>c.id==='AC1006');a.rm='渠道 E 在用';if(typeof hostOf==='function')a.site=hostOf(CHANNELS.find(c=>c.id==='KW_H5_IN_001'));CONFIGS.find(c=>c.id==='AC1007').rm='渠道 F 在用'}
 {const h=location.hash.slice(1);if(PAGES[h])go(h);else render()}
 </script>
 
