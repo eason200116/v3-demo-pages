@@ -106,6 +106,13 @@ input.inp{font:inherit;color:#333;outline:none}input.inp:focus,div.inp:hover{bor
 .lpjump{text-align:center;font-size:11px;color:#c77700}.lpone .lpjump{color:#ffe08a}
 .lpwrap{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:20px}.lppv{border-left:1px solid var(--line);padding-left:20px}
 .lpup{width:72px;height:56px;flex:none;border:1px dashed #bbb;border-radius:4px;background:#fafafa;display:flex;align-items:center;justify-content:center;color:#666;cursor:pointer;font-size:12px}.lpup.on{border-style:solid;border-color:#16a34a;color:#16a34a}
+#lpF .fm+.fm{margin-top:16px}
+.lp1{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto}.lp1-bar{flex:none;height:58px;box-sizing:border-box;background:#0f3b3a;display:flex;align-items:center;gap:8px;padding:0 10px}.lp1-t{flex:1;min-width:0;color:#e8f3f1;font-style:italic;font-weight:700;font-size:12px;line-height:1.25}.lp1-t em{color:#f5c542;font-size:14px}
+.lp1-btn{flex:none;background:linear-gradient(180deg,#ffe28a,#e0a526);color:#3a2600;border-radius:16px;padding:6px 12px;font-weight:700;font-size:11px}.lp1 .lpjump{padding:3px;background:#fff8e6}.lp1-img{flex:none;height:900px;background:linear-gradient(180deg,#14514f,#0b2e2d);color:#9fc9c4;display:flex;justify-content:center;padding-top:40px;font-size:13px}
+.lpgp{gap:8px}.lpmut{color:var(--mut);font-size:10px;display:flex;align-items:center;gap:3px}.lpvf{display:inline-flex;width:12px;height:12px;border-radius:50%;background:#1a73e8;color:#fff;font-size:8px;font-style:normal;align-items:center;justify-content:center;margin-left:4px;vertical-align:1px}
+.lpgp .lpst-n div+div{border-left:1px solid #e6e6e6}.lpgp .lpst-n div{flex:1;align-items:center;justify-content:space-between;min-height:30px}.lpgp .lpst-n span{font-size:10px;white-space:nowrap}
+.lpqi{background:#1b6e4b;color:#ffe9a8;border-radius:8px;padding:6px;text-align:center;font-weight:700;font-size:13px;line-height:1.3;display:flex;flex-direction:column}.lpqi small{color:#fff;font-weight:400;font-size:10px}
+.lpshr{display:flex;justify-content:center;gap:22px;color:#16794a;font-size:11px}.lpgp .lpst-s{overflow:hidden;flex:none}.lpgp .lpst-s i{flex:none;width:31%;height:92px}.lpab{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap}.lptabs{flex-wrap:wrap;gap:0 18px;margin:16px 0 14px}.lptabs .tag{margin:0}
 tr.bad td{background:#fff1f0}
 .dpk{display:flex;flex-direction:column;gap:6px}.dpk label{display:flex;align-items:center;gap:8px}.dpk label>span:nth-child(2){min-width:190px;font-family:Menlo,Consolas,monospace;font-size:12px}.dm{color:var(--blue);cursor:pointer;font-size:12px}.dm.on{color:#fff;background:var(--blue);border-radius:3px;padding:0 6px}
 .dnav button{padding:3px 7px}.dnav .grp{margin:0 0 0 6px}.dnav .legend{display:none!important}
@@ -1023,44 +1030,58 @@ function rptTab(i){PAGES[CUR==='aRpt'?'aRpt':'mRpt'].tab=i;RFOK=null;render()}
 
 /* ---- 商户 · 落地页管理 ---- */
 const LPPATH=1;const LPS=[
- {id:'LP01',name:'daman 商城页',type:'PWA',path:'daman-store',lang:'English',title:'daman - Play & Win',priv:'https://www.1050.test/privacy',jump:'不跳转',app:'daman',url:'www.daman.app',dl:'1M',rate:'4.9',desc:'Play 100+ games, fast deposit and withdrawal.',icon:1,shots:1,og:1},
- {id:'LP02',name:'下载送 500（印地语）',type:'一图流',path:'bonus500-hi',lang:'हिन्दी',title:'₹500 बोनस पाएं',priv:'https://www.1050.test/privacy',jump:'5 秒后自动点按钮',img:1,txt:'डाउनलोड करें और ₹500 बोनस पाएं',btn:'डाउनलोड',og:1},
- {id:'LP03',name:'注册送 500',type:'一图流',path:'reg500',lang:'English',title:'Register to receive ₹500',priv:'https://www.1050.test/privacy',jump:'不跳转',img:1,txt:'Register to receive ₹500 Bonus',btn:'Get it now',og:1},
- {id:'LP04',name:'daman 商城页（葡语）',type:'PWA',path:'daman-store-pt',lang:'Português',title:'daman - Jogue e Ganhe',priv:'',jump:'不跳转',app:'daman',url:'www.daman.app',dl:'500K',rate:'4.7',desc:'Mais de 100 jogos.',icon:1,shots:0,og:0}];
+ {id:'LP01',name:'daman 商城页',type:'PWA',path:'daman-store',logo:1,logo2:1,rate:'4.9',rcnt:'12K',dl:'1M+',shots:1,L:{English:{app:'daman',desc:'Casino & Lottery',about:'Play 100+ games, fast deposit and withdrawal.'}}},
+ {id:'LP02',name:'下载送 500（印地语）',type:'一图流',path:'bonus500-hi',priv:'https://www.1050.test/privacy',jump:'5 秒后自动点按钮',img:1,og:1,L:{English:{txt:'Download and get ₹500 Bonus',btn:'Download',title:'Get ₹500 Bonus'},'हिन्दी':{txt:'डाउनलोड करें और ₹500 बोनस पाएं',btn:'डाउनलोड',title:'₹500 बोनस पाएं'}}},
+ {id:'LP03',name:'注册送 500',type:'一图流',path:'reg500',priv:'https://www.1050.test/privacy',jump:'不跳转',img:1,og:1,L:{English:{txt:'Register to receive ₹500 Bonus',btn:'Get it now',title:'Register to receive ₹500'}}},
+ {id:'LP04',name:'daman 商城页（葡语）',type:'PWA',path:'daman-store-pt',logo:1,logo2:1,rate:'4.7',rcnt:'3K',dl:'500K+',shots:1,L:{English:{app:'daman',desc:'Casino & Lottery',about:'Play 100+ games.'},'Português':{app:'daman',desc:'Cassino e Loteria',about:'Mais de 100 jogos, depósito e saque rápidos.'}}}];
+const LPLF={PWA:['app','desc','about'],'一图流':['txt','btn','title']};
+const lpDone=(v,t)=>!!v&&(LPLF[t]||[]).every(k=>(v[k]||'').trim());
+const lpLangs=o=>OPTS['语言'].filter(l=>lpDone((o.L||{})[l],o.type)).join(' / ')||'--';
 const lpUsed=n=>CHANNELS.filter(c=>c.to==='落地页'&&c.lp===n).length;
-function lpPhone(o,h=360){let b;
+function lpPhone(o,h=360){o={...o,...((o.L||{})[o.cur||'English']||{})};let b;
  const jump=o.jump&&o.jump!=='不跳转'?`<div class="lpjump">${o.jump.replace('后自动点按钮','')}后自动跳转</div>`:'';
- if(o.type==='PWA')b=`<div class="lpst"><div class="lpst-h"><span class="lpic">${o.icon?'<b>'+((o.app||'D')[0].toUpperCase())+'</b>':'▧'}</span><div><b>${o.app||'APP名称'}</b><div style="color:#16794a">${o.url||'www.example.com'}</div></div></div>
-  ${o.show==='显示'?`<div class="lpst-n"><div><b>${o.rate||'4.9'} ★</b><span>${o.dl||'1M'}+ reviews</span></div><div><b>${o.dl||'1M'}</b><span>Downloads</span></div><div><b>18+</b><span>Teen</span></div></div>`:''}
-  <div class="lpst-i">Install</div>${jump}<div class="lpst-s">${[1,2,3].map(i=>`<i class="${o.shots?'on':''}"></i>`).join('')}</div><b style="font-size:13px">About this app</b><div class="note">${o.desc||'应用简介'}</div></div>`;
- else if(o.type==='一图流')b=`<div class="lpone ${o.img?'on':''}"><div class="lpone-t">${o.txt||'宣传文案'}</div><div class="lpone-btn">${o.btn||'按钮文字'}</div>${jump}</div>`;
+ if(o.type==='PWA')b=`<div class="lpst lpgp"><div class="lpst-h"><span class="lpic">${o.logo?'<b>'+((o.app||'D')[0].toUpperCase())+'</b>':'▧'}</span><div style="min-width:0"><b>${o.app||'应用名称'}<i class="lpvf">✓</i></b><div style="color:#16794a">${o.desc||'应用简介'}</div><div class="lpmut"><svg width="10" height="11" viewBox="0 0 10 11"><path d="M5 0L10 2v3.5C10 8 7.8 10.2 5 11 2.2 10.2 0 8 0 5.5V2z" fill="#7a8290"/></svg> App Verified</div></div></div>
+  <div class="lpst-n"><div><b>${o.rate||'--'} ★</b><span>${o.rcnt||'--'} reviews</span></div><div><b>${o.dl||'--'}</b><span>Downloads</span></div><div><b><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="6" r="4.5" fill="none" stroke="#333" stroke-width="1.4"/><path d="M4.5 9.5L3.5 13.5 7 12l3.5 1.5-1-4" fill="none" stroke="#333" stroke-width="1.2"/></svg></b><span>Editors' Choice</span></div></div>
+  <div class="lpqi">Quick Install<small>Download in 15s</small></div><div class="lpshr"><span>⤴ Share</span><span>♡ Add to wishlist</span></div>
+  <div class="lpst-s">${[1,2,3].map(i=>`<i class="${o.shots?'on':''}"></i>`).join('')}</div><b style="font-size:13px">About this game</b><div class="note lpab">${o.about||'关于应用'}</div></div>`;
+ else if(o.type==='一图流')b=`<div class="lp1"><div class="lp1-bar"><div class="lp1-t">${(o.txt||'宣传文案').replace(/(₹\s?[\d,]+)/g,'<em>$1</em>')}</div><div class="lp1-btn">${o.btn||'按钮文字'}</div></div>${jump}${o.img?'<div class="lp1-img">主图（整页长图）</div>':'<div class="lpnone"><b>主图</b><span>未上传</span></div>'}</div>`;
  else b=`<div class="lpnone"><b>页面预览</b><span>先选页面类型</span></div>`;
- return `<div class="lpph" style="height:${h}px"><div class="lpsc"><div class="lpt">${o.title||o.name||'页面标题'}</div>${b}${o.type?`<div class="lpft">${o.priv?'Privacy Policy':'<span style="color:var(--red)">缺隐私政策链接</span>'}</div>`:''}</div></div>`}
+ return `<div class="lpph" style="height:${h}px"><div class="lpsc"><div class="lpt">${(o.type==='PWA'?o.app:o.title)||o.name||'页面标题'}</div>${b}</div></div>`}
 PAGES.mLp={end:'m',title:'落地页管理',bd:['新',''],tab:0,render(){
   return chg('new','参考现有「落地页管理」（卡片列表、PWA / 一图流、右边实时预览），按投放要求补了：语言、页面标题和分享图、隐私政策链接、自动跳转。落地页和渠道的关系：渠道的「落地指向」选「落地页」再选这里的一个页面，页面就挂在那个渠道的推广域名上；一个落地页可以给多个渠道用。域名被封只换域名，不用重做页面。按钮去哪由渠道的端决定，广告点击编号和渠道 code 系统自动带上。')+
   flt([inp('页面名称','',{t:1,ph:'请输入页面名称'}),inp('页面类型','',{ph:'请选择页面类型'}),inp('语言','',{ph:'全部'})])+
   `<div class="bar"><button class="btn p" onclick="lpEdit()">＋ 新增页面</button></div>`+
-  `<div class="lpgrid">${LPS.map(o=>{const u=lpUsed(o.name);return `<div class="lpcard"><div class="lpch"><span title="${o.name}">${o.name}</span><span class="tag">${o.lang}</span><span class="tag" style="background:#e8f6ee;color:#16794a">${o.type}</span></div>${lpPhone(o)}
+  `<div class="lpgrid">${LPS.map(o=>{const u=lpUsed(o.name);return `<div class="lpcard"><div class="lpch"><span title="${o.name}">${o.name}</span><span class="tag">${lpLangs(o)}</span><span class="tag" style="background:#e8f6ee;color:#16794a">${o.type}</span></div>${lpPhone(o)}
    <div class="lpcf"><span class="ops"><a onclick="lpEdit('${o.id}')">编辑</a><a onclick="lpView('${o.id}')">预览</a><a onclick="lpCopy('${o.id}')">复制</a><a class="r" style="color:var(--red)" onclick="lpDel('${o.id}')">删除</a></span><span class="note">${u?`<a onclick="go('mCh')">${u} 个渠道在用</a>`:'没有渠道在用'}</span></div></div>`}).join('')}</div>`+
   `<p class="note">手机预览底部的红字是这个页面还缺的项。卡片右下角是有几个渠道在用这个落地页。按钮点了去哪：PC、H5 渠道进网站，PWA 渠道弹「添加到桌面」引导，安卓渠道下载这个渠道的安装包。</p>`}};
-let LPEID='';function lpEdit(id){const o=LPS.find(x=>x.id===id)||{};LPEID=id||'';
+let LPEID='',LPL={},LPCUR='English';function lpEdit(id){const o=LPS.find(x=>x.id===id)||{};LPEID=id||'';LPL=JSON.parse(JSON.stringify(o.L||{}));LPCUR='English';
  openDrawer(id?'编辑落地页':'新增落地页',`<div class="lpwrap"><div id="lpF"></div><div class="lppv"><div class="sec" style="margin-top:0">实时预览 <span class="note">按钮点了去哪由渠道的端决定</span></div><div id="lpP"></div></div></div>`,
   `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="lpSave()">保存</button>`,860,id?[['页面路径','/lp/'+o.path]]:null);
  lpForm(o);$('#lpF').addEventListener('pick',ev=>{if(ev.target.closest('.fr')?.querySelector('label').textContent.includes('页面类型'))lpForm({...lpVals(),type:ev.target.textContent.trim()});else lpPrev()});
  $('#lpF').addEventListener('input',lpPrev);$('#lpF').addEventListener('click',e=>{if(e.target.closest('.radio span'))setTimeout(lpPrev,0)})}
 const lpUp=(on,note)=>`<div style="display:flex;align-items:center;gap:8px"><div class="lpup ${on?'on':''}" onclick="this.classList.add('on');this.innerHTML='已上传 ✓';lpPrev()">${on?'已上传 ✓':'＋ 上传'}</div>${note?`<span class="note">${note}</span>`:''}</div>`;
-function lpForm(o){const t=o.type;let f=[['页面名称',I(o.name,'给自己看的名字，如 注册送 500'),{req:1}],['页面类型',S(t,'请选择'),{req:1}],['语言',S(o.lang||'','页面文字用的语言'),{req:1}],['页面路径',I(o.path,'如 reg500，用于预览链接'),{req:1}]];
- if(t==='PWA')f=f.concat([['APP名称',I(o.app,'如 daman'),{req:1}],['显示的网址',I(o.url,'页面上展示用，如 www.daman.app'),{req:1}],['显示评分和下载量',R(['不显示','显示'],o.show||'不显示')],['下载量',I(o.dl,'选填，如 1M')],['评分',I(o.rate,'选填，如 4.9')],
-  ['图标',lpUp(o.icon,'512×512'),{req:1}],['截图',lpUp(o.shots,'最多 5 张'),{req:1}],['应用简介',I(o.desc,'显示在 About this app 下面')],['启动图',lpUp(o.splash,'从桌面打开时的全屏图，1080×1920')],['主题色',I(o.color,'如 #1f6feb，状态栏和启动背景色')],['网页推送证书',I(o.push,'选填，从推送服务后台复制')],['推送 SDK 代码',I(o.sdk,'选填，粘贴推送服务给的代码')]]);
- if(t==='一图流')f=f.concat([['主图',lpUp(o.img,'整页一张图，1080×1920'),{req:1}],['宣传文案',I(o.txt,'如 Register to receive ₹500 Bonus'),{req:1}],['按钮文字',I(o.btn,'如 Get it now'),{req:1}]]);
- if(t)f=f.concat([['页面标题',I(o.title,'浏览器标签和分享时显示'),{req:1}],['分享图',lpUp(o.og,'发到 WhatsApp、Telegram 时显示，1200×630')],
-  ['隐私政策链接',I(o.priv,'https://…（广告平台审核要求）'),{req:1}],['自动跳转',R(['不跳转','3 秒后自动点按钮','5 秒后自动点按钮'],o.jump||'不跳转')],['内置浏览器里',R(['先引导用 Chrome 打开','不处理'],o.inapp||'先引导用 Chrome 打开')]]);
- $('#lpF').innerHTML=F(f.map(x=>[x[0],x[1],{...x[2],full:1}]),100)+(t?'<div class="alert">广告点击编号（fbclid、ttclid、gclid 等）和渠道 code 由系统自动带上，不用配置。自动跳转有的广告平台审核不通过，默认不跳。在 Facebook、TikTok、Kwai 的内置浏览器里装不了 PWA、下载也常被拦：按钮先变成「用 Chrome 打开」，跳不过去就提示复制链接到浏览器，跳过去带着渠道 code 和点击编号。</div>'+(t==='PWA'?'<div class="alert">PWA 类型就是安装页：长得像应用商店详情页，PWA 渠道点 Install 把网站加到桌面，安卓渠道点了下载安装包（下载时写入渠道号）。下面的启动图、主题色、推送是加到桌面后用的（原「PWA 设置」并到这里）。保存即发布：新内容先预加载再一次切换，不白屏（待开发确认）。</div><div class="alert w">评分、下载量默认不显示：填假的评分和下载量是广告平台拒审、封户的常见原因，只在数据真实时才打开。</div>':''):'');lpPrev()}
-const LPK={'显示评分和下载量':'show','页面名称':'name','页面类型':'type','语言':'lang','页面路径':'path','APP名称':'app','显示的网址':'url','下载量':'dl','评分':'rate','图标':'icon','截图':'shots','应用简介':'desc','主图':'img','宣传文案':'txt','按钮文字':'btn','页面标题':'title','分享图':'og','隐私政策链接':'priv','自动跳转':'jump','启动图':'splash','主题色':'color','网页推送证书':'push','推送SDK代码':'sdk','内置浏览器里':'inapp'};
-function lpVals(){const o={};$('#lpF').querySelectorAll('.fr').forEach(r=>{const l=r.querySelector('label').textContent.replace(/[?*\s]/g,'');const i=r.querySelector('input.inp'),d=r.querySelector('div.inp'),u=r.querySelector('.lpup'),ra=r.querySelector('.radio .on');
-  o[LPK[l]]=i?i.value.trim():d?(d.classList.contains('v')?d.textContent.trim():''):u?u.classList.contains('on'):ra?ra.textContent:''});return o}
-function lpPrev(){const p=$('#lpP');if(p)p.innerHTML=lpPhone(lpVals(),460)}
-function lpSave(){const o=lpVals();for(const r of $('#lpF').querySelectorAll('.fr')){if(!r.querySelector('.rq'))continue;const l=r.querySelector('label').textContent.replace(/[?*\s]/g,'');const v=o[LPK[l]];if(!v)return toast((r.querySelector('.lpup')?'请上传':r.querySelector('div.inp')?'请选择':'请填写')+l+(l==='隐私政策链接'?'，不填广告平台审核会被拒':''))}
+function lpForm(o){const t=o.type,lv=LPL[LPCUR]||{},en=LPCUR==='English',ta=(v,ph)=>`<textarea class="inp ta" placeholder="${ph}">${v||''}</textarea>`;
+ let a=[['页面名称',I(o.name,'给自己看的名字，如 注册送 500'),{req:1}],['页面类型',S(t,'请选择'),{req:1}],['页面路径',I(o.path,'如 reg500，用于预览链接'),{req:1}]],g=[],b=[];
+ if(t==='PWA'){a=a.concat([['logo上传',lpUp(o.logo,'512×512'),{req:1}],['logo上传-快捷方式',lpUp(o.logo2,'192×192'),{req:1}]]);
+  g=[['应用名称',I(lv.app,'如 daman'),{req:en}],['应用简介',I(lv.desc,'显示在应用名称下面，如 Casino & Lottery'),{req:en}],['评分',I(o.rate,'如 4.9'),{req:1}],['评分人数',I(o.rcnt,'如 12K'),{req:1}],['下载人数',I(o.dl,'如 1M+'),{req:1}],
+   ['应用图片',lpUp(o.shots,'最多 5 张'),{req:1}],['关于应用',ta(lv.about,'显示在 About this app 下面'),{req:en}]]}
+ if(t==='一图流'){a=a.concat([['主图',lpUp(o.img,'整页一张图，1080×1920'),{req:1}]]);
+  g=[['宣传文案',I(lv.txt,'如 Register to receive ₹500 Bonus'),{req:en}],['按钮文字',I(lv.btn,'如 Get it now'),{req:en}],['页面标题',I(lv.title,'浏览器标签和分享时显示'),{req:en}]];
+  b=[['分享图',lpUp(o.og,'发到 WhatsApp、Telegram 时显示，1200×630')],['隐私政策链接',I(o.priv,'https://…（广告平台审核要求）'),{req:1}],['自动跳转',R(['不跳转','3 秒后自动点按钮','5 秒后自动点按钮'],o.jump||'不跳转')],['内置浏览器里',R(['先引导用 Chrome 打开','不处理'],o.inapp||'先引导用 Chrome 打开')]]}
+ const fx=x=>x.length?F(x.map(y=>[y[0],y[1],{...y[2],full:1}]),t==='PWA'?130:100):'';
+ $('#lpF').innerHTML=fx(a)+(t?`<div class="ptabs lptabs" id="lpTabs">${lpTabsH(t)}</div>`:'')+fx(g)+fx(b)+(t==='一图流'?'<div class="alert">广告点击编号（fbclid、ttclid、gclid 等）和渠道 code 由系统自动带上，不用配置。自动跳转有的广告平台审核不通过，默认不跳。在 Facebook、TikTok、Kwai 的内置浏览器里下载常被拦：按钮先变成「用 Chrome 打开」，跳不过去就提示复制链接到浏览器，跳过去带着渠道 code 和点击编号。</div>':'');lpPrev()}
+const lpTabsH=t=>OPTS['语言'].map(l=>`<span class="${l===LPCUR?'on':''}" onclick="lpTab('${l}')">${l}${l==='English'?' <span class="tag">默认</span>':''}${lpDone(LPL[l],t)?' <b style="color:var(--green)">✓</b>':''}</span>`).join('');
+function lpTab(l){const o=lpVals();LPCUR=l;lpForm(o)}
+const LPK={'页面名称':'name','页面类型':'type','页面路径':'path','logo上传':'logo','logo上传-快捷方式':'logo2','应用名称':'app','应用简介':'desc','评分':'rate','评分人数':'rcnt','下载人数':'dl','应用图片':'shots','关于应用':'about','主图':'img','宣传文案':'txt','按钮文字':'btn','页面标题':'title','分享图':'og','隐私政策链接':'priv','自动跳转':'jump','内置浏览器里':'inapp'};
+const LPN=Object.fromEntries(Object.entries(LPK).map(([a,b])=>[b,a]));
+function lpVals(){const o={};$('#lpF').querySelectorAll('.fr').forEach(r=>{const l=r.querySelector('label').textContent.replace(/[?*\s]/g,'');const i=r.querySelector('input.inp,textarea.inp'),d=r.querySelector('div.inp'),u=r.querySelector('.lpup'),ra=r.querySelector('.radio .on');
+  o[LPK[l]]=i?i.value.trim():d?(d.classList.contains('v')?d.textContent.trim():''):u?u.classList.contains('on'):ra?ra.textContent:''});
+ const ks=LPLF[o.type]||[];if(ks.length){const c={...(LPL[LPCUR]||{})};ks.forEach(k=>c[k]=o[k]||'');LPL[LPCUR]=c}
+ o.L=LPL;o.cur=LPCUR;return o}
+function lpPrev(){const p=$('#lpP');if(!p)return;const o=lpVals();p.innerHTML=lpPhone(o,460);const tb=$('#lpTabs');if(tb)tb.innerHTML=lpTabsH(o.type)}
+function lpSave(){const o=lpVals(),ks=LPLF[o.type]||[];for(const r of $('#lpF').querySelectorAll('.fr')){if(!r.querySelector('.rq'))continue;const l=r.querySelector('label').textContent.replace(/[?*\s]/g,'');if(ks.includes(LPK[l]))continue;const v=o[LPK[l]];if(!v)return toast((r.querySelector('.lpup')?'请上传':r.querySelector('div.inp')?'请选择':'请填写')+l+(l==='隐私政策链接'?'，不填广告平台审核会被拒':''))}
+ const miss=ks.find(k=>!((LPL.English||{})[k]||'').trim());if(miss){if(LPCUR!=='English'){LPCUR='English';lpForm(o)}return toast('English 是默认语言，必须配置：请填写'+LPN[miss])}
+ const part=OPTS['语言'].find(l=>l!=='English'&&ks.some(k=>((LPL[l]||{})[k]||'').trim())&&!lpDone(LPL[l],o.type));if(part){if(LPCUR!==part){LPCUR=part;lpForm(o)}return toast('「'+part+'」只填了一部分，请填完或清空')}
  if(LPS.some(x=>x.path===o.path&&x.id!==LPEID))return toast('页面路径「'+o.path+'」已被占用，换一个');closeDrawer();toast('已保存')}
 function lpView(id){const o=LPS.find(x=>x.id===id);openDrawer('预览落地页',`<div style="display:flex;gap:20px;align-items:flex-start"><div style="width:280px;flex:none">${lpPhone(o,500)}</div><div style="min-width:0">${F([['页面路径','/lp/'+o.path,{ro:1}],['在用的渠道',CHANNELS.filter(c=>c.to==='落地页'&&c.lp===o.name).map(c=>c.name+'（'+c.id+'）').join('<br>')||'--',{ro:1}]],90)}<p class="note">推广链接在渠道管理里拿。落地页本身不带渠道，哪个渠道的落地指向选了它，就挂在那个渠道的推广域名上。</p></div></div>`,`<button class="btn" onclick="closeDrawer()">关闭</button><button class="btn p" onclick="toast('演示：已复制在用渠道的推广链接')">复制在用渠道的链接</button>`,720)}
 function lpCopy(id){const o=LPS.find(x=>x.id===id);LPS.push({...o,id:'LP0'+(LPS.length+1),name:o.name+'-副本',path:o.path+'-copy'});render();toast('已复制，新页面在最后')}
@@ -1281,7 +1302,7 @@ Object.defineProperty(OPTS,'渠道',{get:()=>{const f=document.querySelector('#p
 Object.defineProperty(OPTS,'可用域名',{get:()=>freeDoms(),configurable:true});
 document.addEventListener('pick',e=>{const fi=e.target.closest('#page .flt .fi');if(!fi)return;const l=fi.querySelector('label').textContent;if(/代理|渠道类型|分组/.test(l)){const c=[...fi.parentElement.querySelectorAll('.fi')].find(x=>x.querySelector('label').textContent.replace(/[?*\s]/g,'')==='渠道');const d=c?.querySelector('div.inp');if(d&&d.classList.contains('v')&&!OPTS['渠道'].includes(d.textContent.trim())){d.textContent='全部';d.classList.remove('v')}}});
 const _ds0=doSearch;doSearch=function(btn){if(CUR!=='mLp')return _ds0(btn);const f=btn.closest('.flt');const g=k=>{const fi=[...f.querySelectorAll('.fi')].find(x=>x.querySelector('label').textContent.includes(k));const i=fi.querySelector('input.inp'),d=fi.querySelector('div.inp.v');return (i?i.value:d?d.textContent:'').trim()};
- const nm=g('页面名称'),ty=g('页面类型'),lg=g('语言');let c=0;document.querySelectorAll('#page .lpcard').forEach((card,i)=>{const o=LPS[i];const ok=(!nm||o.name.includes(nm))&&(!ty||o.type===ty)&&(!lg||o.lang===lg);card.style.display=ok?'':'none';if(ok)c++});
+ const nm=g('页面名称'),ty=g('页面类型'),lg=g('语言');let c=0;document.querySelectorAll('#page .lpcard').forEach((card,i)=>{const o=LPS[i];const ok=(!nm||o.name.includes(nm))&&(!ty||o.type===ty)&&(!lg||lpLangs(o).split(' / ').includes(lg));card.style.display=ok?'':'none';if(ok)c++});
  toast(nm||ty||lg?`筛选后共 ${c} 个页面`:'已刷新')};
 
 Object.defineProperty(OPTS,'跳转域名',{get:()=>['用默认（公共池轮换）',...POOL.filter(d=>d[1]==='跳转域名'&&d[2]).map(d=>d[0])],configurable:true});
@@ -1299,7 +1320,9 @@ const _ds1=doSearch;doSearch=function(btn){if(!/^[am]Rpt$/.test(CUR))return _ds1
  toast(ty||ag||ch||pl||gp?`筛选后共 ${n} 条`:'已刷新')};
 
 /* ===== 第 5 轮 ===== */
-TIPS['页面类型']='PWA 类型 = 安装页：长得像应用商店详情页，PWA 渠道点 Install 加到桌面，安卓渠道点了下载安装包。一图流：一张大图加一个按钮。';
+TIPS['页面类型']='PWA：像应用商店详情页的安装页，PWA 渠道点 Install 加到桌面，安卓渠道点了下载安装包。一图流：一张大图加一个按钮。';
+TIPS['logo上传']='安装页上显示的应用图标。';TIPS['logo上传-快捷方式']='加到手机桌面后显示的图标。';TIPS['应用名称']='安装页上显示的应用名字。';TIPS['应用简介']='显示在应用名称下面的一句话。';
+TIPS['评分人数']='评分旁边显示的人数，如 12K，只用于展示。';TIPS['下载人数']='安装页上显示的下载人数，如 1M+，只用于展示。';TIPS['应用图片']='安装页中间的应用截图。';TIPS['关于应用']='显示在 About this app 下面的介绍。';
 TIPS['启动图']='从桌面图标打开 PWA 时先显示的全屏图。';TIPS['主题色']='PWA 打开后手机状态栏和启动背景的颜色。';
 TIPS['内置浏览器里']='在 Facebook、TikTok、Kwai 里点广告，打开的是它们自带的浏览器，装不了 PWA、下载常被拦。选「先引导用 Chrome 打开」时，按钮先变成「用 Chrome 打开」，跳不过去就提示复制链接。';
 
