@@ -744,7 +744,7 @@ const TIPS={
  '落地页':'用户点广告后先到的页面（PWA或广告图），在「落地页管理」里做。同一个落地页可以给多个渠道用。',
  '推广域名':'渠道的入口域名，链接带渠道 code。默认自动生成子域名（渠道 code.推广泛域名），也可以选独立推广域名。一对一：一个渠道一个，一个只属于一个渠道。',
  '跳转域名':'落地页按钮（或落地指向选主站时的推广链接）去主站、去下载时经过的中转域名。公共池，多个渠道共用，每个渠道必须选一个；被封时到「域名管理」换。跳转全程带着渠道 code，不影响统计。',
- '防封下载页':'主站或推广域名被封后的救援页。已装 PWA / App 的用户打开时，系统弹出救援弹窗，让用户复制链接到浏览器打开这个页面，重新下载 PWA 或 App，再用原账号登录。每个渠道必须选一个。只对 PWA、App 渠道有用，Web 渠道不显示。',
+ '防封下载页':'主站被封后的救援页。已装 PWA / App 的用户打开时，系统弹出救援弹窗，让用户复制链接到浏览器打开这个页面，重新下载 PWA 或 App，再用原账号登录。每个渠道必须选一个。只对 PWA、App 渠道有用，Web 渠道不显示。',
  '域名类型':'主域名：主站。推广域名：渠道入口，一对一。跳转域名、防封下载页：公共池，多个渠道共用。下载域名：放母包，另备几个备用的。',
  '页面路径':'这个落地页的预览地址后缀，如 reg500，只用来预览和区分页面，不出现在推广链接里。同一商户下不能重复。',
  '自动跳转':'打开几秒后自动点按钮。有的广告平台不允许，审核会被拒，默认不跳。',
@@ -988,7 +988,7 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web'
   ['版面配置',`<div class="inp v" data-l="版面配置">${layHtml(r.lay||DLAY)}</div>`,{req:1}],
   ['安装设置',`<div style="display:flex;align-items:center;white-space:nowrap"><div class="radio" id="chIns">${['跟主站','单独设置'].map(o=>`<span class="${o===(r.ins||'跟主站')?'on':''}" onclick="chInsSet('${o}')">${o}</span>`).join('')}</div><a style="margin-left:10px" onclick="go('mGuide')">看主站默认</a></div><div id="chInsX" style="display:none;margin-top:6px;gap:8px;flex-wrap:wrap;align-items:center;width:100%"><span class="note">引导装</span><div class="inp v" data-l="引导装" style="width:110px">${(r.insv||{}).g||'PWA'}</div><span class="note">弹窗时机</span><div class="inp v" data-l="弹窗时机" style="width:190px">${(r.insv||{}).t||'访问首页'}</div><span class="note">安装奖励 ₹</span><input class="inp" style="width:80px;min-width:0" value="${(r.insv||{}).m||20}"></div>`,{full:1}],
   ['分享卡片',`<div class="radio" id="chShare">${['用默认','单独设置'].map(o=>`<span class="${o==='用默认'?'on':''}" onclick="chShareSet('${o}')">${o}</span>`).join('')}</div><div id="chShareX" style="display:none;margin-top:6px;gap:8px;align-items:center;width:100%"><input class="inp" style="width:200px;min-width:0" placeholder="标题"><input class="inp" style="width:240px;min-width:0" placeholder="描述"><div class="lpup" onclick="this.classList.add('on');this.innerHTML='已上传 ✓'">＋ 分享图</div></div>`,{full:1}],
-  ['跳转域名',S(r.jp||'','选跳转域名'),{req:1}],['防封下载页',S(r.sf||'','选防封下载页'),{req:1}],
+  ['跳转域名',S(r.jp||'','选跳转域名'),{req:1}],
   ['归属代理',I(r.agent&&r.agent!=='--'?r.agent:'','输入代理 ID 或代理邀请码'),{req:1}],
   ['广告接入配置',S(r.cfg&&r.cfg!=='--'&&r.cfg!=='不接广告平台'?r.cfg:'','不投广告平台就不选'),{}],
   ['状态',`<span class="sw ${id&&r.state?'on':''}" id="chSt" onclick="chStGuard(event)"></span>`],
@@ -2131,7 +2131,7 @@ function chDetail(id){const r=CHANNELS.find(x=>x.id===id);if(!r)return;const x=r
  openDrawer('渠道详情',F(fs,110),CLOSEF,760,[['渠道',r.name],['渠道 code',r.id]])}
 {const _cs=chSave;chSave=function(ed){const id=CHE,fr=k=>chFr(k);const sf=fr('防封下载页')?.querySelector('div.inp')?.textContent.trim()||'';
  const gi=fr('注册赠送金额')?.querySelector('input')?.value;
- const res=_cs.apply(this,arguments);if(!document.querySelector('#modal.on')&&ed&&id){const c=CHANNELS.find(x=>x.id===id);if(c){c.sf=/^用默认/.test(sf)?'':sf;if(gi!=null)c.gift=Math.max(0,parseFloat(gi)||0)}}return res}}
+ const res=_cs.apply(this,arguments);if(!document.querySelector('#modal.on')&&ed&&id){const c=CHANNELS.find(x=>x.id===id);if(c){if(sf)c.sf=/^用默认/.test(sf)?'':sf;if(gi!=null)c.gift=Math.max(0,parseFloat(gi)||0)}}return res}}
 {const _ce=chEdit;chEdit=function(id){const res=_ce.apply(this,arguments);if(!document.querySelector('#modal.on'))return res;const c=CHANNELS.find(x=>x.id===id);if(!c)return res;
  const a=chFr('注册赠送金额')?.querySelector('input');if(a&&c.gift!=null)a.value=c.gift;return res}}
 /* 版本 */
