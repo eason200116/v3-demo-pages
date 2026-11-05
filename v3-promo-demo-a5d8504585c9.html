@@ -1034,7 +1034,7 @@ PAGES.mRpt={end:'m',title:'推广报表',bd:['新',''],tab:0,render(){
   const nn=(v,tab)=>v==='--'?'--':n(v,tab);
   if(t===0)h+=`<div class="kpis">${[['落地页浏览','7,560'],['点按钮数','4,232'],['注册','734'],['首充人数','238'],['充值金额','₹ 413,600']].map(k=>`<div class="kpi"><span>${k[0]} ${hi(k[0])}</span><b>${k[1]}</b></div>`).join('')}</div>`+
    `<div class="sec" style="display:flex;align-items:center">渠道数据<button class="btn" style="margin-left:auto" onclick="toast('已导出新增报表')">导出</button></div>`+table([
-   ...JTC(),{t:'商户',k:()=>pill(M)},{t:'渠道',l:1,k:r=>/^off_/.test(r[13])?r[0]:`${r[0]}<span class="sub" style="font-family:Menlo,Consolas,monospace">${r[13]}</span>`},{t:'分组',cls:'newc',k:r=>grpTag((CHANNELS.find(c=>c.id===r[13])||{}).grp)},{t:'渠道类型',k:r=>tyTag(r[12])},{t:'设备类型',k:1},{t:'归属代理',k:2},{t:'广告平台',k:r=>platOf(r[13])},{t:'落地页浏览',k:r=>nn(r[3],2)},{t:'点按钮数',k:r=>r[14]+rxF(r[14],r[3],'点按钮','浏览')},{t:'激活数',cls:'newc',k:r=>{const a=rxAct(r);return a==null?'--':a.toLocaleString('en-US')+rxF(a,r[14],'激活','点按钮')}},{t:'注册',k:r=>{const p=rxPrev(r);return n(r[5],1)+rxF(r[5],p[0],'注册',p[1])}},{t:'首充人数',k:r=>n(r[6],2)+rxF(r[6],r[5],'首充','注册')},{t:'首充金额',cls:'newc',k:r=>rxM(rxX(r)[1])},{t:'当天注册当天首充',cls:'newc',k:r=>rxX(r)[2]},{t:'充值人数',k:r=>n(r[7],2)},{t:'充值金额',k:8},{t:'提现金额',k:9},{t:'充提差',cls:'newc',k:r=>rxM(rxN(r[8])-rxN(r[9]))},{t:'奖励金额',cls:'newc',k:r=>rxM(rxX(r)[3])},{t:'装到桌面数',cls:'newc',k:r=>r[10]+rxF(r[10],r[14],'装到桌面','点按钮')},{t:'从桌面打开数',cls:'newc',k:11}],[
+   ...JTC(),{t:'商户',k:()=>pill(M)},{t:'渠道',l:1,k:r=>/^off_/.test(r[13])?r[0]:`${r[0]}<span class="sub" style="font-family:Menlo,Consolas,monospace">${r[13]}</span>`},{t:'分组',cls:'newc',k:r=>grpTag((CHANNELS.find(c=>c.id===r[13])||{}).grp)},{t:'渠道类型',k:r=>tyTag(r[12])},{t:'设备类型',k:1},{t:'归属代理',k:2},{t:'广告平台',k:r=>platOf(r[13])},{t:'落地页浏览',k:r=>nn(r[3],2)},{t:'点按钮数',k:r=>r[14]+rxF(r[14],r[3],'点按钮','浏览')},{t:'启动/浏览',cls:'newc',k:r=>{const a=rxX(r)[0];if(a==null)return '--';const ap=/^安卓/.test(r[1]);return a.toLocaleString('en-US')+rxF(r[5],a,'注册',ap?'启动':'浏览')}},{t:'注册',k:r=>{const p=rxPrev(r);return n(r[5],1)+rxF(r[5],p[0],'注册',p[1])}},{t:'首充人数',k:r=>n(r[6],2)+rxF(r[6],r[5],'首充','注册')},{t:'首充金额',cls:'newc',k:r=>rxM(rxX(r)[1])},{t:'当天注册当天首充',cls:'newc',k:r=>rxX(r)[2]},{t:'充值人数',k:r=>n(r[7],2)},{t:'充值金额',k:8},{t:'提现金额',k:9},{t:'充提差',cls:'newc',k:r=>rxM(rxN(r[8])-rxN(r[9]))},{t:'奖励金额',cls:'newc',k:r=>rxM(rxX(r)[3])},{t:'装到桌面数',cls:'newc',k:r=>r[10]+rxF(r[10],r[14],'装到桌面','点按钮')},{t:'从桌面打开数',cls:'newc',k:11}],[
    ['A3','Web','8810102','--','--',59,17,21,'₹ 27,100','₹ 5,700','--','--','代理','agt_WEB_IN_003','--',1140],
    ['渠道 E','Web','--',140,'--',12,4,5,'₹ 7,100','₹ 1,500','--','--','非代理','KW_WEB_IN_001','60',210],
    ['渠道 F','安卓壳包','--',230,'--',10,2,3,'₹ 4,300','₹ 1,000','--','--','非代理','KW_SHELL_IN_001','95',150],
@@ -1050,7 +1050,7 @@ PAGES.mRpt={end:'m',title:'推广报表',bd:['新',''],tab:0,render(){
    ['1105022','priya.k','2026-11-01 15:03:41','渠道 C','安卓壳包','--','Facebook','fbclid IwZX9k…','v2.3.1','FB_SHELL_IN_001','2026-11-01 15:20:11','是','IP + 机型匹配'],
    ['1105023','dev2026','2026-11-01 15:40:02','Facebook-A','Web','--','未知','--','--','FB_WEB_IN_001','--','否','未匹配'],
    ['1105024','anil_m','2026-11-01 16:11:58','A2','Web','8810021','未知','--','--','agt_WEB_IN_002','--','否','未匹配'],
-   ['1105025','neha.s','2026-11-01 17:02:33','渠道 E','Web','--','未知','--','--','KW_WEB_IN_001','2026-11-01 17:30:45','是','不发平台']]);
+   ['1105025','neha.s','2026-11-01 17:02:33','渠道 A','Web','--','未知','--','--','self_WEB_IN_001','2026-11-01 17:30:45','是','不发平台']]);
   if(t===2)h+=evRecTbl();
   if(t===3)h+=retHtml();
   if(t===4)h+=spHtml();
@@ -1828,11 +1828,11 @@ function grpDel(i){const g=GROUPS[i],n=CHANNELS.filter(c=>c.grp===g.name).length
  EVWHEN['激活']='第一次打开 App（每台设备一次）';}
 
 /* ---- 推广报表 · 新增报表新列 + 花费（patchC） ---- */
-/* 新增报表（11-01）按渠道 code：[激活数, 首充金额, 当天注册当天首充, 奖励金额]；激活只有安卓原生、安卓壳包；最低充值按 ₹100 */
+/* 新增报表（11-01）按渠道 code：[启动/浏览, 首充金额, 当天注册当天首充, 奖励金额]；安卓原生、安卓壳包填激活数，Web、PWA 填打开主站的浏览次数；最低充值按 ₹100 */
 var RXNEW={off_WEB_IN_001:[null,8000,11,1200],off_PWA_IN_001:[null,2400,2,200],off_APK_IN_001:[16,1400,1,100],off_SHELL_IN_001:[11,1000,1,100],
- self_WEB_IN_001:[null,43700,52,39000],agt_WEB_IN_001:[null,25500,26,18500],agt_WEB_IN_002:[null,1200,2,0],agt_PWA_IN_001:[null,12200,11,2850],
- FB_SHELL_IN_001:[760,29500,29,6150],GG_APK_IN_001:[205,13000,10,8000],FB_WEB_IN_001:[null,15000,13,3000],
- agt_WEB_IN_003:[null,7400,9,3500],KW_WEB_IN_001:[null,2600,2,300],KW_SHELL_IN_001:[40,1800,1,200]};
+ self_WEB_IN_001:[980,43700,52,39000],agt_WEB_IN_001:[430,25500,26,18500],agt_WEB_IN_002:[140,1200,2,0],agt_PWA_IN_001:[300,12200,11,2850],
+ FB_SHELL_IN_001:[760,29500,29,6150],GG_APK_IN_001:[205,13000,10,8000],FB_WEB_IN_001:[1180,15000,13,3000],
+ agt_WEB_IN_003:[260,7400,9,3500],KW_WEB_IN_001:[38,2600,2,300],KW_SHELL_IN_001:[40,1800,1,200]};
 /* 花费（10 月注册的这批人，和留存报表同一批）：10 月花费 ₹；主站系统渠道、不接广告平台的（含渠道 A）没有花费。单个注册成本：A1 340、A2 520、D 400、C 680、B 890、Facebook-A 75 */
 var RXSP={agt_WEB_IN_001:520200,agt_WEB_IN_002:135200,agt_PWA_IN_001:328000,FB_SHELL_IN_001:1332800,GG_APK_IN_001:658600,FB_WEB_IN_001:66000};
 /* 提现占充值的比例，取自新增报表同一渠道的 [充值金额, 提现金额] */
@@ -1843,7 +1843,7 @@ const rxF=(a,b,na,nb)=>{const x=rxN(a),y=rxN(b);return x==null||!y?'':`<span cla
 const rxX=r=>RXNEW[r[13]]||[];
 const rxAct=r=>/^安卓/.test(r[1])&&rxX(r)[0]!=null?rxX(r)[0]:null;
 function rxPrev(r){const a=rxAct(r);if(a!=null)return [a,'激活'];if(rxN(r[10])!=null)return [r[10],'装到桌面'];return [r[14],'点按钮']}
-TIPS['激活数']='App 装好后第一次打开的设备数，每台设备只算一次。只有安卓原生、安卓壳包渠道有，其它显示「--」。';
+TIPS['启动/浏览']='网页、PWA 渠道是打开主站的浏览次数；安卓原生、安卓壳包是 App 装好后第一次打开的设备数，每台设备只算一次。';
 TIPS['首充金额']='这天到账的首充订单金额加起来，只算实付，不含赠送。';
 TIPS['当天注册当天首充']='这天注册、并且同一天首充到账的人数，是首充人数里的一部分。';
 TIPS['充提差']='充值金额 − 提现金额。';
