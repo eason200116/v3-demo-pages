@@ -1503,8 +1503,8 @@ function domOp(d,t,c){DOMOPS.push([d,t,c,'运营-张伟','2026-11-04 16:00'])}
 function domLogRows(){const his=DOMHIS.map(h=>{const auto=h[4]==='系统自动';const sc=h[0]==='全部自动子域名'?'*.old1050.test 下的渠道（一键替换）':(CHANNELS.find(x=>x.id===h[0])||{}).name?`只 ${(CHANNELS.find(x=>x.id===h[0])).name}（${h[0]}）`:h[0];
   return [h[1],auto?'自动换':'手动换',`${h[1]} → ${h[2]}；范围：${sc}；原因：${h[3]}`,h[4],h[5]]});
  return [...his,...DOMOPS].sort((a,b)=>b[4].localeCompare(a[4]))}
-function domLogTb(L){const nw=i=>r=>`<span style="white-space:nowrap">${r[i]}</span>`;return table([{t:'域名',k:nw(0)},{t:'操作类型',k:nw(1)},{t:'操作内容',l:1,k:2},{t:'操作人',k:nw(3)},{t:'操作时间',k:nw(4)}],L)}
-function domLog(){openDrawer('操作记录',`<div class="flt" id="dlogF">${inp('域名','',{t:1,ph:'请输入'})}${inp('操作类型')}${inp('操作时间','2026-10-01 ~ 2026-11-04')}<div class="btns"><button class="btn p" onclick="domLogQ()">⌕ 搜索</button><button class="btn" onclick="domLog()">↻ 重置</button></div></div><div id="dlogT">${domLogTb(domLogRows())}</div>`,CLOSEF,860)}
+function domLogTb(L){const nw=i=>r=>`<span style="white-space:nowrap">${r[i]}</span>`;return table([{t:'商户',k:()=>pill(M)},{t:'域名',k:nw(0)},{t:'操作类型',k:nw(1)},{t:'操作内容',l:1,k:2},{t:'操作人',k:nw(3)},{t:'操作时间',k:nw(4)}],L)}
+function domLog(){openDrawer('操作记录',`<div class="flt" id="dlogF">${inp('商户',M,{req:1})}${inp('域名','',{t:1,ph:'请输入'})}${inp('操作类型')}${inp('操作时间','2026-10-01 ~ 2026-11-04')}<div class="btns"><button class="btn p" onclick="domLogQ()">⌕ 搜索</button><button class="btn" onclick="domLog()">↻ 重置</button></div></div><div id="dlogT">${domLogTb(domLogRows())}</div>`,CLOSEF,860)}
 function domLogQ(){const f=$('#dlogF'),q=(f.querySelector('input.inp').value||'').trim(),tp=f.querySelector('div.inp[data-l="操作类型"]');const t=tp.classList.contains('v')?tp.textContent.trim():'';
  $('#dlogT').innerHTML=domLogTb(domLogRows().filter(r=>(!q||r[0].includes(q))&&(!t||r[1]===t)))}
 {const _sw=domSw;domSw=function(id){_sw(id);const r=DOMROWS.find(x=>x[0]===id);if(r)domOp(r[1],DOMSW[id]?'开启':'关闭','状态改为'+(DOMSW[id]?'开启':'关闭'))}}
