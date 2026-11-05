@@ -1493,24 +1493,30 @@ PAGES.mDom={end:'m',title:'域名管理',bd:['改','c'],render(){
 let DOMROWS=[];
 /* ---- 域名管理：操作记录（照 V3 版面列表「操作记录」：按钮放新增旁，点开弹窗，筛选 + 5 列） ---- */
 const CLK='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:4px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
-/* [域名, 操作类型, 操作内容, 操作人, 时间] */
-const DOMOPS=[['https://www3.1050.test','新增','新增主域名，作备用主域名','运营-张伟','2026-11-02 10:05'],
- ['https://www.1050.test','编辑','备注改为「当前版面主域名」','运营-张伟','2026-11-02 10:00'],
- ['https://old-main.1050.test','关闭','状态改为关闭','运营-李娜','2026-10-30 18:20'],
- ['*.go1050c.test','新增','新增推广泛域名','运营-李娜','2026-10-30 18:05']];
+/* [域名, 操作类型, [[改了什么, 修改前, 修改后]...], 备注, 操作人, 时间] */
+const DOMOPS=[['https://www3.1050.test','新增',[['域名类型','--','主域名'],['域名','--','https://www3.1050.test'],['备注','--','备用主域名']],'','运营-张伟','2026-11-02 10:05'],
+ ['https://www.1050.test','编辑',[['备注','--','当前版面主域名']],'','运营-张伟','2026-11-02 10:00'],
+ ['https://old-main.1050.test','关闭',[['状态','开启','关闭']],'','运营-李娜','2026-10-30 18:20'],
+ ['*.go1050c.test','新增',[['域名类型','--','推广泛域名'],['域名','--','*.go1050c.test']],'','运营-李娜','2026-10-30 18:05']];
 const DOMOPT=['新增','编辑','开启','关闭','自动换','手动换'];OPTS['操作类型']=DOMOPT;OPTS['操作时间']=['2026-11-04 ~ 2026-11-04','2026-11-01 ~ 2026-11-04','2026-10-01 ~ 2026-11-04'];
-function domOp(d,t,c){DOMOPS.push([d,t,c,'运营-张伟','2026-11-04 16:00'])}
-function domLogRows(){const his=DOMHIS.map(h=>{const auto=h[4]==='系统自动';const sc=h[0]==='全部自动子域名'?'*.old1050.test 下的渠道（一键替换）':(CHANNELS.find(x=>x.id===h[0])||{}).name?`只 ${(CHANNELS.find(x=>x.id===h[0])).name}（${h[0]}）`:h[0];
-  return [h[1],auto?'自动换':'手动换',`${h[1]} → ${h[2]}；范围：${sc}；原因：${h[3]}`,h[4],h[5]]});
- return [...his,...DOMOPS].sort((a,b)=>b[4].localeCompare(a[4]))}
-function domLogTb(L){const nw=i=>r=>`<span style="white-space:nowrap">${r[i]}</span>`;return table([{t:'商户',k:()=>pill(M)},{t:'域名',k:nw(0)},{t:'操作类型',k:nw(1)},{t:'操作内容',l:1,k:2},{t:'操作人',k:nw(3)},{t:'操作时间',k:nw(4)}],L)}
-function domLog(){openDrawer('操作记录',`<div class="flt" id="dlogF">${inp('商户',M,{req:1})}${inp('域名','',{t:1,ph:'请输入'})}${inp('操作类型')}${inp('操作时间','2026-10-01 ~ 2026-11-04')}<div class="btns"><button class="btn p" onclick="domLogQ()">⌕ 搜索</button><button class="btn" onclick="domLog()">↻ 重置</button></div></div><div id="dlogT">${domLogTb(domLogRows())}</div>`,CLOSEF,860)}
-function domLogQ(){const f=$('#dlogF'),q=(f.querySelector('input.inp').value||'').trim(),tp=f.querySelector('div.inp[data-l="操作类型"]');const t=tp.classList.contains('v')?tp.textContent.trim():'';
- $('#dlogT').innerHTML=domLogTb(domLogRows().filter(r=>(!q||r[0].includes(q))&&(!t||r[1]===t)))}
-{const _sw=domSw;domSw=function(id){_sw(id);const r=DOMROWS.find(x=>x[0]===id);if(r)domOp(r[1],DOMSW[id]?'开启':'关闭','状态改为'+(DOMSW[id]?'开启':'关闭'))}}
+function domOp(d,t,ch,note){DOMOPS.push([d,t,ch,note||'','运营-张伟','2026-11-04 16:00'])}
+function domLogRows(){const his=DOMHIS.map(h=>{const auto=h[4]==='系统自动';const c=CHANNELS.find(x=>x.id===h[0]);const sc=h[0]==='全部自动子域名'?'*.old1050.test 下的渠道（一键替换）':c?`只 ${c.name}（${h[0]}）`:h[0];
+  return [h[1],auto?'自动换':'手动换',[['域名',h[1],h[2]]],`范围：${sc}；原因：${h[3]}`,h[4],h[5]]});
+ return [...his,...DOMOPS].sort((a,b)=>b[5].localeCompare(a[5]))}
+/* 照系统日志：改了什么和修改前灰色，修改后深色加粗 */
+function domChg(r){return `<div style="display:flex;flex-direction:column;gap:6px;line-height:20px">${r[2].map(c=>`<div><div style="font-size:12px;color:var(--mut)">${c[0]}</div><div style="color:var(--mut)">修改前：${c[1]}</div><div style="color:var(--ink);font-weight:600">修改后：${c[2]}</div></div>`).join('')}${r[3]?`<div style="font-size:12px;color:var(--mut)">${r[3]}</div>`:''}</div>`}
+function domLogTb(L){const nw=i=>r=>`<span style="white-space:nowrap">${r[i]}</span>`;return table([{t:'商户',k:()=>pill(M)},{t:'域名',k:nw(0)},{t:'操作类型',k:nw(1)},{t:'操作内容',l:1,k:domChg},{t:'操作人',k:nw(4)},{t:'操作时间',k:nw(5)}],L)}
+function domLog(){openDrawer('操作记录',`<div class="flt" id="dlogF">${inp('商户',M,{req:1})}${inp('操作类型')}${inp('操作时间','2026-10-01 ~ 2026-11-04')}<div class="btns"><button class="btn p" onclick="domLogQ()">⌕ 搜索</button><button class="btn" onclick="domLog()">↻ 重置</button></div></div><div id="dlogT">${domLogTb(domLogRows())}</div>`,CLOSEF,900)}
+function domLogQ(){const tp=$('#dlogF div.inp[data-l="操作类型"]');const t=tp.classList.contains('v')?tp.textContent.trim():'';
+ $('#dlogT').innerHTML=domLogTb(domLogRows().filter(r=>!t||r[1]===t))}
+/* 编辑弹窗打开时记下每项的值，保存时对比出修改前/修改后 */
+function domSnap(){const o={};document.querySelectorAll('#domF .fr').forEach(fr=>{const l=fr.querySelector('label');if(!l)return;const k=l.textContent.replace(/[*?\s]/g,'');if(k==='域名类型')return;
+  const v=[...fr.querySelectorAll('input.inp,div.inp')].map(x=>(x.tagName==='INPUT'?x.value:x.textContent).trim()).filter(Boolean).join(' / ');o[k]=v||'--'});return o}
+{const _sw=domSw;domSw=function(id){const r=DOMROWS.find(x=>x[0]===id);const b=r&&domOn(r);_sw(id);if(r)domOp(r[1],DOMSW[id]?'开启':'关闭',[['状态',b?'开启':'关闭',DOMSW[id]?'开启':'关闭']])}}
+{const _ed=domEdit;domEdit=function(id){_ed(id);window._dsnap=id==null?null:domSnap()}}
 {const _sv=domSave;domSave=function(ed){const t=$('#domF div.inp[data-l="域名类型"]'),d=$('#domF .fr:has(label) input.inp'),v=d?d.value.trim():'',tv=t&&t.classList.contains('v')?t.textContent.trim():'';
- const rid=ed?($('#dtitle .kv b')||{}).textContent:'';const r=ed&&DOMROWS.find(x=>x[0]===rid);
- _sv(ed);if(!tv)return;if(ed&&r)domOp(r[1],'编辑','编辑'+tv+'配置');else if(!ed&&v)domOp(v,'新增','新增'+tv)}}
+ const rid=ed?($('#dtitle .kv b')||{}).textContent:'';const r=ed&&DOMROWS.find(x=>x[0]===rid);const now=ed?domSnap():null,was=window._dsnap||{};
+ _sv(ed);if(!tv)return;if(ed&&r){const ch=Object.keys(now).filter(k=>now[k]!==was[k]).map(k=>[k,was[k]||'--',now[k]]);if(ch.length)domOp(r[1],'编辑',ch)}else if(!ed&&v)domOp(v,'新增',[['域名类型','--',tv],['域名','--',v]])}}
 
 const DOMSW={};function domOn(r){return r[0] in DOMSW?DOMSW[r[0]]:r[3]!==0}
 function domSw(id){const r=DOMROWS.find(x=>x[0]===id);if(!r)return;DOMSW[id]=!domOn(r);toast(DOMSW[id]?'已开启':'已关闭')}
@@ -2065,7 +2071,7 @@ function chPkg(r){const x=(window.SUBS||[]).find(y=>y.ch===r.id&&y.st==='ok');
 function wildSwap(d){d=d||wildOn();const L=wildCh(d);openDrawer('一键替换推广泛域名',F([['现在的',`<span>*.${d}</span>`,{full:1,ro:1}],['换成','<div class="inp" data-l="备用泛域名">选备用的推广泛域名</div>',{req:1,full:1}],['原因',R(['被封','到期','其他'],'被封'),{full:1}],
  ['受影响的渠道',`${L.length} 个：${L.map(c=>c.name).join('、')||'--'}`,{full:1,ro:1}]],100)+
  `<div class="alert">只换 *.${d} 下面这 ${L.length} 个渠道：推广链接一起换成新域名（渠道 code.新域名），渠道 code 不变，数据还算原渠道。其他根域名下的渠道、用独立推广域名的渠道不受影响。已经投出去的广告要到广告后台换成新链接。已经加到桌面的 PWA 还指向旧地址，要不要自动引导到新地址待开发确认。</div>`,
- `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="(()=>{const v=$('#dbody div.inp[data-l=\\'备用泛域名\\']');if(!v.classList.contains('v'))return toast('请选新的推广泛域名');closeDrawer();domOp('*.'+v.textContent.trim().replace(/^\\*\\./,''),'手动换','*.${d} → '+v.textContent.trim()+'；范围：*.${d} 下 ${L.length} 个渠道；原因：'+($('#dbody .radio span.on')?.textContent.trim()||'被封'));toast('已替换，${L.length} 个渠道的链接已更新，已记入操作记录')})()">确认替换</button>`,520)}
+ `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="(()=>{const v=$('#dbody div.inp[data-l=\\'备用泛域名\\']');if(!v.classList.contains('v'))return toast('请选新的推广泛域名');closeDrawer();domOp('*.${d}','手动换',[['域名','*.${d}',v.textContent.trim()]],'范围：*.${d} 下 ${L.length} 个渠道；原因：'+($('#dbody .radio span.on')?.textContent.trim()||'被封'));toast('已替换，${L.length} 个渠道的链接已更新，已记入操作记录')})()">确认替换</button>`,520)}
 {const a=SUBS.find(x=>x.ch==='off_SHELL_IN_001'),b=SUBS.find(x=>x.ch==='off_APK_IN_001');if(a){a.store=1;a.sv='安卓壳包 v2.3.0'}if(b){b.store=1;b.sv='安卓原生 v3.0.2'}}
 [['flowF','tplFlow'],['briefF','tplBrief']].forEach(([h,t])=>{const e=document.getElementById(h),tp=document.getElementById(t);if(e&&tp&&!e.shadowRoot){const r=e.attachShadow({mode:'open'});r.appendChild(tp.content.cloneNode(true));const p=r.getElementById('print');if(p)p.addEventListener('click',()=>window.print())}});
 /* 宽表格：底部常驻横向滚动条（表格比屏幕高时，不用滚到表格底部才能左右拖） */
