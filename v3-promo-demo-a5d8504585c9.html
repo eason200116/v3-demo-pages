@@ -1251,6 +1251,11 @@ function openPop(el){closePop();const l=el.dataset.l||el.closest('.fi,.fr')?.que
  document.body.appendChild(p);const r=el.getBoundingClientRect();p.style.left=r.left+'px';p.style.top=(r.bottom+4)+'px';p.style.minWidth=r.width+'px';POP=p;
  p.onclick=e=>{const o=e.target.closest('.po');if(!o)return;el.textContent=o.textContent;el.classList.add('v');closePop();el.dispatchEvent(new Event('pick',{bubbles:true}));
   const q=el.closest('.fi');if(q&&q.querySelector('label')?.textContent.includes('日期'))q.parentElement.querySelectorAll('.quick span').forEach(s=>s.classList.remove('on'))}}
+/* 落地页弹窗「绑定域名」：下拉顶部加搜索框，按包含关系过滤（不分大小写） */
+{const _opn=openPop;openPop=function(el){_opn.apply(this,arguments);const l=el.closest('.fr')?.querySelector('label')?.textContent.replace(/[?*\s]/g,'');if(l!=='绑定域名'||!el.closest('#lpF')||!POP)return;const p=POP;
+ const q=document.createElement('input');q.className='inp';q.placeholder='输入域名搜索';q.style.cssText='display:block;margin:4px 8px;width:calc(100% - 16px);box-sizing:border-box';
+ const nm=document.createElement('div');nm.className='note';nm.style.cssText='padding:6px 12px;display:none';nm.textContent='无匹配域名';p.prepend(q);p.appendChild(nm);
+ q.oninput=()=>{const k=q.value.trim().toLowerCase();let n=0;p.querySelectorAll('.po').forEach(o=>{const h=!!k&&!o.textContent.toLowerCase().includes(k);o.style.display=h?'none':'';if(!h)n++});nm.style.display=n?'none':''};q.focus()}}
 function rowObj(a){const tr=a.closest('tr'),tb=a.closest('table');const hs=[...tb.querySelectorAll('thead th')].map(t=>t.textContent.replace('?','').trim());
  const ki=Math.max(0,hs.findIndex(h=>/ID$|编号$|版本号|更新任务/.test(h)));
  return {tr,cells:[...tr.children],hs,key:[hs[ki],tr.children[ki].textContent],get:(h)=>{const i=hs.indexOf(h);return i<0?null:tr.children[i]}}}
