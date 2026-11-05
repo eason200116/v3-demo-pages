@@ -644,7 +644,7 @@ ol.iss li.p::before{background:var(--pend-soft);color:var(--pend);content:"定"}
 <li><b>主域名 · 推广泛域名 · 独立推广域名 · 跳转域名 · 防封下载页 · 下载域名</b><span>按类型登记、检查是否可用：推广域名是渠道入口，一对一（泛域名自动给每个渠道生成子域名；几个根域名同时在用，自动子域名的渠道分散在它们下面，一个根域名被封只一键替换它下面的渠道，其他照常用；下载域名另备几个备用的）；跳转域名、防封下载页是公共池，多个渠道共用，被封换掉一个，其他照常轮换；统计只认渠道 code，域名不参与统计；<span style="background:#fff3c4;border-radius:3px;padding:0 3px">新增、编辑先选类型，只填这一类要填的；保存后照提示加 DNS 解析，状态从「检测中」变「已生效」才能用。域名这里不设跳转方式：推广域名落到哪里在新增渠道时选，这里只显示绑了哪个渠道、落到哪里。主域名要选一套版面配置（V3 商户版面），落地指向主站的渠道默认用它。防封下载页只选页面，按钮按主域名里设的救援方式走。原「PWA 设置」去掉，桌面名称、图标、启动图、主题色、推送并到落地页「PWA」里。</span></span></li>
 </ul></li>
 <li><b>防封救援（并进域名管理）</b><span>不再单独一页：救援设置在主域名的编辑里，救援记录在主域名那一行上。</span><ul>
-<li><b>救援方式 · 救援奖励</b><span><span style="background:#fff3c4;border-radius:3px;padding:0 3px">主域名打不开时弹救援窗（可设能否关闭），救援页从防封下载页里选，救援方式选 PWA 或安装包；救援奖励只给已登录用户，每个账号一次；装好后自动登录原账号。PWA 能否提前缓存救援页待开发确认。</span></span></li>
+<li><b>救援方式</b><span><span style="background:#fff3c4;border-radius:3px;padding:0 3px">主域名打不开时弹救援窗（可设能否关闭），救援页从防封下载页里选，救援方式选 PWA 或安装包；装好后自动登录原账号。PWA 能否提前缓存救援页待开发确认。</span></span></li>
 </ul></li>
 <li><b>应用与版本</b><span>合并“渠道包管理＋版本上架”。</span><ul>
 <li><b>版本更新 · 自动打包</b><span><span style="background:#fff3c4;border-radius:3px;padding:0 3px">回滚：商户只能回滚自己做的建议更新，选渠道后系统用上一版重建这些子包，下载链接不变；强制更新不能回滚；商户端没有下架，要停止下载就停用渠道。总控可以回滚任一已发布版本：这个版本下架，上一版恢复为当前版本，影响所有用到它的商户；安装包版本由系统自动用上一版重建受影响的子包、链接不变，已装 App 打开时提示；热更直接切回上一版网页内容。回滚要先确认影响范围（商户数、子包数、已装 App 数），写入记录，商户端显示只读记录。</span><span style="background:#fff3c4;border-radius:3px;padding:0 3px">商户端只有「版本更新」和「自动打包」，母包由总控管理。版本更新：总控发布新母包后，选 App 渠道安排更新，跟进实际升级情况。一个渠道只认一个下载包：没打子包的渠道，用户点链接下载时系统把渠道 code 写进母包；打了子包的渠道，链接下载的就是这个子包，再打包会替换原来的。自动打包：要固定安装包文件时（发给代理、传应用商店），选渠道和母包版本生成，子包里已写好渠道 code，不重新签名；可以下载、复制链接；下载链接一直不变。更新分两种：强制更新由系统自动重建该商户全部子包，商户端只收到只读通知和更新记录，不用重新上传（传到应用商店的子包不会自己更新，标「需人工重新上传」）；建议更新由商户点「更新」选渠道，系统重建这些渠道的子包。</span></span></li><li><b>给研发的两条说明</b><span><span style="background:#fff3c4;border-radius:3px;padding:0 3px">1）所有子包用平台统一的一套签名证书，重建后能覆盖安装。2）App 启动时检查版本并提示用户更新，强制更新靠这个让已装在用户手机上的 App 也升级。</span></span></li>
@@ -1411,7 +1411,6 @@ TIPS['内置浏览器里']='在 Facebook、TikTok、Kwai 里点广告，打开�
 TIPS['分享卡片']='把链接发到 WhatsApp、Telegram 时显示的标题、描述和图。落地页渠道用落地页自己的；落地到主站的渠道默认用主域名里配的，也可以单独设。';
 
 TIPS['默认分享卡片']='把主站链接发到 WhatsApp、Telegram 里时，显示的标题、描述和图片。';TIPS['救援方式']='用户在救援页重新装什么：PWA（加到桌面，快）或安装包。';
-TIPS['救援奖励']='重装后发给用户的奖励，实发；只给已登录过的用户，每个账号只领一次。';
 TIPS['强制安装']='打开后安装弹窗不能关，必须装。容易引起投诉，默认关。';
 OPTS['渠道类型']=['代理渠道','非代理渠道'];
 OPTS['测试渠道']=()=>{};Object.defineProperty(OPTS,'测试渠道',{get:()=>{const L=CHANNELS.filter(c=>c.cfg===(ST.ad&&ST.ad.r&&ST.ad.r.name));return ['不选，用临时测试链接',...L.map(c=>c.id+' · '+c.name)]},configurable:true});
@@ -1457,10 +1456,10 @@ PAGES.mGuide={end:'m',title:'安装引导',bd:['新',''],render(){
 /* ---- 防封救援（在现有页上扩展） ---- */
 const RESC=[['https://www.1050.test','https://www.1050.test','normal',0,'--',1,'不能关','PWA',20,0],['https://old-main.1050.test','https://www2.1050.test','switched',2,'2026-10-30 18:12',1,'能关','安装包',20,318]];
 PAGES.mRescue={end:'m',title:'防封救援',bd:['改','c'],render(){
- return chg('chg','现有「防封救援」页（主域名、备用域名、检测间隔、自动救援）上扩展：加救援弹窗、救援页（从防封下载页公共池选）、救援方式、救援奖励。流程：主域名被封 → 已装 PWA / App 的用户打开时弹救援弹窗 → 复制链接到浏览器 → 进救援页重新装 PWA 或安装包 → 打开后自动登录原账号（服务端给一次性登录凭证），渠道 code 不变。')+
+ return chg('chg','现有「防封救援」页（主域名、备用域名、检测间隔、自动救援）上扩展：加救援弹窗、救援页（从防封下载页公共池选）、救援方式。流程：主域名被封 → 已装 PWA / App 的用户打开时弹救援弹窗 → 复制链接到浏览器 → 进救援页重新装 PWA 或安装包 → 打开后自动登录原账号（服务端给一次性登录凭证），渠道 code 不变。')+
  flt([inp('商户',M,{req:1}),inp('主域名','',{t:1,ph:'请输入'}),inp('救援状态','',{ph:'全部'})])+`<div class="bar"><button class="btn p" onclick="rescEdit()">＋ 新增</button></div>`+
  table([{t:'商户',k:()=>pill(M)},{t:'主域名',k:0},{t:'当前生效域名',k:1},{t:'救援状态',k:r=>r[2]==='normal'?st('正常','ok'):st('已切换','wait')},{t:'累计切换次数',k:3},{t:'最近切换时间',k:4},
-  {t:'救援弹窗',cls:'newc',k:r=>r[5]?`开 · ${r[6]}`:'关'},{t:'救援方式',cls:'newc',k:7},{t:'救援奖励',cls:'newc',k:r=>'₹ '+r[8]},{t:'累计救援人数',k:9},{t:'状态',k:()=>st('启用','ok')},
+  {t:'救援弹窗',cls:'newc',k:r=>r[5]?`开 · ${r[6]}`:'关'},{t:'救援方式',cls:'newc',k:7},{t:'累计救援人数',k:9},{t:'状态',k:()=>st('启用','ok')},
   {t:'操作',k:r=>`<span class="ops"><a onclick="rescEdit(${RESC.indexOf(r)})">编辑</a><a onclick="rescLog(${RESC.indexOf(r)})">救援记录</a><a class="r" onclick="toast('演示：已关闭')">关闭</a></span>`}],RESC)+
  `<p class="note">红底列为本次新增。待开发确认：PWA 要提前缓存救援弹窗，主域名打不开时也能弹出来；重装后自动登录原账号用一次性登录凭证。</p>`}};
 OPTS['救援状态']=['正常','已切换'];
@@ -1468,10 +1467,9 @@ function rescEdit(i){const r=i==null?['','','normal',0,'--',1,'不能关','PWA',
  openDrawer(i==null?'新增防封救援':'编辑防封救援',F([['主域名',S(r[0],'选主域名'),{req:1,full:1}],['备用域名',`<textarea class="inp ta" placeholder="一行一个">https://www2.1050.test</textarea>`,{full:1}],['检测间隔',S('10 分钟'),{}],['自动救援','<span class="sw on"></span>',{}],
   ['救援弹窗','<span class="sw on"></span>',{}],['用户能否关闭',R(['能关','不能关'],r[6]),{}],
   ['救援页',`<div class="ck">${POOL.filter(d=>d[1]==='防封下载页').map(d=>`<label><input type="checkbox" checked> ${d[0]}</label>`).join('')}</div><span class="note">从域名管理的防封下载页里选，多个时随机打开一个</span>`,{req:1,full:1}],
-  ['救援方式',R(['PWA','安装包'],r[7]),{full:1}],['救援奖励',I(String(r[8]),'金额，实发'),{}]],100)+
-  '<div class="alert">救援奖励只给已登录过的用户，每个账号只领一次；没登录过的用户也会弹窗，但没有奖励。重装后自动登录原账号，渠道 code 不变。</div>',
+  ['救援方式',R(['PWA','安装包'],r[7]),{full:1}]],100),
   `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="closeDrawer();toast('已保存')">保存</button>`,600)}
-function rescLog(i){const r=RESC[i];openDrawer('救援记录',F([['主域名',r[0],{ro:1}],['当前生效域名',r[1],{ro:1}],['救援方案',r[7],{ro:1}],['弹窗方式',r[5]?(r[6]==='能关'?'弹窗，用户能关':'弹窗，用户不能关'):'不弹窗',{ro:1}],['救援奖金','₹ '+r[8],{ro:1}],['累计救援人数',String(r[9]),{ro:1}],['累计切换次数',String(r[3]),{ro:1}],['最近切换时间',r[4],{ro:1}]],100)+table([{t:'时间',k:0},{t:'事件',k:1},{t:'人数',k:2}],[['2026-10-30 18:12','主域名打不开，切到 www2，开始弹救援窗','--'],['2026-10-30 18:40','重装并自动登录','126'],['2026-10-31 12:00','重装并自动登录','192']]),CLOSEF,600,[['主域名',r[0]],['当前生效域名',r[1]]])}
+function rescLog(i){const r=RESC[i];openDrawer('救援记录',F([['主域名',r[0],{ro:1}],['当前生效域名',r[1],{ro:1}],['救援方案',r[7],{ro:1}],['弹窗方式',r[5]?(r[6]==='能关'?'弹窗，用户能关':'弹窗，用户不能关'):'不弹窗',{ro:1}],['累计救援人数',String(r[9]),{ro:1}],['累计切换次数',String(r[3]),{ro:1}],['最近切换时间',r[4],{ro:1}]],100)+table([{t:'时间',k:0},{t:'事件',k:1},{t:'人数',k:2}],[['2026-10-30 18:12','主域名打不开，切到 www2，开始弹救援窗','--'],['2026-10-30 18:40','重装并自动登录','126'],['2026-10-31 12:00','重装并自动登录','192']]),CLOSEF,600,[['主域名',r[0]],['当前生效域名',r[1]]])}
 
 /* ---- 域名管理：按类型新增 / 编辑，检测中 → 已生效，去掉 PWA 设置 ---- */
 PDOMS.push(['https://spare3.1050.test','',3]);
@@ -1621,15 +1619,15 @@ delete PAGES.mGuide;
 {const _ce=chEdit;chEdit=function(){const r=_ce.apply(this,arguments);const f=chFr('安装设置');if(f)f.remove();return r}}
 {const _cn=window.chNew;if(typeof chNew==='function'){const o=chNew;chNew=function(){const r=o.apply(this,arguments);const f=chFr('安装设置');if(f)f.remove();return r}}}
 delete PAGES.mRescue;
-function rescSum(d){const r=RESC.find(x=>x[0]===d);return r?(r[5]?`弹救援窗（${r[6]}）· 装 ${r[7]} · 奖励 ₹${r[8]}`:'不弹救援窗'):'没设救援'}
+function rescSum(d){const r=RESC.find(x=>x[0]===d);return r?(r[5]?`弹救援窗（${r[6]}）· 装 ${r[7]}`:'不弹救援窗'):'没设救援'}
 {const _df=domFields;domFields=function(t,r){const a=_df(t,r);if(t!=='主域名')return a;const R0=(r&&RESC.find(x=>x[0]===r[1]))||['','','normal',0,'--',1,'不能关','PWA',20,0];
  return a.concat([['被封时怎么救','<span class="note">这个主域名打不开时：自动切到备用主域名；已装 PWA / App 的用户打开时弹救援窗，引导重装</span>',{full:1,ro:1}],
   ['备用主域名',S(r&&r[1]==='https://www2.1050.test'?'https://www.1050.test':'https://www2.1050.test','选一个主域名'),{}],['检测间隔',S('10 分钟'),{}],['自动切换','<span class="sw on"></span>',{}],
   ['救援弹窗',`<span class="sw ${R0[5]?'on':''}"></span>`,{}],['用户能否关闭',R(['能关','不能关'],R0[6]),{}],
   ['救援页',`<div class="ck">${POOL.filter(d=>d[1]==='防封下载页').map(d=>`<label><input type="checkbox" checked> ${d[0]}</label>`).join('')}</div><span class="note">从防封下载页里选，多个时随机打开一个</span>`,{full:1}],
-  ['救援方式',R(['PWA','安装包'],R0[7]),{}],['救援奖励',I(String(R0[8]),'金额，实发'),{}]])}}
+  ['救援方式',R(['PWA','安装包'],R0[7]),{}]])}}
 OPTS['备用主域名']=['https://www2.1050.test','https://www.1050.test'];
-TIPS['救援弹窗']='主域名打不开时，已装 PWA / App 的用户一打开就弹这个窗，让他复制链接到浏览器，进救援页重装，装好后自动登录原账号，渠道 code 不变。救援奖励只给登录过的用户，每个账号一次。';
+TIPS['救援弹窗']='主域名打不开时，已装 PWA / App 的用户一打开就弹这个窗，让他复制链接到浏览器，进救援页重装，装好后自动登录原账号，渠道 code 不变。';
 {const _rl=rescLog;rescLog=function(i){const r=RESC[i];if(r&&r[2]==='normal')return openDrawer('救援记录','<div class="note" style="padding:24px 0;text-align:center">这个主域名还没被封过，没有救援记录。</div>',CLOSEF,600,[['主域名',r[0]]]);return _rl(i)}}
 RESC.push(['https://www2.1050.test','https://www2.1050.test','normal',0,'--',1,'不能关','PWA',20,0]);
 {const h=location.hash.slice(1);const m={mGuide:'mCh',mRescue:'mDom'};if(m[h])history.replaceState(null,'','#'+m[h])}
