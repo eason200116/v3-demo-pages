@@ -946,7 +946,7 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web'
   ['版面配置',`<div class="inp v" data-l="版面配置">${layHtml(r.lay||DLAY)}</div>`,{req:1}],
   ['安装设置',`<div style="display:flex;align-items:center;white-space:nowrap"><div class="radio" id="chIns">${['跟主站','单独设置'].map(o=>`<span class="${o===(r.ins||'跟主站')?'on':''}" onclick="chInsSet('${o}')">${o}</span>`).join('')}</div><a style="margin-left:10px" onclick="go('mGuide')">看主站默认</a></div><div id="chInsX" style="display:none;margin-top:6px;gap:8px;flex-wrap:wrap;align-items:center;width:100%"><span class="note">引导装</span><div class="inp v" data-l="引导装" style="width:110px">${(r.insv||{}).g||'PWA'}</div><span class="note">弹窗时机</span><div class="inp v" data-l="弹窗时机" style="width:190px">${(r.insv||{}).t||'访问首页'}</div><span class="note">安装奖励 ₹</span><input class="inp" style="width:80px;min-width:0" value="${(r.insv||{}).m||20}"></div>`,{full:1}],
   ['分享卡片',`<div class="radio" id="chShare">${['用默认','单独设置'].map(o=>`<span class="${o==='用默认'?'on':''}" onclick="chShareSet('${o}')">${o}</span>`).join('')}</div><div id="chShareX" style="display:none;margin-top:6px;gap:8px;align-items:center;width:100%"><input class="inp" style="width:200px;min-width:0" placeholder="标题"><input class="inp" style="width:240px;min-width:0" placeholder="描述"><div class="lpup" onclick="this.classList.add('on');this.innerHTML='已上传 ✓'">＋ 分享图</div></div>`,{full:1}],
-  ['跳转域名',S(r.jp||'','选跳转域名'),{req:1}],
+  ['跳转落地页',S(r.lp||'','选跳转落地页'),{req:1}],
   ['归属代理',I(r.agent&&r.agent!=='--'?r.agent:'','输入代理 ID 或代理邀请码'),{req:1}],
   ['广告接入配置',S(r.cfg&&r.cfg!=='--'&&r.cfg!=='不接广告平台'?r.cfg:'','选广告接入配置'),{}],
   ['状态',`<span class="sw ${id&&r.state?'on':''}" id="chSt" onclick="chStGuard(event)"></span>`],
@@ -1029,10 +1029,10 @@ function rptTab(i){if(i===2&&CUR!=='aRpt')return go('mEvLog');PAGES[CUR==='aRpt'
 
 /* ---- 商户 · 落地页管理 ---- */
 const LPPATH=1;const LPS=[
- {id:'LP01',name:'daman 商城页',type:'PWA',path:'daman-store',logo:1,logo2:1,rate:'4.9',rcnt:'12K',dl:'1M+',shots:1,L:{英语:{app:'daman',desc:'Casino & Lottery',about:'Play 100+ games, fast deposit and withdrawal.'}}},
- {id:'LP02',name:'下载送 500（印地语）',type:'广告图',path:'bonus500-hi',priv:'https://www.1050.test/privacy',jump:'5 秒后自动点按钮',img:1,og:1,L:{英语:{txt:'Download and get ₹500 Bonus',btn:'Download',title:'Get ₹500 Bonus'},'印地语':{txt:'डाउनलोड करें और ₹500 बोनस पाएं',btn:'डाउनलोड',title:'₹500 बोनस पाएं'}}},
- {id:'LP03',name:'注册送 500',type:'广告图',path:'reg500',priv:'https://www.1050.test/privacy',jump:'不跳转',img:1,og:1,L:{英语:{txt:'Register to receive ₹500 Bonus',btn:'Get it now',title:'Register to receive ₹500'}}},
- {id:'LP04',name:'daman 商城页（葡语）',pub:0,type:'PWA',path:'daman-store-pt',logo:1,logo2:1,rate:'4.7',rcnt:'3K',dl:'500K+',shots:1,L:{英语:{app:'daman',desc:'Casino & Lottery',about:'Play 100+ games.'},'葡萄牙语':{app:'daman',desc:'Cassino e Loteria',about:'Mais de 100 jogos, depósito e saque rápidos.'}}}];
+ {id:'LP01',name:'daman 商城页',type:'PWA',path:'daman-store',dom:'https://spare1.1050.test',logo:1,logo2:1,rate:'4.9',rcnt:'12K',dl:'1M+',shots:1,L:{英语:{app:'daman',desc:'Casino & Lottery',about:'Play 100+ games, fast deposit and withdrawal.'}}},
+ {id:'LP02',name:'下载送 500（印地语）',type:'广告图',path:'bonus500-hi',dom:'https://spare2.1050.test',priv:'https://www.1050.test/privacy',jump:'5 秒后自动点按钮',img:1,og:1,L:{英语:{txt:'Download and get ₹500 Bonus',btn:'Download',title:'Get ₹500 Bonus'},'印地语':{txt:'डाउनलोड करें और ₹500 बोनस पाएं',btn:'डाउनलोड',title:'₹500 बोनस पाएं'}}},
+ {id:'LP03',name:'注册送 500',type:'广告图',path:'reg500',dom:'https://spare1.1050.test',priv:'https://www.1050.test/privacy',jump:'不跳转',img:1,og:1,L:{英语:{txt:'Register to receive ₹500 Bonus',btn:'Get it now',title:'Register to receive ₹500'}}},
+ {id:'LP04',name:'daman 商城页（葡语）',pub:0,type:'PWA',path:'daman-store-pt',dom:'https://spare2.1050.test',logo:1,logo2:1,rate:'4.7',rcnt:'3K',dl:'500K+',shots:1,L:{英语:{app:'daman',desc:'Casino & Lottery',about:'Play 100+ games.'},'葡萄牙语':{app:'daman',desc:'Cassino e Loteria',about:'Mais de 100 jogos, depósito e saque rápidos.'}}}];
 const LPLF={PWA:['app','desc','about'],'广告图':['txt','btn','title']};
 const lpDone=(v,t)=>!!v&&(LPLF[t]||[]).every(k=>(v[k]||'').trim());
 const lpLangs=o=>OPTS['语言'].filter(l=>lpDone((o.L||{})[l],o.type)).map(l=>LN[l]||l).join(' / ')||'--';
@@ -1094,7 +1094,7 @@ let LPEID='',LPL={},LPCUR='英语';function lpEdit(id){const o=LPS.find(x=>x.id=
  $('#lpF').addEventListener('input',lpPrev);$('#lpF').addEventListener('click',e=>{if(e.target.closest('.radio span'))setTimeout(lpPrev,0)})}
 const lpUp=(on,note)=>`<div style="display:flex;align-items:center;gap:8px"><div class="lpup ${on?'on':''}" onclick="this.classList.add('on');this.innerHTML='已上传 ✓';lpPrev()">${on?'已上传 ✓':'＋ 上传'}</div>${note?`<span class="note">${note}</span>`:''}</div>`;
 function lpForm(o){const t=o.type,lv=LPL[LPCUR]||{},en=LPCUR==='英语',ta=(v,ph)=>`<textarea class="inp ta" placeholder="${ph}">${v||''}</textarea>`;
- let a=[['页面名称',I(o.name,'给自己看的名字，如 注册送 500'),{req:1}],['页面类型',S(t,'请选择'),{req:1}],['页面路径',I(o.path,'如 reg500，用于预览链接'),{req:1}]],g=[],b=[];
+ let a=[['页面名称',I(o.name,'给自己看的名字，如 注册送 500'),{req:1}],['页面类型',S(t,'请选择'),{req:1}],['页面路径',I(o.path,'如 reg500，用于预览链接'),{req:1}],['绑定域名',S(o.dom,'选绑定域名'),{req:1}]],g=[],b=[];
  if(t==='PWA'){a=a.concat([['logo上传',lpUp(o.logo,'512×512'),{req:1}],['logo上传-快捷方式',lpUp(o.logo2,'192×192'),{req:1}]]);
   g=[['应用名称',I(lv.app,'如 daman'),{req:en}],['应用简介',I(lv.desc,'显示在应用名称下面，如 Casino & Lottery'),{req:en}],['评分',I(o.rate,'如 4.9'),{req:1}],['评分人数',I(o.rcnt,'如 12K'),{req:1}],['下载人数',I(o.dl,'如 1M+'),{req:1}],
    ['应用图片',lpUp(o.shots,'最多 5 张'),{req:1}],['关于应用',ta(lv.about,'显示在 About this app 下面'),{req:en}]]}
@@ -1105,7 +1105,7 @@ function lpForm(o){const t=o.type,lv=LPL[LPCUR]||{},en=LPCUR==='英语',ta=(v,ph
  $('#lpF').innerHTML=fx(a)+(t?`<div class="ptabs lptabs" id="lpTabs">${lpTabsH(t)}</div>`:'')+fx(g)+fx(b);lpPrev()}
 const lpTabsH=t=>OPTS['语言'].map(l=>`<span class="${l===LPCUR?'on':''}" onclick="lpTab('${l}')">${LN[l]||l}${l==='英语'?' <span class="tag">默认</span>':''}${lpDone(LPL[l],t)?' <b style="color:var(--green)">✓</b>':''}</span>`).join('');
 function lpTab(l){const o=lpVals();LPCUR=l;lpForm(o)}
-const LPK={'页面名称':'name','页面类型':'type','页面路径':'path','logo上传':'logo','logo上传-快捷方式':'logo2','应用名称':'app','应用简介':'desc','评分':'rate','评分人数':'rcnt','下载人数':'dl','应用图片':'shots','关于应用':'about','主图':'img','宣传文案':'txt','按钮文字':'btn','页面标题':'title','分享图':'og','隐私政策链接':'priv','自动跳转':'jump','内置浏览器里':'inapp'};
+const LPK={'页面名称':'name','页面类型':'type','页面路径':'path','绑定域名':'dom','logo上传':'logo','logo上传-快捷方式':'logo2','应用名称':'app','应用简介':'desc','评分':'rate','评分人数':'rcnt','下载人数':'dl','应用图片':'shots','关于应用':'about','主图':'img','宣传文案':'txt','按钮文字':'btn','页面标题':'title','分享图':'og','隐私政策链接':'priv','自动跳转':'jump','内置浏览器里':'inapp'};
 const LPN=Object.fromEntries(Object.entries(LPK).map(([a,b])=>[b,a]));
 function lpVals(){const o={};$('#lpF').querySelectorAll('.fr').forEach(r=>{const l=r.querySelector('label').textContent.replace(/[?*\s]/g,'');const i=r.querySelector('input.inp,textarea.inp'),d=r.querySelector('div.inp'),u=r.querySelector('.lpup'),ra=r.querySelector('.radio .on');
   o[LPK[l]]=i?i.value.trim():d?(d.classList.contains('v')?d.textContent.trim():''):u?u.classList.contains('on'):ra?ra.textContent:''});
@@ -1646,14 +1646,14 @@ TIPS['版面配置']='V3 的商户版面（总控「商户版面配置」里给�
 TIPS['绑定渠道']='渠道管理里用到这个域名的渠道，没有渠道用到显示 --。主域名：落地指向是主站首页或注册页的渠道；推广域名、跳转域名：渠道里选的那个；防封下载页：安卓和 PWA 渠道（用默认的随机轮换）；下载域名：安卓渠道下载安装包。用户打开后落到哪里（落地页、主站首页、主站注册页），在新增渠道时按链路选，域名这里不设。';
 document.addEventListener('pick',ev=>{const el=ev.target;if(el&&el.dataset&&el.dataset.l==='版面配置'){const n=el.textContent.replace('默认版面','').trim();el.innerHTML=layHtml(n)}});
 function dTo(id){const c=CHANNELS.find(c=>c.id===id)||{};return c.to==='落地页'?'落地页 '+(c.lp||''):(c.to||'--')+' · '+(c.lay||DLAY)}
-{const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','设备类型','母包','推广域名','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转域名','防封下载页','状态','备注'];
+{const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','设备类型','母包','推广域名','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转落地页','防封下载页','状态','备注'];
  const FULL=['商户','归属代理','落地页','版面配置','广告接入配置'];
  const _ce=chEdit;chEdit=function(id){const r=_ce.apply(this,arguments);const b=$('#dbody');const g=b&&b.querySelector('.fr')?.parentElement;if(!g||!chFr('渠道类型'))return r;
   ORD.forEach(k=>{const f=chFr(k);if(f){g.appendChild(f);if(FULL.includes(k))f.classList.add('full')}});
   [...g.querySelectorAll(':scope > .fr')].forEach(f=>{const k=f.querySelector('label').textContent.replace(/[?*\s]/g,'');if(!ORD.includes(k))g.appendChild(f)});
   const t=$('#chTo .on');if(t)chToSet(t.textContent);return r}}
 {const _ts=chToSet;chToSet=function(t){const r=_ts.apply(this,arguments);const f=chFr('版面配置');if(f)f.style.display=t==='落地页'?'none':'';chLay();return r}}
-chLay=function(){const rm=chFr('备注');if(!rm)return;const ff=chFr('跳转域名')?.parentElement;if(!ff)return;const L=['跳转域名','防封下载页','状态','注册赠送金额'].filter(k=>{const f=chFr(k);return f&&f.style.display!=='none'&&!f.classList.contains('full')}).length;rm.classList.toggle('full',L%2===0)};
+chLay=function(){const rm=chFr('备注');if(!rm)return;const ff=chFr('跳转落地页')?.parentElement;if(!ff)return;const L=['跳转落地页','防封下载页','状态','注册赠送金额'].filter(k=>{const f=chFr(k);return f&&f.style.display!=='none'&&!f.classList.contains('full')}).length;rm.classList.toggle('full',L%2===0)};
 /* ---- 11-04 渠道：进站语言、绑定币种、领奖条件、下载引导；广告接入测试：Kwai 用测试点击编号 ---- */
 const CHX0={lang:'跟手机语言',cur:'INR',dlIn:'跟主站',pop:0,ends:['PWA'],close:'能关',reg:0,dep:0,wd:0,fb:'安卓壳包',claim:'正式账号',once:1};
 CHANNELS.forEach(c=>{c.cx={...CHX0,ends:[...CHX0.ends],...(c.cx||{})}});
@@ -2124,7 +2124,7 @@ function chDetail(id){const r=CHANNELS.find(x=>x.id===id);if(!r)return;const x=r
  const fs=[['商户',sp(M)],['渠道ID',sp(chCid(r))],['渠道 code',sp(r.id)],['渠道名',sp(r.name)],['分组',r.grp?grpTag(r.grp):sp('--')],['渠道类型',tyTag(r.type)],['归属代理',sp(r.type==='代理'?r.agent:'--')],['设备类型',sp(r.end)],
   ...(app?[['母包',sp(MPOF[r.end]||'--')]]:[]),['推广域名',sp(hostOf(r))],['落地指向',sp(r.to||'落地页')],
   ((r.to||'落地页')==='落地页'?['落地页',sp(r.lp||'--')]:['版面配置',sp(layHtml(r.lay||DLAY))]),
-  ...((r.to||'落地页')!=='落地页'?[['分享卡片',sp('用默认')]]:[]),['广告接入配置',sp(r.cfg&&r.cfg!=='--'&&r.cfg!=='不接广告平台'?r.cfg:'--')],['跳转域名',sp(r.jp||'--')],
+  ...((r.to||'落地页')!=='落地页'?[['分享卡片',sp('用默认')]]:[]),['广告接入配置',sp(r.cfg&&r.cfg!=='--'&&r.cfg!=='不接广告平台'?r.cfg:'--')],['跳转落地页',sp(r.lp||'--')],
   ['状态',r.state?st('启用','ok'):st('停用','no')],['备注',sp(r.rm||'--'),{full:1}],
   ['创建人/时间',r.c||'--'],['最后修改人/时间',r.u||'--']].map(f=>[f[0],f[1],{...(f[2]||{}),ro:1}]);
  openDrawer('渠道详情',F(fs,110),CLOSEF,760,[['渠道',r.name],['渠道 code',r.id]])}
@@ -2150,6 +2150,10 @@ TIPS['渠道 code']='系统自动生成、不能改的渠道编号，推广链�
 /* 11-04 渠道：设备类型改名、按设备类型收窄落地页和落地指向、跳转域名/防封下载页必选 */
 OPTS['设备类型']=ENDS;TIPS['设备类型']='用户用哪种设备：Web（电脑、手机浏览器打开的是同一条链接）、PWA（装到桌面的网页）、安卓原生、安卓壳包。一个渠道只对应一种。PWA 只能选 PWA 落地页；Web 和安卓只能选广告图落地页；安卓渠道只能指向落地页。';
 Object.defineProperty(OPTS,'跳转域名',{get:()=>POOL.filter(d=>d[1]==='跳转域名'&&d[2]).map(d=>d[0]),configurable:true});
+Object.defineProperty(OPTS,'跳转落地页',{get:()=>LPS.map(x=>x.name),configurable:true});
+/* 绑定域名：域名管理里没被渠道占用、能访问的推广域名 + 本页已绑的那个 */
+Object.defineProperty(OPTS,'绑定域名',{get:()=>{const L=PDOMS.filter(d=>!d[1]&&d[2]===1).map(d=>d[0]),cur=(LPS.find(x=>x.id===LPEID)||{}).dom;if(cur&&!L.includes(cur))L.push(cur);return L.length?L:['没有空闲的推广域名，先去「域名管理」新增']},configurable:true});
+TIPS['跳转落地页']='用户点这个渠道的推广链接先到的落地页，从落地页管理里选。';
 Object.defineProperty(OPTS,'防封下载页',{get:()=>POOL.filter(d=>d[1]==='防封下载页'&&d[2]).map(d=>d[0]),configurable:true});
 Object.defineProperty(OPTS,'落地页',{get:()=>{const e=$('#modal.on #chEnd .on')?.textContent;const t=e==='PWA'?'PWA':'广告图';return LPS.filter(x=>!e||x.type===t).map(x=>x.name)},configurable:true});
 CHANNELS.forEach((c,i)=>{if(!c.jp)c.jp=i%2?'https://jump2.1050.test':'https://jump1.1050.test';if(isApp(c.end)&&c.lp==='daman 商城页')c.lp='下载送 500（印地语）'});
@@ -2158,15 +2162,15 @@ CHANNELS.forEach((c,i)=>{if(!c.jp)c.jp=i%2?'https://jump2.1050.test':'https://ju
  if(app&&($('#chTo .on')?.textContent||'落地页')!=='落地页')chToSet('落地页');
  if(!init){const f=chFr('落地页')?.querySelector('.inp');if(f&&!OPTS['落地页'].includes(f.textContent.trim())){f.textContent='选落地页';f.classList.remove('v')}}
  return res}}
-{const _sv=chSave;chSave=function(ed){for(const k of ['跳转域名','防封下载页']){const f=chFr(k);if(f&&f.style.display!=='none'&&f.querySelector('.inp')?.textContent.trim()==='选'+k)return toast('请选'+k)}
- const jp=chFr('跳转域名')?.querySelector('.inp')?.textContent.trim(),id=CHE,n=CHANNELS.length;const res=_sv.apply(this,arguments);
- if(!document.querySelector('#modal.on')){const c=ed?CHANNELS.find(x=>x.id===id):CHANNELS.length>n?CHANNELS[CHANNELS.length-1]:null;if(c&&jp)c.jp=jp}return res}}
+{const _sv=chSave;chSave=function(ed){for(const k of ['跳转落地页','防封下载页']){const f=chFr(k);if(f&&f.style.display!=='none'&&f.querySelector('.inp')?.textContent.trim()==='选'+k)return toast('请选'+k)}
+ const jl=chFr('跳转落地页')?.querySelector('.inp.v')?.textContent.trim(),id=CHE,n=CHANNELS.length;const res=_sv.apply(this,arguments);
+ if(!document.querySelector('#modal.on')){const c=ed?CHANNELS.find(x=>x.id===id):CHANNELS.length>n?CHANNELS[CHANNELS.length-1]:null;if(c&&jl)c.lp=jl}return res}}
 /* 11-05 新增渠道保存后加进列表 */
 {const _sn=chSave;chSave=function(ed){if(ed)return _sn.apply(this,arguments);
  const tx=k=>{const x=chFr(k)?.querySelector('div.inp.v');return x?x.textContent.trim():''},iv=k=>chFr(k)?.querySelector('input')?.value.trim()||'';
  const type=($('#chType .on')?.textContent||'').replace('渠道','')||'非代理',end=$('#chEnd .on')?.textContent||'Web',to=$('#chTo .on')?.textContent||'落地页';
  const own=$('#chDm span:last-child')?.classList.contains('on'),dm=own?($('#chDmPick .inp')?.textContent.trim()||''):'';
- const o={name:iv('渠道名'),grp:tx('分组'),type,agent:type==='代理'?iv('归属代理'):'--',end,to,lp:to==='落地页'?tx('落地页'):'',dm:/^选/.test(dm)?'':dm,
+ const o={name:iv('渠道名'),grp:tx('分组'),type,agent:type==='代理'?iv('归属代理'):'--',end,to,lp:tx('跳转落地页')||(to==='落地页'?tx('落地页'):''),dm:/^选/.test(dm)?'':dm,
   jp:chFr('跳转域名')?.querySelector('.inp')?.textContent.trim().replace(/^选跳转域名$/,'')||'',cfg:(x=>x&&x!=='不关联'?x:'不接广告平台')(tx('广告接入配置')),state:$('#chSt')?.classList.contains('on')?1:0,rm:iv('备注')};
  const res=_sn.apply(this,arguments);
  if(!document.querySelector('#modal.on')){const E={'Web':'WEB','PWA':'PWA','安卓原生':'APK','安卓壳包':'SHELL'}[end]||'WEB',pre=(type==='代理'?'agt':'self')+'_'+E+'_IN_';
