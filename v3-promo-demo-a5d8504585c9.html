@@ -2282,20 +2282,20 @@ function pageLogQ(){const tp=$('#plogF div.inp[data-l="操作类型"]');const t=
 OPTS['落地指向D']=['落地页','主站首页','主站注册页'];OPTS['落地指向App']=['落地页'];
 Object.defineProperty(OPTS,'落地页PWA',{get:()=>LPS.filter(x=>x.type==='PWA').map(x=>x.name),configurable:true});
 Object.defineProperty(OPTS,'落地页AD',{get:()=>LPS.filter(x=>x.type==='广告图').map(x=>x.name),configurable:true});
-function domToRows(L){return `<div class="tw"><table class="domTo" style="width:100%"><thead><tr><th>渠道</th><th>落地指向</th><th>落地页</th></tr></thead><tbody>${L.map(c=>{const lp=c.to==='落地页';
-  return `<tr data-ch="${c.id}"><td style="white-space:nowrap">${c.name}<span class="sub">${c.end}</span></td><td><div class="inp v" data-k="${isApp(c.end)?'落地指向App':'落地指向D'}">${c.to||'落地页'}</div></td><td><div class="inp ${c.lp?'v':''}" data-k="${c.end==='PWA'?'落地页PWA':'落地页AD'}" style="${lp||!c.to?'':'display:none'}">${c.lp||'选落地页'}</div><span class="note" style="${lp||!c.to?'display:none':''}">--</span></td></tr>`}).join('')}</tbody></table></div>`}
+function domToRows(L){return `<div class="tw"><table class="domTo" style="width:100%"><thead><tr><th>渠道</th><th>落地指向</th><th>落地页 / 版面配置</th></tr></thead><tbody>${L.map(c=>{const lp=c.to==='落地页';
+  return `<tr data-ch="${c.id}"><td style="white-space:nowrap">${c.name}<span class="sub">${c.end}</span></td><td><div class="inp v" data-k="${isApp(c.end)?'落地指向App':'落地指向D'}">${c.to||'落地页'}</div></td><td><div class="inp ${c.lp?'v':''}" data-k="${c.end==='PWA'?'落地页PWA':'落地页AD'}" style="${lp||!c.to?'':'display:none'}">${c.lp||'选落地页'}</div><div class="inp v" data-k="版面配置" style="${lp||!c.to?'display:none':''}">${layHtml(c.lay||DLAY)}</div></td></tr>`}).join('')}</tbody></table></div>`}
 {const _df9=domFields;domFields=function(t,r){const a=_df9(t,r);if(!r)return a;
  const L=t==='独立推广域名'?CHANNELS.filter(c=>c.dm===r[1]):t==='推广泛域名'?wildCh(r[1].slice(2)):null;
  if(L&&L.length){const i=a.findIndex(x=>x[0]==='绑定渠道');a.splice(i<0?a.length:i+1,0,['落地指向',domToRows(L),{req:1,full:1}])}return a}}
 {const _de9=domEdit;domEdit=function(){const r=_de9.apply(this,arguments);document.querySelectorAll('#domF [data-k]').forEach(x=>x.dataset.l=x.dataset.k);return r}}
 document.addEventListener('pick',ev=>{const d=ev.target;if(!d.closest||!d.closest('table.domTo')||!/^落地指向/.test(d.dataset.l||''))return;
- const td=d.closest('tr').children[2],on=d.textContent.trim()==='落地页';td.querySelector('.inp').style.display=on?'':'none';td.querySelector('.note').style.display=on?'none':''});
+ const td=d.closest('tr').children[2],on=d.textContent.trim()==='落地页';const x=td.querySelectorAll('.inp');x[0].style.display=on?'':'none';x[1].style.display=on?'none':''});
 {const _ds9=domSave;domSave=function(ed){const rows=[...document.querySelectorAll('#domF table.domTo tbody tr')];const V=[];
  for(const tr of rows){const c=CHANNELS.find(x=>x.id===tr.dataset.ch);if(!c)continue;const to=tr.children[1].querySelector('.inp').textContent.trim(),l=tr.children[2].querySelector('.inp');
-  if(to==='落地页'&&!l.classList.contains('v'))return toast('请给「'+c.name+'」选落地页');V.push([c,to,to==='落地页'?l.textContent.trim():c.lp])}
- const res=_ds9.apply(this,arguments);if(!document.querySelector('#modal.on')||!document.querySelector('#domF')){V.forEach(([c,to,lp])=>{c.to=to;c.lp=lp});if(V.length)render()}return res}}
+  if(to==='落地页'&&!l.classList.contains('v'))return toast('请给「'+c.name+'」选落地页');const ly=tr.children[2].querySelectorAll('.inp')[1];V.push([c,to,to==='落地页'?l.textContent.trim():c.lp,ly?ly.textContent.replace('默认版面','').trim():c.lay])}
+ const res=_ds9.apply(this,arguments);if(!document.querySelector('#modal.on')||!document.querySelector('#domF')){V.forEach(([c,to,lp,ly])=>{c.to=to;c.lp=lp;if(to!=='落地页')c.lay=ly});if(V.length)render()}return res}}
 /* 渠道表单：落地指向、落地页两行藏起来（值从域名那边来） */
-function chToHide(){['落地指向','落地页'].forEach(k=>{const f=chFr(k);if(f)f.style.display='none'})}
+function chToHide(){['落地指向','落地页','版面配置'].forEach(k=>{const f=chFr(k);if(f)f.style.display='none'})}
 {const _t9=chToSet;chToSet=function(){const r=_t9.apply(this,arguments);chToHide();return r}}
 {const _e9=chEdit;chEdit=function(){const r=_e9.apply(this,arguments);chToHide();return r}}
 {const _s9=chSave;chSave=function(ed){const d=chFr('落地页')?.querySelector('div.inp');if(d&&!d.classList.contains('v')){d.textContent='';d.classList.add('v')}return _s9.apply(this,arguments)}}
