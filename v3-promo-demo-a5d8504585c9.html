@@ -1450,7 +1450,7 @@ PAGES.mGuide={end:'m',title:'安装引导',bd:['新',''],render(){
   ['弹窗时机',`<div class="ck">${['访问首页','充值成功后（游戏中不弹）','首次提现后'].map((x,i)=>`<label><input type="checkbox" ${i<2?'checked':''}> ${x}</label>`).join('')}</div>`,{full:1}],
   ['弹窗间隔',S('24 小时'),{}],['强制安装','<span class="sw"></span><span class="note" style="margin-left:8px">开了弹窗不能关，默认关</span>',{}],
   ['安卓装什么',R(['PWA（快，不用下载）','安装包','先 PWA，不行再装安装包'],'先 PWA，不行再装安装包'),{full:1}],
-  ['安装奖励','<span class="sw on"></span>',{}],['奖励金额',I('20','实发金额'),{}],['打码倍数',I('1'),{}],['下载提示文案',I('下载 App，充值提现更快','顶部下载提示和弹窗里显示，最多 100 字'),{}]],110)+
+  ['安装奖励','<span class="sw on"></span>',{}],['奖励金额',I('20','实发金额'),{}],['下载提示文案',I('下载 App，充值提现更快','顶部下载提示和弹窗里显示，最多 100 字'),{}]],110)+
  `<div class="alert">已经装了 PWA 或安装包的用户，不再看到顶部提示和弹窗。通过引导装的 PWA、安装包照样带渠道 code（安装包下载时写入，PWA 启动链接带上），装好后的注册、充值都算这个渠道。</div><div style="text-align:right"><button class="btn p" onclick="toast('已保存，主站马上生效')">保存</button></div></div>`+
  `<div class="sec">单独设置了的渠道</div>`+table([{t:'渠道',k:c=>`${c.name}<span class="sub">${c.id}</span>`},{t:'端',k:'end'},{t:'落地指向',k:'to'},{t:'单独设置的内容',k:c=>{const v=c.insv||{};return `引导装 ${v.g||'PWA'} · 弹窗时机：${v.t||'访问首页'} · 安装奖励 ₹${v.m||20}`}},{t:'操作',k:c=>`<a onclick="go('mCh');setTimeout(()=>chEdit('${c.id}'),50)">去改</a>`}],ov)}};
 
@@ -1468,7 +1468,7 @@ function rescEdit(i){const r=i==null?['','','normal',0,'--',1,'不能关','PWA',
  openDrawer(i==null?'新增防封救援':'编辑防封救援',F([['主域名',S(r[0],'选主域名'),{req:1,full:1}],['备用域名',`<textarea class="inp ta" placeholder="一行一个">https://www2.1050.test</textarea>`,{full:1}],['检测间隔',S('10 分钟'),{}],['自动救援','<span class="sw on"></span>',{}],
   ['救援弹窗','<span class="sw on"></span>',{}],['用户能否关闭',R(['能关','不能关'],r[6]),{}],
   ['救援页',`<div class="ck">${POOL.filter(d=>d[1]==='防封下载页').map(d=>`<label><input type="checkbox" checked> ${d[0]}</label>`).join('')}</div><span class="note">从域名管理的防封下载页里选，多个时随机打开一个</span>`,{req:1,full:1}],
-  ['救援方式',R(['PWA','安装包'],r[7]),{full:1}],['救援奖励',I(String(r[8]),'金额，实发'),{}],['打码倍数',I('1'),{}]],100)+
+  ['救援方式',R(['PWA','安装包'],r[7]),{full:1}],['救援奖励',I(String(r[8]),'金额，实发'),{}]],100)+
   '<div class="alert">救援奖励只给已登录过的用户，每个账号只领一次；没登录过的用户也会弹窗，但没有奖励。重装后自动登录原账号，渠道 code 不变。</div>',
   `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="closeDrawer();toast('已保存')">保存</button>`,600)}
 function rescLog(i){const r=RESC[i];openDrawer('救援记录',F([['主域名',r[0],{ro:1}],['当前生效域名',r[1],{ro:1}],['救援方案',r[7],{ro:1}],['弹窗方式',r[5]?(r[6]==='能关'?'弹窗，用户能关':'弹窗，用户不能关'):'不弹窗',{ro:1}],['救援奖金','₹ '+r[8],{ro:1}],['累计救援人数',String(r[9]),{ro:1}],['累计切换次数',String(r[3]),{ro:1}],['最近切换时间',r[4],{ro:1}]],100)+table([{t:'时间',k:0},{t:'事件',k:1},{t:'人数',k:2}],[['2026-10-30 18:12','主域名打不开，切到 www2，开始弹救援窗','--'],['2026-10-30 18:40','重装并自动登录','126'],['2026-10-31 12:00','重装并自动登录','192']]),CLOSEF,600,[['主域名',r[0]],['当前生效域名',r[1]]])}
@@ -1627,7 +1627,7 @@ function rescSum(d){const r=RESC.find(x=>x[0]===d);return r?(r[5]?`弹救援窗�
   ['备用主域名',S(r&&r[1]==='https://www2.1050.test'?'https://www.1050.test':'https://www2.1050.test','选一个主域名'),{}],['检测间隔',S('10 分钟'),{}],['自动切换','<span class="sw on"></span>',{}],
   ['救援弹窗',`<span class="sw ${R0[5]?'on':''}"></span>`,{}],['用户能否关闭',R(['能关','不能关'],R0[6]),{}],
   ['救援页',`<div class="ck">${POOL.filter(d=>d[1]==='防封下载页').map(d=>`<label><input type="checkbox" checked> ${d[0]}</label>`).join('')}</div><span class="note">从防封下载页里选，多个时随机打开一个</span>`,{full:1}],
-  ['救援方式',R(['PWA','安装包'],R0[7]),{}],['救援奖励',I(String(R0[8]),'金额，实发'),{}],['打码倍数',I('1'),{}]])}}
+  ['救援方式',R(['PWA','安装包'],R0[7]),{}],['救援奖励',I(String(R0[8]),'金额，实发'),{}]])}}
 OPTS['备用主域名']=['https://www2.1050.test','https://www.1050.test'];
 TIPS['救援弹窗']='主域名打不开时，已装 PWA / App 的用户一打开就弹这个窗，让他复制链接到浏览器，进救援页重装，装好后自动登录原账号，渠道 code 不变。救援奖励只给登录过的用户，每个账号一次。';
 {const _rl=rescLog;rescLog=function(i){const r=RESC[i];if(r&&r[2]==='normal')return openDrawer('救援记录','<div class="note" style="padding:24px 0;text-align:center">这个主域名还没被封过，没有救援记录。</div>',CLOSEF,600,[['主域名',r[0]]]);return _rl(i)}}
@@ -1647,7 +1647,7 @@ function dTo(id){const c=CHANNELS.find(c=>c.id===id)||{};return c.to==='落地�
   [...g.querySelectorAll(':scope > .fr')].forEach(f=>{const k=f.querySelector('label').textContent.replace(/[?*\s]/g,'');if(!ORD.includes(k))g.appendChild(f)});
   const t=$('#chTo .on');if(t)chToSet(t.textContent);return r}}
 {const _ts=chToSet;chToSet=function(t){const r=_ts.apply(this,arguments);const f=chFr('版面配置');if(f)f.style.display=t==='落地页'?'none':'';chLay();return r}}
-chLay=function(){const rm=chFr('备注');if(!rm)return;const ff=chFr('跳转域名')?.parentElement;if(!ff)return;const L=['跳转域名','防封下载页','状态','注册赠送金额','赠送打码倍数'].filter(k=>{const f=chFr(k);return f&&f.style.display!=='none'&&!f.classList.contains('full')}).length;rm.classList.toggle('full',L%2===0)};
+chLay=function(){const rm=chFr('备注');if(!rm)return;const ff=chFr('跳转域名')?.parentElement;if(!ff)return;const L=['跳转域名','防封下载页','状态','注册赠送金额'].filter(k=>{const f=chFr(k);return f&&f.style.display!=='none'&&!f.classList.contains('full')}).length;rm.classList.toggle('full',L%2===0)};
 /* ---- 11-04 渠道：进站语言、绑定币种、领奖条件、下载引导；广告接入测试：Kwai 用测试点击编号 ---- */
 const CHX0={lang:'跟手机语言',cur:'INR',dlIn:'跟主站',pop:0,ends:['PWA'],close:'能关',reg:0,dep:0,wd:0,fb:'安卓壳包',claim:'正式账号',once:1};
 CHANNELS.forEach(c=>{c.cx={...CHX0,ends:[...CHX0.ends],...(c.cx||{})}});
@@ -2132,10 +2132,10 @@ function chDetail(id){const r=CHANNELS.find(x=>x.id===id);if(!r)return;const x=r
   ['创建人/时间',r.c||'--'],['最后修改人/时间',r.u||'--']].map(f=>[f[0],f[1],{...(f[2]||{}),ro:1}]);
  openDrawer('渠道详情',F(fs,110),CLOSEF,760,[['渠道',r.name],['渠道 code',r.id]])}
 {const _cs=chSave;chSave=function(ed){const id=CHE,fr=k=>chFr(k);const sf=fr('防封下载页')?.querySelector('div.inp')?.textContent.trim()||'';
- const gi=fr('注册赠送金额')?.querySelector('input')?.value,gx=fr('赠送打码倍数')?.querySelector('input')?.value;
- const res=_cs.apply(this,arguments);if(!document.querySelector('#modal.on')&&ed&&id){const c=CHANNELS.find(x=>x.id===id);if(c){c.sf=/^用默认/.test(sf)?'':sf;if(gi!=null)c.gift=Math.max(0,parseFloat(gi)||0);if(gx!=null)c.giftx=Math.max(0,parseFloat(gx)||0)}}return res}}
+ const gi=fr('注册赠送金额')?.querySelector('input')?.value;
+ const res=_cs.apply(this,arguments);if(!document.querySelector('#modal.on')&&ed&&id){const c=CHANNELS.find(x=>x.id===id);if(c){c.sf=/^用默认/.test(sf)?'':sf;if(gi!=null)c.gift=Math.max(0,parseFloat(gi)||0)}}return res}}
 {const _ce=chEdit;chEdit=function(id){const res=_ce.apply(this,arguments);if(!document.querySelector('#modal.on'))return res;const c=CHANNELS.find(x=>x.id===id);if(!c)return res;
- const a=chFr('注册赠送金额')?.querySelector('input'),b=chFr('赠送打码倍数')?.querySelector('input');if(a&&c.gift!=null)a.value=c.gift;if(b&&c.giftx!=null)b.value=c.giftx;return res}}
+ const a=chFr('注册赠送金额')?.querySelector('input');if(a&&c.gift!=null)a.value=c.gift;return res}}
 /* 版本 */
 UPS.forEach(u=>{if(u&&!Array.isArray(u)){if(u.how==='安装包')u.how='安装包升级';else if(/热更/.test(u.how))u.how='热更网页内容'}});
 
