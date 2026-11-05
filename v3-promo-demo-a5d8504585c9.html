@@ -1579,7 +1579,7 @@ CONFIGS.find(c=>c.id==='AC1007').rm='预留，还没有渠道用';
  if(nw)nw.rm=ch.name+' 在用';ch.cfg=name;render();toast('已保存');return r}}
 const adChOf=r=>{const c=r&&r.name&&CHANNELS.find(c=>c.cfg===r.name);return c?c.name+'（'+c.id+'）':''};
 Object.defineProperty(OPTS,'关联渠道',{get:()=>{const r=ST.ad&&ST.ad.r;const k=r&&r.end;const E=KENDS[k]||[];return [...CHANNELS.filter(c=>!c.sys&&E.includes(c.end)&&(c.cfg==='不接广告平台'||!CONFIGS.some(x=>x.name===c.cfg)||(r&&c.cfg===r.name))).map(c=>c.name+'（'+c.id+'）')]},configurable:true});
-TIPS['关联渠道']='一份配置只给一个渠道用。新增时可以在这里选，下拉只列投放端对得上、还没绑配置、平台也对得上的渠道（代理渠道 agt_ 不限平台；推广渠道只能配 code 里那个平台；自建渠道 self_ 不接广告平台，不出现在这里），也可以先不选；新增渠道时也能选配置，两边绑的是同一个关系，哪边绑上另一边都会显示。建好后这里只显示，要换到渠道管理里改。推广域名和安装包都跟着渠道走。';
+TIPS['关联渠道']='一份配置只给一个渠道用。新增时可以在这里选，下拉只列投放端对得上、还没绑配置、平台也对得上的渠道（代理渠道 agt_ 不限平台；推广渠道只能配 code 里那个平台，Adjust 例外，不限渠道平台；自建渠道 self_ 不接广告平台，不出现在这里），也可以先不选；新增渠道时也能选配置，两边绑的是同一个关系，哪边绑上另一边都会显示。建好后这里只显示，要换到渠道管理里改。推广域名和安装包都跟着渠道走。';
 {const _ae=adEndSet;adEndSet=function(){const r=_ae.apply(this,arguments);const d=document.querySelector('#dbody div.inp[data-l="关联渠道"]');if(d){d.textContent='请选择渠道';d.classList.remove('v')}return r}}
 {const _as2=adSave;adSave=function(){const r=ST.ad&&ST.ad.r;const d=document.querySelector('#dbody div.inp[data-l="关联渠道"]');const v=d&&d.classList.contains('v')?d.textContent.trim():'';const res=_as2.apply(this,arguments);
  if(!document.querySelector('#modal.on')&&r&&r.id&&d){const m=v.match(/（([A-Za-z]+_[A-Z0-9]+_[A-Z]+_\d{3})）$/);const tg=m&&CHANNELS.find(c=>c.id===m[1]);const pv=CHANNELS.find(c=>c.cfg===r.name);if(pv&&pv!==tg)pv.cfg='不接广告平台';if(tg)tg.cfg=r.name;r.rm=tg?tg.name+' 在用':'预留，还没有渠道用';render()}return res}}
@@ -1941,8 +1941,8 @@ if(0)SUBS.push({id:'SP-1029-01',ch:'off_SHELL_IN_001',ver:'安卓壳包 v2.3.1',
 UPS.unshift(['UP-1102-01','安卓壳包 网页内容 v2.4.0（热更）','强制更新','全部安卓壳包渠道（渠道 C）','不用重建（热更）','412 / 1,904',['用户更新中','run'],'总控 · admin02 2026-11-02 14:00']);
 
 const PFX={FB:'Facebook',TT:'TikTok',KW:'Kwai'};const pfxOf=id=>(String(id).match(/^([A-Za-z]+)_/)||[])[1]||'';
-{const _cfo6=chCfgOpts;chCfgOpts=function(){const L=_cfo6();if(!CHE)return L;const p=pfxOf(CHE);if(p==='agt')return L;if(p==='off'||p==='self')return L.filter(x=>x.startsWith('不接广告平台'));const P=PFX[p];if(!P)return L;return L.filter(x=>{const c=CONFIGS.find(y=>y.name===x);return c&&c.plat===P})}}
-{const d=Object.getOwnPropertyDescriptor(OPTS,'关联渠道');if(d&&d.get){const g=d.get;Object.defineProperty(OPTS,'关联渠道',{get:()=>{const L=g();const r=ST.ad&&ST.ad.r;const P=r&&r.plat;if(!P)return L;return L.filter(x=>{const m=x.match(/（([^（）]+)）$/);if(!m)return true;const p=pfxOf(m[1]);return p==='agt'||PFX[p]===P})},configurable:true})}}
+{const _cfo6=chCfgOpts;chCfgOpts=function(){const L=_cfo6();if(!CHE)return L;const p=pfxOf(CHE);if(p==='agt')return L;if(p==='off'||p==='self')return L.filter(x=>x.startsWith('不接广告平台'));const P=PFX[p];if(!P)return L;return L.filter(x=>{const c=CONFIGS.find(y=>y.name===x);return c&&(c.plat===P||c.plat==='Adjust')})}}
+{const d=Object.getOwnPropertyDescriptor(OPTS,'关联渠道');if(d&&d.get){const g=d.get;Object.defineProperty(OPTS,'关联渠道',{get:()=>{const L=g();const r=ST.ad&&ST.ad.r;const P=r&&r.plat;if(!P)return L;return L.filter(x=>{const m=x.match(/（([^（）]+)）$/);if(!m)return true;const p=pfxOf(m[1]);return p==='agt'||PFX[p]===P||(P==='Adjust'&&!!PFX[p])})},configurable:true})}}
 
 {const c=CONFIGS.find(x=>x.id==='AC1005');if(c){c.rm='A2 在用';c.cbFrom='2026-11-01 16:11';c.cbErr='The access token is invalid or has expired.'}}
 
@@ -2129,7 +2129,7 @@ UPS.forEach(u=>{if(u&&!Array.isArray(u)){if(u.how==='安装包')u.how='安装包
 
 
 /* 30：渠道只在渠道管理里绑配置 */
-TIPS['关联渠道']='必须关联一个渠道，一份配置只给一个渠道用。这里和渠道管理都能绑，哪边改了另一边跟着变。下拉只列投放端、平台都对得上，还没绑配置的渠道。';
+TIPS['关联渠道']='必须关联一个渠道，一份配置只给一个渠道用。这里和渠道管理都能绑，哪边改了另一边跟着变。下拉只列投放端、平台都对得上，还没绑配置的渠道；Adjust 例外，不限渠道平台。';
 {const _cfo7=chCfgOpts;chCfgOpts=function(){const L=_cfo7().filter(x=>x.startsWith('不接广告平台')||x.startsWith('没有')||!CHANNELS.some(c=>c.cfg===x&&c.id!==CHE));return L.length?L:['没有空闲的配置，先去「广告接入」新建']}}
 /* 每份广告配置一一对应一个渠道 */ CHANNELS.push({id:'KW_WEB_IN_001',name:'渠道 E',type:'非代理',agent:'--',end:'Web',to:'落地页',lp:'注册送 500',dm:'',cfg:'Kwai-Web',state:0,c:who('运营-李娜','2026-10-29 15:40'),u:who('运营-李娜','2026-11-01 11:10'),rm:'配置测试没通过，先停着'},{id:'KW_SHELL_IN_001',name:'渠道 F',type:'非代理',agent:'--',end:'安卓壳包',to:'落地页',lp:'daman 商城页',dm:'',cfg:'Kwai-安卓壳包',mp:'daman 安卓壳包 v2.3.1',state:0,c:who('运营-李娜','2026-10-30 09:10'),u:who('运营-李娜','2026-10-30 09:10'),rm:'等配置测试通过再启用'}); {const a=CONFIGS.find(c=>c.id==='AC1006');a.rm='渠道 E 在用';if(typeof hostOf==='function')a.site=hostOf(CHANNELS.find(c=>c.id==='KW_WEB_IN_001'));CONFIGS.find(c=>c.id==='AC1007').rm='渠道 F 在用'}
 /* 11-04 渠道管理整理：状态列集中提示、投放端统一叫法 */
