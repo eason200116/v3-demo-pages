@@ -768,7 +768,6 @@ const CHANNELS=[
   {id:'agt_WEB_IN_003',name:'A3',type:'代理',agent:'8810102',end:'Web',to:'主站注册页',lp:'',dm:'',cfg:'不接广告平台',state:1,c:who('运营-张伟','2026-11-03 09:20'),u:who('运营-张伟','2026-11-03 09:20'),rm:'刚建，还没接广告平台'},
  {id:'agt_PWA_IN_001',name:'渠道 D',type:'代理',agent:'8810102',end:'PWA',to:'落地页',lp:'daman 商城页',dm:'',cfg:'TikTok-PWA',state:1,h5:1,dlt:'请先把网页添加到桌面，从桌面图标打开后再充值、提现。',c:who('运营-张伟','2026-09-20 10:20'),u:who('运营-张伟','2026-09-20 10:20'),rm:''},
  {id:'FB_SHELL_IN_001',name:'渠道 C',type:'非代理',agent:'--',end:'安卓壳包',to:'落地页',lp:'daman 商城页',dm:'',cfg:'FB-安卓壳包',mp:'daman 安卓壳包 v2.3.1',state:1,c:who('运营-李娜','2026-09-12 11:20'),u:who('运营-李娜','2026-09-12 11:20'),rm:''},
- {id:'self_APK_IN_001',name:'渠道 B',type:'非代理',agent:'--',end:'安卓原生',to:'落地页',lp:'下载送 500（印地语）',dm:'',cfg:'不接广告平台',mp:'daman 安卓原生 v3.1.0',state:1,c:who('运营-张伟','2026-09-18 14:05'),u:who('运营-张伟','2026-11-02 16:10'),rm:'子包还是 v3.0.2，等建议更新'},
  {id:'FB_WEB_IN_001',name:'Facebook-A',type:'非代理',agent:'--',end:'Web',to:'主站首页',lp:'',dm:'https://fb-a.1050.test',cfg:'--',state:1,c:who('管理员','2026-06-10 10:00'),u:who('运营-李娜','2026-10-30 11:30'),rm:'主推渠道，用独立域名'},
 ];
 
@@ -886,7 +885,7 @@ const PDOMS=[['https://fb-a.1050.test','FB_WEB_IN_001',1],['https://spare1.1050.
 /* 换域名记录：[范围, 旧, 新, 原因, 操作人, 时间] */
 const DOMHIS=[['FB_WEB_IN_001','https://old-fb.1050.test','https://fb-a.1050.test','被封','运营-李娜','2026-10-12 09:40'],['全部自动子域名','*.old1050.test','*.go1050c.test','被封','运营-李娜','2026-10-30 18:12'],['主域名','https://old-main.1050.test','https://www.1050.test','被封','系统自动','2026-10-30 18:12']];
 const hostId=x=>String(x).toLowerCase().replace(/_/g,'-');const hostOf=r=>r.dm||`https://${hostId(r.id)}.${r.wr||wildOn()}`;
-{const W={self_WEB_IN_001:'go1050c.test',agt_WEB_IN_003:'go1050c.test',FB_SHELL_IN_001:'go1050d.test',self_APK_IN_001:'go1050d.test'};CHANNELS.forEach(c=>{if(W[c.id])c.wr=W[c.id]})}
+{const W={self_WEB_IN_001:'go1050c.test',agt_WEB_IN_003:'go1050c.test',FB_SHELL_IN_001:'go1050d.test'};CHANNELS.forEach(c=>{if(W[c.id])c.wr=W[c.id]})}
 const hostOk=r=>!r.dm||(PDOMS.find(d=>d[0]===r.dm)||[0,0,1])[2];
 const lnk=(d,r)=>r.dm?`${d}/?ch=${r.id}`:d;const chOut=r=>r.sys?r.lk:lnk(hostOf(r),r);
 const toTxt=r=>r.to==='落地页'?`落地页「${r.lp}」`:r.to;
@@ -991,7 +990,7 @@ PAGES.mRpt={end:'m',title:'推广报表',bd:['新',''],tab:0,render(){
   (CUR==='aRpt'?tabs2(['新增报表','留存报表','花费','用户来源','事件记录'],[0,3,4,1,2],t,'rptTab'):tabs2(['新增报表','留存报表','花费','用户来源'],[0,3,4,1],t,'rptTab'))+
   rptFlt(t);
   const nn=(v,tab)=>v==='--'?'--':n(v,tab);
-  if(t===0)h+=`<div class="kpis">${[['落地页浏览','7,560'],['点按钮数','4,232'],['注册','734'],['首充人数','238'],['充值金额','₹ 413,600']].map(k=>`<div class="kpi"><span>${k[0]} ${hi(k[0])}</span><b>${k[1]}</b></div>`).join('')}</div>`+
+  if(t===0)h+=`<div class="kpis">${[['落地页浏览','6,940'],['点按钮数','3,942'],['注册','679'],['首充人数','222'],['充值金额','₹ 382,400']].map(k=>`<div class="kpi"><span>${k[0]} ${hi(k[0])}</span><b>${k[1]}</b></div>`).join('')}</div>`+
    `<div class="sec" style="display:flex;align-items:center">渠道数据<button class="btn" style="margin-left:auto" onclick="toast('已导出新增报表')">导出</button></div>`+table([
    ...JTC(),{t:'商户',k:()=>pill(M)},{t:'渠道',l:1,k:r=>/^off_/.test(r[13])?r[0]:`${r[0]}<span class="sub" style="font-family:Menlo,Consolas,monospace">${r[13]}</span>`},{t:'分组',cls:'newc',k:r=>grpTag((CHANNELS.find(c=>c.id===r[13])||{}).grp)},{t:'渠道类型',k:r=>tyTag(r[12])},{t:'设备类型',k:1},{t:'归属代理',k:2},{t:'广告平台',k:r=>platOf(r[13])},{t:'落地页浏览',k:r=>nn(r[3],2)},{t:'点按钮数',k:r=>r[14]+rxF(r[14],r[3],'点按钮','浏览')},{t:'启动/浏览',cls:'newc',k:r=>{const a=rxX(r)[0];if(a==null)return '--';const ap=/^安卓/.test(r[1]);return a.toLocaleString('en-US')+rxF(r[5],a,'注册',ap?'启动':'浏览')}},{t:'注册',k:r=>{const p=rxPrev(r);return n(r[5],1)+rxF(r[5],p[0],'注册',p[1])}},{t:'首充人数',k:r=>n(r[6],2)+rxF(r[6],r[5],'首充','注册')},{t:'首充金额',cls:'newc',k:r=>rxM(rxX(r)[1])},{t:'当天注册当天首充',cls:'newc',k:r=>rxX(r)[2]},{t:'充值人数',k:r=>n(r[7],2)},{t:'充值金额',k:8},{t:'提现金额',k:9},{t:'充提差',cls:'newc',k:r=>rxM(rxN(r[8])-rxN(r[9]))},{t:'奖励金额',cls:'newc',k:r=>rxM(rxX(r)[3])},{t:'装到桌面数',cls:'newc',k:r=>r[10]+rxF(r[10],r[14],'装到桌面','点按钮')},{t:'从桌面打开数',cls:'newc',k:11}],[
    ['A3','Web','8810102','--','--',59,17,21,'₹ 27,100','₹ 5,700','--','--','代理','agt_WEB_IN_003','--',1140],
@@ -1002,7 +1001,6 @@ PAGES.mRpt={end:'m',title:'推广报表',bd:['新',''],tab:0,render(){
    ['A2','Web','8810021','--',12,19,4,5,'₹ 6,300','₹ 0','--','--','代理','agt_WEB_IN_002','--',520],
    ['渠道 D','PWA','8810102',640,210,58,19,23,'₹ 28,400','₹ 5,100','236','1,180','代理','agt_PWA_IN_001','402',760],
    ['渠道 C','安卓壳包','--',2140,803,120,41,50,'₹ 48,600','₹ 9,800','--','--','非代理','FB_SHELL_IN_001','1,310',2300],
-   ['渠道 B','安卓原生','--',620,151,55,16,19,'₹ 31,200','₹ 7,450','--','--','非代理','self_APK_IN_001','290',700],
    ['Facebook-A','Web','--','--','--',66,20,24,'₹ 38,900','₹ 6,200','--','--','非代理','FB_WEB_IN_001','--',1260]]);
   if(t===1)h+=table([...JTC(),{t:'商户',k:()=>pill(M)},{t:'会员ID',k:0},{t:'会员账号',k:1},{t:'注册时间',k:2},{t:'首充时间',cls:'newc',k:10},{t:'渠道',k:3},{t:'渠道 code',k:r=>/^off_/.test(r[9])?'--':`<span style="font-family:Menlo,Consolas,monospace">${r[9]}</span>`},{t:'渠道类型',k:r=>tyTag((CHANNELS.find(c=>c.id===r[9])||{}).type||'')},{t:'分组',k:r=>grpTag((CHANNELS.find(c=>c.id===r[9])||{}).grp)},{t:'设备类型',k:4},{t:'归属代理',k:5},{t:'广告平台',k:r=>platOf(r[9])},{t:'广告点击编号',k:7},{t:'匹配方式',cls:'newc',k:r=>r[9].startsWith('off_')?'--':r[12]==='未匹配'?'无点击编号':r[12]},{t:'App 版本',k:8}],[
    ['1105021','rahul_88','2026-11-01 14:22:10','A1','Web','8810021','Facebook','fbclid IwAR3x…','--','agt_WEB_IN_001','2026-11-01 14:35:02','是','URL 直接带'],
@@ -1242,7 +1240,7 @@ const OPTS={
  '商户':['(1050)daman','(1048)91club','(1021)55club','(1070)bdggame'],'集团':['全部集团','亚太集团','南亚集团','东南亚集团'],
  '广告平台':['Facebook','TikTok','Kwai','不接平台'],'是否充值':['是','否'],'测试结果':['已通过','未测试','失败'],
  
- '渠道':['渠道 A','A1','A2','渠道 B','渠道 C','Facebook-A'],'母包':['安卓原生母包','安卓壳包母包'],'写入状态':['成功','写入中','失败'],
+ '渠道':['渠道 A','A1','A2','渠道 C','Facebook-A'],'母包':['安卓原生母包','安卓壳包母包'],'写入状态':['成功','写入中','失败'],
  '状态':['全部','启用','停用'],'端':['Web','PWA','安卓原生','安卓壳包'],'类型':['安卓原生','安卓壳包'],
  '问题类型':['写入渠道号失败','更新失败','缺陷'],'处理状态':['待处理','处理中','已修复'],'应用':['daman（安卓原生 / 安卓壳包）'],
  '适用网址/包名':['*.go1050.test、www.1050.test','https://fb-a.1050.test','com.daman.shell','com.daman.app'],'下载域名':['https://dl.1050.test'],'推广域名':['*.go1050.test','https://fb-a.1050.test','https://spare1.1050.test','https://spare2.1050.test'],'域名':['https://www.1050.test','*.go1050.test','https://fb-a.1050.test','https://dl.1050.test'],
@@ -1535,7 +1533,6 @@ const VERS=[
  ['v2.3.1','安卓壳包母包','安装包','安装包升级','修复登录态丢失','--',st('已通过','ok'),st('已发布','ok'),[100,'1,904 / 1,904 台'],'--（新安装包）','--'],
  ['v3.1.0','安卓原生母包','安装包','安装包升级','充值页改版','--',st('已通过','ok'),st('已发布','ok'),[21,'86 / 410 台'],'--（新安装包）','--']];
 const ISSUES=[
- ['IS3002','写入渠道号失败','渠道 B 用 v3.1.0 重建子包时写入渠道号失败（超时），已自动重试，还没成功','(1050)daman','1 个渠道','2026-11-02 16:32','处理中','admin02','v3.1.0'],
  ['IS3003','更新失败','安装包部分机型安装失败','(1050)daman','2 个渠道 · 约 120 用户','2026-10-31 20:40','已修复','admin01','v2.3.1']];
 OPTS['发布状态']=['草稿','已发布','已下架'];OPTS['平台']=['ANDROID'];
 const VEXT={'v3.2.0':{id:'VER20261103001',size:'45.1 MB',u:who('admin01','2026-11-03 09:40')},'v2.4.0':{id:'VER20261102001',size:'3.2 MB',u:who('admin02','2026-11-02 14:00')},'v3.1.0':{id:'VER20261028001',size:'42.3 MB',u:who('admin01','2026-10-28 11:20')},'v2.3.1':{id:'VER20261030001',size:'18.6 MB',u:who('admin02','2026-10-30 18:00')}};
@@ -1663,7 +1660,6 @@ CHANNELS.forEach(c=>{c.cx={...CHX0,ends:[...CHX0.ends],...(c.cx||{})}});
 {const X=(id,o)=>{const c=CHANNELS.find(x=>x.id===id);if(c)Object.assign(c.cx,o)};
  X('agt_WEB_IN_001',{pop:1,ends:['PWA','安卓壳包'],close:'装了才能关',dep:1});
  X('agt_PWA_IN_001',{dlIn:'开',pop:1,ends:['安卓原生','安卓壳包'],reg:3,fb:'不改装'});
- X('self_APK_IN_001',{lang:'印地语',dlIn:'关'});
  X('agt_WEB_IN_002',{claim:'仅已首充'})}
 OPTS['进站语言']=['跟手机语言',...OPTS['语言'].map(l=>LN[l])];OPTS['绑定币种']=['INR','USDT'];OPTS['装不了时改装']=['安卓壳包','安卓原生','不改装'];
 Object.assign(TIPS,{
@@ -1732,7 +1728,6 @@ const RETCH=[
  ['A2','agt_WEB_IN_002','代理','Web','8810021',260,[22.7,11.5,6.2,3.1,1.9],8.5,96],
  ['渠道 D','agt_PWA_IN_001','代理','PWA','8810102',820,[45.1,31.2,23.0,16.4,12.1],24.4,471],
  ['渠道 C','FB_SHELL_IN_001','非代理','安卓壳包','--',1960,[52.3,38.6,29.5,21.7,16.8],29.8,612],
- ['渠道 B','self_APK_IN_001','非代理','安卓原生','--',740,[49.0,35.1,26.2,18.9,14.0],27.3,540],
  ['Facebook-A','FB_WEB_IN_001','非代理','Web','--',880,[27.4,15.8,9.6,5.2,3.4],12.7,188]];
 const RETN=[1,3,7,15,30];const RETD=[31,31,27,19,4];const retBs=reg=>RETD.map(x=>Math.round(reg*x/31));
 function retCell(reg,rate,bs,N){if(rate==null)return '<span class="note">--</span>';const b=bs==null?reg:bs;const c=Math.round(b*rate/100);return `<div style="background:rgba(31,95,168,${Math.min(.55,rate/90).toFixed(2)});border-radius:4px;padding:4px 6px;min-width:58px;color:${rate>32?'#fff':'inherit'}">${(b?c/b*100:rate).toFixed(1)}%<div style="font-size:11px;opacity:.8">${c.toLocaleString()} 人</div>${b<reg?`<div style="font-size:11px;opacity:.8">满 ${N} 天 ${b.toLocaleString()} 人</div>`:''}</div>`}
@@ -1756,7 +1751,7 @@ function retHtml(){const _RC=RFOK?RETCH.filter(r=>RFOK.includes(r[1])):RETCH;con
  return mode+table([...JTC(),{t:'商户',k:()=>pill(M)},{t:'注册日期',k:r=>`<span style="white-space:nowrap">2026-${r.name}</span>`},{t:'广告平台',k:()=>'全部'},...head],rows.reverse())+note}
 
 var GROUPS=[{name:'Facebook 组',rm:'Facebook 投放的渠道'},{name:'印度 Web 组',rm:'网页推广的渠道'},{name:'代理推广组',rm:''},{name:'安卓 App 组',rm:'安卓原生、安卓壳包'},{name:'TikTok 组',rm:''},{name:'群发链接组',rm:'不接广告平台的渠道'}];
-{const GM={self_WEB_IN_001:'群发链接组',FB_WEB_IN_001:'Facebook 组',agt_WEB_IN_001:'印度 Web 组',agt_WEB_IN_002:'印度 Web 组',agt_PWA_IN_001:'代理推广组',FB_SHELL_IN_001:'安卓 App 组',self_APK_IN_001:'安卓 App 组'};CHANNELS.forEach(c=>{if(c.grp===undefined)c.grp=GM[c.id]||''})}
+{const GM={self_WEB_IN_001:'群发链接组',FB_WEB_IN_001:'Facebook 组',agt_WEB_IN_001:'印度 Web 组',agt_WEB_IN_002:'印度 Web 组',agt_PWA_IN_001:'代理推广组',FB_SHELL_IN_001:'安卓 App 组'};CHANNELS.forEach(c=>{if(c.grp===undefined)c.grp=GM[c.id]||''})}
 function grpTag(g){return g?`<span class="tag">${g}</span>`:'--'}
 Object.defineProperty(OPTS,'分组',{get:()=>['未分组',...GROUPS.map(g=>g.name)],configurable:true});
 TIPS['分组']='自己给渠道归类用的标签，比如「Facebook 组」「印度 Web 组」。一个渠道只能在一个分组里，也可以不分组；分组只用来筛选和汇总，不影响渠道链接、域名和配置。在渠道管理点「分组管理」新建、改名、删除。';
@@ -1789,12 +1784,12 @@ function grpDel(i){const g=GROUPS[i],n=CHANNELS.filter(c=>c.grp===g.name).length
 /* 新增报表（11-01）按渠道 code：[启动/浏览, 首充金额, 当天注册当天首充, 奖励金额]；安卓原生、安卓壳包填激活数，Web、PWA 填打开主站的浏览次数；最低充值按 ₹100 */
 var RXNEW={off_WEB_IN_001:[null,8000,11,1200],off_PWA_IN_001:[null,2400,2,200],off_APK_IN_001:[16,1400,1,100],off_SHELL_IN_001:[11,1000,1,100],
  self_WEB_IN_001:[980,43700,52,39000],agt_WEB_IN_001:[430,25500,26,18500],agt_WEB_IN_002:[140,1200,2,0],agt_PWA_IN_001:[300,12200,11,2850],
- FB_SHELL_IN_001:[760,29500,29,6150],self_APK_IN_001:[205,13000,10,8000],FB_WEB_IN_001:[1180,15000,13,3000],
+ FB_SHELL_IN_001:[760,29500,29,6150],FB_WEB_IN_001:[1180,15000,13,3000],
  agt_WEB_IN_003:[260,7400,9,3500],KW_WEB_IN_001:[38,2600,2,300],KW_SHELL_IN_001:[40,1800,1,200]};
-/* 花费（10 月注册的这批人，和留存报表同一批）：10 月花费 ₹；主站系统渠道、不接广告平台的（含渠道 A）没有花费。单个注册成本：A1 340、A2 520、D 400、C 680、B 890、Facebook-A 75 */
-var RXSP={agt_WEB_IN_001:520200,agt_WEB_IN_002:135200,agt_PWA_IN_001:328000,FB_SHELL_IN_001:1332800,self_APK_IN_001:658600,FB_WEB_IN_001:66000};
+/* 花费（10 月注册的这批人，和留存报表同一批）：10 月花费 ₹；主站系统渠道、不接广告平台的（含渠道 A）没有花费。单个注册成本：A1 340、A2 520、D 400、C 680、Facebook-A 75 */
+var RXSP={agt_WEB_IN_001:520200,agt_WEB_IN_002:135200,agt_PWA_IN_001:328000,FB_SHELL_IN_001:1332800,FB_WEB_IN_001:66000};
 /* 提现占充值的比例，取自新增报表同一渠道的 [充值金额, 提现金额] */
-var RXCW={agt_WEB_IN_001:[70500,12000],agt_WEB_IN_002:[6300,0],agt_PWA_IN_001:[28400,5100],FB_SHELL_IN_001:[48600,9800],self_APK_IN_001:[31200,7450],FB_WEB_IN_001:[38900,6200]};
+var RXCW={agt_WEB_IN_001:[70500,12000],agt_WEB_IN_002:[6300,0],agt_PWA_IN_001:[28400,5100],FB_SHELL_IN_001:[48600,9800],FB_WEB_IN_001:[38900,6200]};
 const rxM=v=>'₹ '+Math.round(v).toLocaleString('en-US');
 const rxN=v=>v==null||v==='--'?null:+String(v).replace(/[^\d.]/g,'');
 const rxF=(a,b,na,nb)=>{const x=rxN(a),y=rxN(b);return x==null||!y?'':`<span class="sub" style="white-space:nowrap">${na} / ${nb} ${Math.round(x/y*100)}%</span>`};
@@ -1878,8 +1873,7 @@ TIPS['充值金额']='这段日期里到账的实付金额，按到账日期算�
 
 TIPS['渠道 code']='保存时系统自动生成，不能改。格式：类型_端_地区_序号。类型：接了广告平台的非代理渠道（推广渠道）用平台简写：FB（Facebook）、TT（TikTok）、KW（Kwai），商户自己建、不接广告平台的非代理渠道用 self（自建渠道，如群发链接）；代理渠道用 agt。端：WEB（网页）、PWA、APK（安卓原生）、SHELL（安卓壳包）。地区用商户所在地区的简写（daman 是 IN）。序号按「类型_端_地区」从 001 往上排。自动子域名用小写、下划线换成短横线（如 agt-web-in-001.go1050.test），因为域名里不能有下划线。';
 
-var SUBS=[{id:'SP-1102-02',ch:'FB_SHELL_IN_001',ver:'安卓壳包 v2.3.1',file:'daman_FB_SHELL_IN_001_v2.3.1.apk',size:'18.6 MB',st:'ok',who:who('运营-李娜','2026-11-02 15:20'),rm:'发给 Facebook 投放组上传'},
- {id:'SP-1020-01',ch:'self_APK_IN_001',ver:'安卓原生 v3.1.0',file:'daman_self_APK_IN_001_v3.1.0.apk',size:'42.3 MB',st:'ok',who:who('运营-张伟','2026-10-20 10:05'),rm:''}];
+var SUBS=[{id:'SP-1102-02',ch:'FB_SHELL_IN_001',ver:'安卓壳包 v2.3.1',file:'daman_FB_SHELL_IN_001_v2.3.1.apk',size:'18.6 MB',st:'ok',who:who('运营-李娜','2026-11-02 15:20'),rm:'发给 Facebook 投放组上传'}];
 const subCh=id=>CHANNELS.find(c=>c.id===id)||{};
 const SUBVER={'安卓原生':['安卓原生 v3.1.0（最新）','安卓原生 v3.0.2'],'安卓壳包':['安卓壳包 v2.3.1（最新）','安卓壳包 v2.3.0']};
 function subPage(){return flt([inp('商户',M,{req:1}),inp('子包渠道','',{ph:'全部'})])+`<div class="bar"><button class="btn p" onclick="subNew()">＋ 自动打包</button><span class="note" style="margin-left:10px">只列安卓原生、安卓壳包的渠道；一个渠道只有一个子包，推广链接下载的就是它</span></div>`+
@@ -1919,9 +1913,9 @@ TIPS['母包版本']='固定用当前母包版本，不能选旧版本。之后�
 
 var VTYPE={'v3.2.0':'建议更新','v2.4.0':'强制更新','v3.1.0':'建议更新','v2.3.1':'强制更新'};
 TIPS['更新类型']='强制更新：系统自动重建这个商户所有渠道的子包，下载链接不变，商户只收到通知；已装的 App 启动时检查版本，提示用户更新。建议更新：商户自己在「版本更新」里点「更新」，选要更新的渠道，系统重建这些渠道的子包。';
-var CHVER={off_APK_IN_001:'v3.0.2',self_APK_IN_001:'v3.0.2',off_SHELL_IN_001:'v2.3.1',FB_SHELL_IN_001:'v2.3.1'};
+var CHVER={off_APK_IN_001:'v3.0.2',off_SHELL_IN_001:'v2.3.1',FB_SHELL_IN_001:'v2.3.1'};
 SUBS.forEach(x=>{x.file=`daman_${x.ch}.apk`});
-{const g=SUBS.find(x=>x.ch==='self_APK_IN_001');if(g){g.ver='安卓原生 v3.0.2';g.rm=''}const f=SUBS.find(x=>x.ch==='FB_SHELL_IN_001');if(f){f.ver='安卓壳包 v2.3.1';f.rm='发给 Facebook 投放组上传'}}
+{const f=SUBS.find(x=>x.ch==='FB_SHELL_IN_001');if(f){f.ver='安卓壳包 v2.3.1';f.rm='发给 Facebook 投放组上传'}}
 SUBVER['安卓原生']=['安卓原生 v3.1.0（最新）','安卓原生 v3.0.2'];SUBVER['安卓壳包']=['安卓壳包 v2.3.1（最新）','安卓壳包 v2.3.0'];
 var UPS=[['UP-1030-01','安卓壳包 v2.3.1','强制更新','全部安卓壳包渠道（渠道 C）','1 / 1','1,512 / 1,904',['用户更新中','run'],'总控 · admin02 2026-10-30 18:00'],
  ['UP-1027-03','安卓壳包 v2.3.0','建议更新','渠道 C','1 / 1','1,128 / 1,128',['已完成','ok'],'运营-张伟 2026-10-27 10:20']];
@@ -1973,7 +1967,6 @@ function upView(id){const r=UPS.find(x=>x.id===id);if(!r)return;openDrawer('更�
 
 const upTag2=t=>t==='回滚'?'<span class="tag" style="background:#f2f3f5;color:#555">回滚</span>':upTag(t);
 
-UPS.unshift({id:'UP-1102-02',ver:'安卓原生 v3.1.0',prev:'安卓原生 v3.0.2',how:'安装包',type:'建议更新',chs:['渠道 B'],sub:'0 / 1 已重建（渠道 B 写入渠道号失败，总控处理中）',app:'86 / 410',st:['更新中','run'],by:'运营-张伟',t:'2026-11-02 16:30',note:'充值页改版',warn:'写入渠道号失败，总控处理中'});
 UPS.sort((a,b)=>a.t<b.t?1:-1);
 function verPage(){const left=CHANNELS.filter(c=>c.end==='安卓原生'&&SUBS.some(x=>x.ch===c.id)&&CHVER[c.id]!=='v3.1.0'&&!UPS.some(u=>u.ver==='安卓原生 v3.1.0'&&u.st[0]==='更新中'&&u.chs.includes(c.name)));
  return (left.length?`<div class="bar" style="background:#eef4ff;border:1px solid #d6e4ff;border-radius:6px;padding:8px 12px;margin-bottom:10px"><span>${upTag('建议更新')} 安卓原生 v3.1.0 可更新，${left.length} 个渠道待更新</span><button class="btn p sm" style="margin-left:12px" onclick="upSuggest()">更新</button></div>`:'')+
@@ -2073,7 +2066,6 @@ OPTS['日期范围']=['2026-11-01 ~ 2026-11-03','2026-10-16 ~ 2026-10-31','2026-
 /* 花费记录 */
 var SPREC=[
  {id:'SPD008',ch:'FB_WEB_IN_001',dt:'2026-10-01 ~ 2026-10-31',amt:66000,how:'手动',who:who('运营-李娜','2026-11-01 11:10'),rm:''},
- {id:'SPD007',ch:'self_APK_IN_001',dt:'2026-10-01 ~ 2026-10-31',amt:658600,how:'手动',who:who('运营-张伟','2026-11-01 11:00'),rm:''},
  {id:'SPD004',ch:'agt_PWA_IN_001',dt:'2026-10-01 ~ 2026-10-31',amt:328000,how:'导入',who:who('运营-张伟','2026-11-01 10:40'),rm:''},
  {id:'SPD003',ch:'agt_WEB_IN_002',dt:'2026-10-01 ~ 2026-10-31',amt:135200,how:'手动',who:who('运营-张伟','2026-11-01 10:30'),rm:''},
  {id:'SPD002',ch:'agt_WEB_IN_001',dt:'2026-10-16 ~ 2026-10-31',amt:260100,how:'导入',who:who('运营-李娜','2026-11-01 10:05'),rm:'Facebook 后台账单导出'},
@@ -2191,14 +2183,11 @@ const PLOG={
   ['Kwai-安卓壳包','新增',[['广告平台','--','Kwai'],['投放端','--','安卓壳包'],['配置名称','--','Kwai-安卓壳包']],'','运营-李娜','2026-10-30 09:00']]},
  mCh:{obj:'渠道',types:['新增','编辑','启用','停用','批量更新状态'],rows:[
   ['A3（agt_WEB_IN_003）','新增',[['渠道类型','--','代理'],['归属代理','--','8810102'],['落地指向','--','主站注册页']],'','运营-张伟','2026-11-03 09:20'],
-  ['渠道 B（self_APK_IN_001）','编辑',[['备注','--','子包还是 v3.0.2，等建议更新']],'','运营-张伟','2026-11-02 16:10'],
   ['A2（agt_WEB_IN_002）','编辑',[['备注','--','同一代理第二次投放']],'','运营-张伟','2026-11-01 16:30'],
   ['渠道 F（KW_SHELL_IN_001）','新增',[['渠道类型','--','非代理'],['设备类型','--','安卓壳包'],['状态','--','停用']],'','运营-李娜','2026-10-30 09:10'],
   ['渠道 E（KW_WEB_IN_001）','停用',[['状态','启用','停用']],'配置测试没通过，先停着','运营-李娜','2026-11-01 11:10']]},
  mApp:{obj:'渠道 / 版本',types:['版本更新','回滚','自动打包'],rows:[
-  ['渠道 B · 安卓原生 v3.1.0','版本更新',[['母包版本','安卓原生 v3.0.2','安卓原生 v3.1.0']],'建议更新','运营-张伟','2026-11-02 16:30'],
   ['渠道 C · 子包','自动打包',[['子包','--','com.ar.1050.fb_shell_in_001.daman']],'发给 Facebook 投放组上传','运营-李娜','2026-11-02 15:20'],
-  ['渠道 B · 子包','自动打包',[['子包','--','com.ar.1050.self_apk_in_001.daman']],'','运营-张伟','2026-10-20 10:05'],
   ['渠道 C · 安卓壳包 v2.3.0','版本更新',[['母包版本','安卓壳包 v2.2.4','安卓壳包 v2.3.0']],'建议更新','运营-张伟','2026-10-27 10:20']]},
  mLp:{obj:'页面名称',types:['新增','编辑','删除'],rows:[
   ['下载送 500（印地语）','编辑',[['自动跳转','不跳转','5 秒后自动点按钮']],'','运营-李娜','2026-11-03 14:30'],
