@@ -1617,7 +1617,7 @@ function rescSum(d){const r=RESC.find(x=>x[0]===d);return r?(r[5]?`弹救援窗�
   ['备用主域名',S(r&&r[1]==='https://www2.1050.test'?'https://www.1050.test':'https://www2.1050.test','选一个主域名'),{}],['检测间隔',S('10 分钟'),{}],['自动切换','<span class="sw on"></span>',{}],
   ['救援弹窗',`<span class="sw ${R0[5]?'on':''}"></span>`,{}],['用户能否关闭',R(['能关','不能关'],R0[6]),{}],
   ['救援页',`<div class="ck">${POOL.filter(d=>d[1]==='防封下载页').map(d=>`<label><input type="checkbox" checked> ${d[0]}</label>`).join('')}</div><span class="note">从防封下载页里选，多个时随机打开一个</span>`,{full:1}],
-  ['救援方式',R(['PWA','安装包'],R0[7]),{}]])}}
+  ['救援方式',R(['PWA'],'PWA'),{}]])}}
 OPTS['备用主域名']=['https://www2.1050.test','https://www3.1050.test','https://www.1050.test'];
 TIPS['救援弹窗']='主域名打不开时，已装 PWA / App 的用户一打开就弹这个窗，让他复制链接到浏览器，进救援页重装，装好后自动登录原账号，渠道 code 不变。';
 {const _rl=rescLog;rescLog=function(i){const r=RESC[i];if(r&&r[2]==='normal')return openDrawer('救援记录','<div class="note" style="padding:24px 0;text-align:center">这个主域名还没被封过，没有救援记录。</div>',CLOSEF,600,[['主域名',r[0]]]);return _rl(i)}}
@@ -2016,11 +2016,20 @@ function subRe(x){return !!(x&&x.store&&x.ver!==x.sv)}
 function chPkg(r){const x=(window.SUBS||[]).find(y=>y.ch===r.id&&y.st==='ok');
  if(!x)return `<span class="sub">下载包：母包 ${String(r.mp||'').replace('daman ','')}</span>`;
  return `<span class="sub">下载包：子包 ${x.ver} · <a onclick="go('mApp');appTab(1)">查看</a></span>`+(subRe(x)?'<span class="sub"><span class="tag" style="background:#fdecee;color:#c03">需人工重新上传</span></span>':'')}
-function wildSwap(d){d=d||wildOn();const L=wildCh(d);openDrawer('一键替换推广泛域名',F([['现在的',`<span>*.${d}</span>`,{full:1,ro:1}],['换成','<div class="inp" data-l="备用泛域名">选备用的推广泛域名</div>',{req:1,full:1}],['原因',R(['被封','到期','其他'],'被封'),{full:1}],
- ['受影响的渠道',`${L.length} 个：${L.map(c=>c.name).join('、')||'--'}`,{full:1,ro:1}]],100)+
- `<div class="alert">只换 *.${d} 下面这 ${L.length} 个渠道：推广链接一起换成新域名（渠道 code.新域名），渠道 code 不变，数据还算原渠道。其他根域名下的渠道、用独立推广域名的渠道不受影响。已经投出去的广告要到广告后台换成新链接。已经加到桌面的 PWA 还指向旧地址，要不要自动引导到新地址待开发确认。</div>`,
- `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="(()=>{const v=$('#dbody div.inp[data-l=\\'备用泛域名\\']');if(!v.classList.contains('v'))return toast('请选新的推广泛域名');closeDrawer();domOp('*.${d}','手动换',[['域名','*.${d}',v.textContent.trim()]],'范围：*.${d} 下 ${L.length} 个渠道；原因：'+($('#dbody .radio span.on')?.textContent.trim()||'被封'));toast('已替换，${L.length} 个渠道的链接已更新，已记入操作记录')})()">确认替换</button>`,520)}
+function wildSwap(d){d=d||wildOn();const L=wildCh(d);openDrawer('一键替换推广泛域名',F([['现在的',`<span>*.${d}</span>`,{full:1,ro:1}],['换成','<div class="inp" data-l="备用泛域名">选备用的推广泛域名</div>',{req:1,full:1}],['原因',R(['被封','到期','其他'],'被封')+'<input class="inp" id="wsWhy" placeholder="请填写原因" style="display:none;margin-top:8px">',{full:1}],
+ ['受影响的渠道',`${L.length} 个：${L.map(c=>c.name).join('、')||'--'}`,{full:1,ro:1}]],100),
+ `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="(()=>{const v=$('#dbody div.inp[data-l=\\'备用泛域名\\']');if(!v.classList.contains('v'))return toast('请选新的推广泛域名');closeDrawer();domOp('*.${d}','手动换',[['域名','*.${d}',v.textContent.trim()]],'范围：*.${d} 下 ${L.length} 个渠道；原因：'+(($('#dbody .radio span.on')?.textContent.trim()==='其他'&&$('#wsWhy')?.value.trim())||$('#dbody .radio span.on')?.textContent.trim()||'被封'));toast('已替换，${L.length} 个渠道的链接已更新，已记入操作记录')})()">确认替换</button>`,520)}
 {const a=SUBS.find(x=>x.ch==='off_SHELL_IN_001'),b=SUBS.find(x=>x.ch==='off_APK_IN_001');if(a){a.store=1;a.sv='安卓壳包 v2.3.0'}if(b){b.store=1;b.sv='安卓原生 v3.0.2'}}
+/* 11-05 一键替换：原因选「其他」时出输入框 */
+document.addEventListener('click',e=>{const sp=e.target.closest&&e.target.closest('#dbody .radio span');const w=$('#wsWhy');if(!sp||!w||!sp.parentElement.parentElement.contains(w))return;w.style.display=sp.textContent.trim()==='其他'?'':'none'});
+/* 11-05 新增域名照编辑：没选类型也有域名框，换类型保留已填域名；新增弹窗域名类型只留 3 种 */
+const DOMT3={'主域名':'主域名','推广域名':'独立推广域名','PWA防封域名':'防封下载页'};
+Object.defineProperty(OPTS,'域名类型',{get:()=>document.querySelector('#modal.on #domF')?Object.keys(DOMT3):DOMTYPES,configurable:true});
+{const _df10=domFields;domFields=function(t,r){if(r)return _df10(t,r);const a=_df10(DOMT3[t]||t,r);const b=a.find(x=>x[0]==='域名类型');
+ if(b)b[1]=`<div class="inp ${t?'v':''}" data-l="域名类型">${t||'请选择域名类型'}</div>`;if(!t&&b)a.splice(a.indexOf(b)+1,0,['域名',I(''),{req:1,full:1}]);return a}}
+{const dmIn=()=>[...document.querySelectorAll('#domF .fr')].find(f=>f.querySelector('label')?.textContent.replace(/[*?\s]/g,'')==='域名')?.querySelector('input');let keep='';
+ document.addEventListener('pick',e=>{if(e.target.dataset?.l==='域名类型'&&e.target.closest('#domF'))keep=dmIn()?.value||''},true);
+ document.addEventListener('pick',e=>{if(e.target.dataset?.l!=='域名类型'||!$('#domF'))return;const x=dmIn();if(x&&keep)x.value=keep;keep=''})}
 [['flowF','tplFlow'],['briefF','tplBrief']].forEach(([h,t])=>{const e=document.getElementById(h),tp=document.getElementById(t);if(e&&tp&&!e.shadowRoot){const r=e.attachShadow({mode:'open'});r.appendChild(tp.content.cloneNode(true));const p=r.getElementById('print');if(p)p.addEventListener('click',()=>window.print())}});
 /* 宽表格：底部常驻横向滚动条（表格比屏幕高时，不用滚到表格底部才能左右拖） */
 {const HSB=document.createElement('div');HSB.id='hsb';HSB.innerHTML='<div></div>';document.body.appendChild(HSB);let HT=null,lock=0;
