@@ -1253,7 +1253,7 @@ const MNAV=['会员','运营','优惠','财务','游戏','代理','报表','风�
 const ANAV=['财务','游戏','报表','商户','系统'];
 const MEGA={
  m:{'运营':[['运营配置',[['轮播图管理'],['短信商配置'],['邮件商配置'],['协议管理'],['站内消息管理'],['意见反馈'],['版面配置（备份）'],['品牌配置']]],
-   ['推广配置',[['广告接入','mAd',B('新')],['渠道管理','mCh',B('改名','c')],['应用与版本','mApp',B('合并','c')],['推广报表','mRpt',B('新')],['域名管理','mDom'],['落地页管理','mLp',B('新')],['解析检测记录'],['版本上架',null,'',1],['渠道包管理',null,'',1]]]]},
+   ['推广',[['推广配置','mPromo',B('新')],['渠道管理','mCh',B('改名','c')],['应用与版本','mApp',B('合并','c')],['推广报表','mRpt',B('新')],['域名管理','mDom'],['落地页管理','mLp',B('新')],['解析检测记录'],['版本上架',null,'',1],['渠道包管理',null,'',1]]]]},
  a:{'商户':[['集团·商户',[['集团管理'],['商户管理'],['集团管理员']]],['配置·运维',[['配置管理'],['任务中心']]],['商户定制管理',[['版面库（备份）'],['商户版面配置']]],
    ['推广管理',[['应用与版本','aApp',B('新')],['推广报表','aRpt',B('新')]]]]}};
 function renderTop(end,cur){
@@ -1266,15 +1266,15 @@ function renderTop(end,cur){
 
 /* ============ 路由 ============ */
 let CUR='intro';
-function go(k,tab){k=({mGuide:'mCh',mRescue:'mDom'})[k]||k;if(!PAGES[k]&&k!=='intro')k='mAd';if(tab!=null&&PAGES[k])PAGES[k].tab=tab;CUR=k;closeDrawer();if(location.hash.slice(1)!==k)history.replaceState(null,'','#'+k);render();window.scrollTo(0,0)}
+function go(k,tab){if(k in PROMO_ALIAS){PAGES.mPromo.tab=PROMO_ALIAS[k];if(k==='mAd'&&tab!=null)PAGES.mAd.tab=tab;k='mPromo';tab=null}k=({mGuide:'mCh',mRescue:'mDom'})[k]||k;if(!PAGES[k]&&k!=='intro')k='mPromo';if(tab!=null&&PAGES[k])PAGES[k].tab=tab;CUR=k;closeDrawer();if(location.hash.slice(1)!==k)history.replaceState(null,'','#'+k);render();window.scrollTo(0,0)}
 function render(){
-  const dn=[['intro','方案介绍']],mk=['mAd','mEvLog','mCh','mApp','mRpt','mDom','mLp'].filter(k=>PAGES[k]),ak=['aApp','aRpt'];
+  const dn=[['intro','方案介绍']],mk=['mPromo','mCh','mApp','mRpt','mDom','mLp'].filter(k=>PAGES[k]),ak=['aApp','aRpt'];
   const btn=k=>{const p=PAGES[k];return `<button class="${CUR===k?'on':''}" onclick="go('${k}')">${p.title}<span class="bd ${p.bd[1]}">${p.bd[0]}</span></button>`};
   $('#dnav').innerHTML=`<b>V3 推广 B 端 Demo</b><button class="${CUR==='intro'?'on':''}" onclick="go('intro')">① 方案介绍</button><span class="grp">商户端 3100</span>${mk.map(btn).join('')}<span class="grp">总控端 3200</span>${ak.map(btn).join('')}<span class="legend"><span><span class="bd">新</span> 新增</span><span><span class="bd c">改</span> 改动</span><span>静态演示，数据为假</span></span>`;
   if(CUR==='intro'){$('#intro').style.display='block';$('#app').style.display='none';return}
   $('#intro').style.display='none';$('#app').style.display='block';
   const p=PAGES[CUR];renderTop(p.end,CUR);$('#page').innerHTML=p.render()}
-function fromHash(){const h=location.hash.slice(1);CUR=PAGES[h]?h:'intro';closeDrawer();render()}
+function fromHash(){let h=location.hash.slice(1);if(h in PROMO_ALIAS){PAGES.mPromo.tab=PROMO_ALIAS[h];h='mPromo';history.replaceState(null,'','#mPromo')}CUR=PAGES[h]?h:'intro';closeDrawer();render()}
 window.addEventListener('hashchange',fromHash);
 /* ============ 交互层：让原型能点 ============ */
 const OPTS={
@@ -2319,7 +2319,10 @@ PAGES.mEvLog={end:'m',title:'事件回传记录',bd:['新',''],render(){
 document.head.insertAdjacentHTML('beforeend','<style>.evlog th:last-child,.evlog td:last-child{position:static;box-shadow:none}</style>');
 OPTS['回传结果']=['成功','失败','重试中'];OPTS['广告平台']=PL.map(x=>x.name);
 Object.defineProperty(OPTS,'事件名称',{get:()=>[...new Set(Object.values(EV).flat().map(e=>e.zh))],configurable:true});
-MEGA.m['运营'].forEach(g=>{if(g[0]==='推广配置'){const i=g[1].findIndex(x=>x[1]==='mAd');g[1].splice(i+1,0,['事件回传记录','mEvLog',B('新')])}});
+PAGES.mPromo={end:'m',title:'推广配置',bd:['新',''],tab:0,render(){
+ const t=this.tab;return tabs(['广告接入','事件回传记录'],t,'promoTab')+(t===1?PAGES.mEvLog.render():PAGES.mAd.render.call(PAGES.mAd))}};
+function promoTab(i){PAGES.mPromo.tab=i;render()}
+const PROMO_ALIAS={mAd:0,mEvLog:1};
 </script>
 
 </body></html>
