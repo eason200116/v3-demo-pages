@@ -89,7 +89,7 @@ input.inp{font:inherit;color:#333;outline:none}input.inp:focus,div.inp:hover{bor
 .evT tr.grp td{background:#f7f8fa;font-weight:600;text-align:left;padding:6px 12px}.evT td:nth-child(2),.evT td:last-child{text-align:center}
 .tipb{position:fixed;z-index:200;max-width:320px;background:rgba(38,38,38,.94);color:#fff;font-size:12px;line-height:1.6;padding:7px 10px;border-radius:4px;pointer-events:none;display:none;white-space:normal;text-align:left;font-weight:400}
 .radio{display:flex;gap:14px}.radio span:before{content:"○ ";color:#aaa}.radio span.on:before{content:"◉ ";color:var(--pri)}
-.sw{display:inline-block;width:32px;height:18px;border-radius:9px;background:#ccc;position:relative;vertical-align:middle}.sw:after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:2px;left:2px}.sw.on{background:var(--pri)}.sw.on:after{left:16px}.sw.dis{opacity:.45}
+.sw{display:inline-block;width:32px;height:18px;border-radius:9px;background:#ccc;position:relative;vertical-align:middle}.sw:after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:2px;left:2px}.sw.on{background:var(--pri)}.sw.on:after{left:16px}.sw.dis{opacity:.45}.radio.dis span{cursor:not-allowed;color:#bbb}.radio.dis span.on:before{color:#bbb}
 .steps{display:flex;gap:0;margin-bottom:14px}.steps span{flex:1;text-align:center;padding:7px;border-bottom:2px solid var(--line);color:#888;cursor:pointer}.steps span.on{border-color:var(--pri);color:var(--pri);font-weight:600}
 .qr{width:84px;height:84px;background:repeating-conic-gradient(#222 0 25%,#fff 0 50%) 0 0/12px 12px;border:4px solid #fff;outline:1px solid #ddd}
 .toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.12);padding:8px 16px;border-radius:6px;z-index:100;display:none}
@@ -930,8 +930,8 @@ function freeDoms(){const L=PDOMS.filter(d=>!d[1]&&d[2]).map(d=>d[0]);return L.l
 function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web';CHE=id||'';const to=r.to||'落地页';
  openDrawer(id?'编辑渠道':'新增渠道',
  F([['商户',S(M),{req:1}],['渠道ID',id?`<span>${chCid(r)}</span>`:'<span class="note">保存后自动生成</span>',{ro:1}],['渠道名',I(r.name),{req:1}],['分组',S(r.grp||'','选择分组（可不选）')],
-  ['渠道类型',`<div class="radio" id="chType">${['代理','官方'].map(o=>`<span class="${o===(r.type||'代理')?'on':''}" onclick="chTypeSet('${o}',${id?1:0})">${o}渠道</span>`).join('')}</div><span class="note" style="margin-left:10px">代理渠道挂一个代理（哪个等级都行，相当于这个代理的分享），必须填；官方渠道不挂代理</span>`,{req:1,full:1}],
-  ['设备类型',`<div class="radio" id="chEnd">${ENDS.map(o=>`<span class="${o===e?'on':''}" onclick="chEndSet('${o}',${id?1:0})">${o}</span>`).join('')}</div>`,{req:1,full:1}],
+  ['渠道类型',`<div class="radio${id?' dis':''}" id="chType">${['代理','官方'].map(o=>`<span class="${o===(r.type||'代理')?'on':''}" onclick="chTypeSet('${o}',${id?1:0})">${o}渠道</span>`).join('')}</div><span class="note" style="margin-left:10px">代理渠道挂一个代理（哪个等级都行，相当于这个代理的分享），必须填；官方渠道不挂代理</span>`,{req:1,full:1}],
+  ['设备类型',`<div class="radio${id?' dis':''}" id="chEnd">${ENDS.map(o=>`<span class="${o===e?'on':''}" onclick="chEndSet('${o}',${id?1:0})">${o}</span>`).join('')}</div>`,{req:1,full:1}],
   ['母包',`<span id="chMp">${MPOF[e]||''}</span><span class="note" style="margin-left:8px">按端自动带出；只有这一个母包，用户下载时系统把渠道号写进去，不重新打包</span>`,{full:1,ro:1}],
   ['落地指向',`<div class="radio" id="chTo">${['落地页','主站首页','主站注册页'].map(o=>`<span class="${o===to?'on':''}" onclick="chToClk('${o}')">${o}</span>`).join('')}</div><span class="note" style="margin-left:10px">用户点广告后先到哪</span>`,{req:1,full:1}],
   ['域名配置',(v=>`<div id="chDmPick" style="display:inline-block;width:320px;vertical-align:middle"><div class="inp ${v?'v':''}" data-l="域名配置">${v||'选一个空闲的独立推广域名'}</div></div><span class="note" style="margin-left:10px">只列出没被别的渠道用过、能访问的域名</span>`)(id?hostOf(r):''),{req:1,full:1}],
@@ -944,7 +944,7 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web'
   ['广告接入配置',(v=>`<div class="inp clr ${v?'v':''}" data-ph="选广告接入配置">${v||'选广告接入配置'}</div>`)(r.cfg&&r.cfg!=='--'&&r.cfg!=='不接广告平台'?r.cfg:''),{}],
   ['状态',`<span class="sw ${id&&r.state?'on':''}" id="chSt" onclick="chStGuard(event)"></span>`],
   ['备注',I(r.rm||'')]],110)+
- '<div class="alert" id="chTip" style="display:none"></div>'+(id?'<div class="alert w">渠道类型、设备类型、域名配置建好后不能改。</div>':''),
+ '<div class="alert" id="chTip" style="display:none"></div>',
  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="chSave(${id?1:0})">保存</button>`,860,id?[['渠道 code',r.id]]:null);
  chEndSet(e,0,1);chTypeSet(r.type||'代理');chToSet(to)}
 function chLay(){const ag=($('#chType .on')?.textContent||'')==='代理渠道',lp=($('#chTo .on')?.textContent||'')==='落地页';const rm=chFr('备注');if(rm){const sf=chFr('防封下载页')?.style.display!=='none';rm.classList.toggle('full',((ag?1:0)+(lp?1:0)+(sf?1:0))%2===1)}}
