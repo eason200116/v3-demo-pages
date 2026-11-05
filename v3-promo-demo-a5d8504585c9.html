@@ -811,7 +811,7 @@ PAGES.mAd={end:'m',title:'广告接入',bd:['新',''],tab:-1,render(){const t=th
   return flt([inp('商户',M,{req:1}),inp('广告平台',t>=0?PL[t].name:''),inp('投放端'),inp('回传状态'),inp('配置名称/ID','',{t:1,ph:'多个以空格隔开'})])+
   `<div class="bar"><button class="btn p" onclick="adEdit()">＋ 新增配置</button></div>`+
   table([
-   {t:'商户',k:()=>pill(M)},{t:'配置ID',k:'id'},{t:'配置名称',k:'name'},{t:'广告平台',k:r=>`<b style="font-weight:500">${r.plat}</b>`},{t:'投放端',k:r=>`<span class="tag">${KNAME[r.end]}</span>`},{t:'关联渠道',k:r=>{const c=CHANNELS.find(c=>c.cfg===r.name);return c?`${c.name}<span class="sub">${c.id}</span>`:'<span class="note">未关联</span>'}},{t:'平台像素ID',k:r=>r.plat==='Google Ads'?'--':r.pix},{t:'Access Token',k:r=>r.plat==='Google Ads'?'--':mono(tokM(r))},
+   {t:'商户',k:()=>pill(M)},{t:'配置ID',k:'id'},{t:'配置名称',k:'name'},{t:'广告平台',k:r=>`<b style="font-weight:500">${r.plat}</b>`},{t:'投放端',k:r=>`<span class="tag">${KNAME[r.end]}</span>`},{t:'关联渠道',k:r=>{const c=CHANNELS.find(c=>c.cfg===r.name);return c?`${c.name}<span class="sub">${c.id}</span>`:'<span class="note">未关联</span>'}},{t:'平台像素ID',k:r=>r.plat==='Google Ads'?'--':r.pix},{t:'Access Token',k:r=>r.plat==='Google Ads'?'--':mono(tokM(r))},{t:'回传事件',cls:'newc',l:1,k:r=>evOn(r).map(e=>e.zh).join('、')||'--'},
    {t:'回传状态',k:r=>adStat(r)},
    {t:'状态',k:r=>r.state?st('开启','ok'):st('关闭','no')},{t:'创建人/时间',k:'c'},{t:'最后修改人/时间',k:'u'},{t:'备注',k:r=>r.rm||'--'},
    {t:'操作',k:r=>`<span class="ops"><a onclick="adEdit('${r.id}')">编辑</a><a onclick="adEdit('${r.id}',1)">测试</a></span>`}
@@ -832,7 +832,7 @@ function evTipHtml(pn,n,a){const app=a===''||a==null?null:a;let e=EV[pn].find(x=
  return `<div class="h"><b>${e.n}</b>　${e.zh}<span class="k">自动上报</span></div>${e.tip?`<div class="r"><span>说明</span><div>${e.tip}</div></div>`:''}<div class="r"><span>上报的端</span><div>${endChips(e,app)}</div></div><div class="r"><span>触发方式</span><div>${e.how}</div></div>${e.top?`<div class="r"><span>事件本身</span><div>${pm(e.top)}</div></div>`:''}<div class="r"><span>${pn==='Google Ads'?'ClickConversion':(PLPRM[pn]||['服务器参数'])[0]}</span><div>${pm(e.srv)}</div></div>${pn==='Google Ads'?'':`<div class="r"><span>${(PLPRM[pn]||['','自定义参数'])[1]}</span><div>${pm(e.cus)}</div></div>`}`}
 document.addEventListener('mouseover',ev=>{const t=ev.target.closest('.evtip'),b=document.getElementById('evtb');if(!b)return;if(!t){b.style.display='none';return}
  b.innerHTML=evTipHtml(t.dataset.p,t.dataset.n,t.dataset.a);b.style.display='block';const r=t.getBoundingClientRect();let x=Math.max(8,Math.min(r.left,innerWidth-b.offsetWidth-8));let y=r.bottom+6;if(y+b.offsetHeight>innerHeight-8)y=r.top-b.offsetHeight-6;b.style.left=x+'px';b.style.top=y+'px'});
-function adEvList(p,app){const a=evFor(p,app);return `<div class="evlist">${table([{t:'事件',k:e=>evTags(p,[e],app)+`<span class="evq evtip" data-p="${p.name}" data-n="${e.n}" data-a="${KIND(app)||''}">?</span>`,cls:'l'},{t:'什么时候上报',k:e=>evWhen(e,app),cls:'l'},{t:'在哪些端上报',k:e=>endChips(e,app),cls:'l'}],a)}</div>`}
+function adEvList(p,app){const a=evFor(p,app),off=(ST.ad&&ST.ad.r&&ST.ad.r.off)||[];return `<div class="evlist">${table([{t:'事件名称',k:e=>e.zh},{t:'平台事件名',k:e=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${e.n}</span><span class="evq evtip" data-p="${p.name}" data-n="${e.n}" data-a="${KIND(app)||''}">?</span>`,cls:'l'},{t:'什么时候上报',k:e=>evWhen(e,app),cls:'l'},{t:'在哪些端上报',k:e=>endChips(e,app),cls:'l'},{t:'回传',k:e=>`<span class="sw ${off.includes(e.n)?'':'on'}" data-ev="${e.n}"></span>`}],a)}</div>`}
 function adEndSet(o){const r=ST.ad.r,p=ST.ad.p;r.end={Web:'WEB',PWA:'PWA',App:'APP',壳包:'SHELL','PC / H5':'WEB','安卓原生':'APP','安卓壳包':'SHELL'}[o];{const d=$('#dbody div.inp[data-l="适用网址/包名"]');const pk={APP:'com.daman.app',SHELL:'com.daman.shell'}[r.end];if(d){if(pk){d.textContent=pk;d.classList.add('v')}else if(/^com\./.test(d.textContent)){d.textContent='选择网址';d.classList.remove('v')}}}document.querySelectorAll('#adEnd span').forEach(x=>x.classList.toggle('on',x.textContent===o));
  const w=document.querySelector('#dbody .evlist');if(w){w.nextElementSibling.remove();w.outerHTML=adEvList(p,r.end)}}
 function adTab(i){PAGES.mAd.tab=i;render()}
@@ -904,7 +904,7 @@ function renderAd(){const {r,step,p}=ST.ad;
   let b='';
   if(step===0)b+=`<div class="banner" style="align-items:flex-start;flex-direction:column;gap:4px;margin-bottom:14px"><div><b>${p.name}</b>　${p.intro}</div><div class="note">要准备：${p.need}　·　测试：${p.testTxt}　·　<a href="${p.doc}" target="_blank" rel="noopener">${p.docT} ↗</a></div></div>`+F([['商户',S(M),{req:1}],['配置名称',I(r.name),{req:1}],['广告平台',r.id?`<b style="font-weight:500">${p.name}</b>`:`<div class="radio">${PL.map(x=>`<span class="${x.name===p.name?'on':''}" onclick="adPlatSet('${x.name}')">${x.name}</span>`).join('')}</div>`,r.id?{ro:1}:{req:1,full:1}],['投放端',`<div class="radio" id="adEnd">${Object.values(KNAME).map(o=>`<span class="${o===KNAME[r.end]?'on':''}" onclick="adEndSet('${o}')">${o}</span>`).join('')}</div>`,{req:1,full:1}],
    ['关联渠道',S(adChOf(r)||'','请选择渠道'),{req:1}],...(p.idL?[['平台像素ID',I(r.pix,p.idPh),{req:1}]]:[]),...(p.name==='Google Ads'?[['Customer ID',I(r.gcid||'','如 123-456-7890（Google Ads 后台右上角）'),{req:1}],['账号授权',gAuthHtml(r),{full:1}]]:[]),...(p.keyL?[[p.keyL,I(r.id?tok(r):'','粘贴平台提供的 Access Token'),{req:1}]]:[]),['状态',`<span class="sw ${!r.id||r.state?'on':''}"></span>`,{full:!p.keyL}],['备注',I(''),{full:1}]],120)+
-   `<div class="sec">自动上报以下事件<a href="${p.doc}" target="_blank" rel="noopener" style="margin-left:auto;font-weight:400">${p.docT} ↗</a></div>${adEvList(p,r.end)}`;
+   `<div class="sec">回传事件<a href="${p.doc}" target="_blank" rel="noopener" style="margin-left:auto;font-weight:400">${p.docT} ↗</a></div>${adEvList(p,r.end)}`;
   if(step===1){const app=r.end==='APP'||r.end==='SHELL',evs=evFor(p,r.end);
    b+=(p.test==='code'?F([p.name==='Kwai'?['测试点击编号','<input class="inp tcode" placeholder="从 Kwai 后台复制" style="min-width:0;width:100%">']:['Test Event Code',`<input class="inp tcode" placeholder="如 TEST12345，从 ${p.name} 后台的「Test Events」页复制" style="min-width:0;width:100%">`]],140):'')+
     F([['测试渠道',`<span>${adChOf(r)||'<span class="note">还没关联渠道，先去<a onclick="go(\'mCh\')">渠道管理</a>绑定</span>'}${(CHANNELS.find(c=>c.cfg===r.name)||{state:1}).state?'':' '+st('已停用','no')+'<span class="note" style="margin-left:8px">正式事件不发，测试事件照发</span>'}</span>`,{ro:1,full:1}]],140)+
@@ -1268,7 +1268,7 @@ function renderTop(end,cur){
 let CUR='intro';
 function go(k,tab){k=({mGuide:'mCh',mRescue:'mDom'})[k]||k;if(!PAGES[k]&&k!=='intro')k='mAd';if(tab!=null&&PAGES[k])PAGES[k].tab=tab;CUR=k;closeDrawer();if(location.hash.slice(1)!==k)history.replaceState(null,'','#'+k);render();window.scrollTo(0,0)}
 function render(){
-  const dn=[['intro','方案介绍']],mk=['mAd','mCh','mApp','mRpt','mDom','mLp'].filter(k=>PAGES[k]),ak=['aApp','aRpt'];
+  const dn=[['intro','方案介绍']],mk=['mAd','mEvLog','mCh','mApp','mRpt','mDom','mLp'].filter(k=>PAGES[k]),ak=['aApp','aRpt'];
   const btn=k=>{const p=PAGES[k];return `<button class="${CUR===k?'on':''}" onclick="go('${k}')">${p.title}<span class="bd ${p.bd[1]}">${p.bd[0]}</span></button>`};
   $('#dnav').innerHTML=`<b>V3 推广 B 端 Demo</b><button class="${CUR==='intro'?'on':''}" onclick="go('intro')">① 方案介绍</button><span class="grp">商户端 3100</span>${mk.map(btn).join('')}<span class="grp">总控端 3200</span>${ak.map(btn).join('')}<span class="legend"><span><span class="bd">新</span> 新增</span><span><span class="bd c">改</span> 改动</span><span>静态演示，数据为假</span></span>`;
   if(CUR==='intro'){$('#intro').style.display='block';$('#app').style.display='none';return}
@@ -2299,6 +2299,27 @@ function chToHide(){['落地指向','落地页'].forEach(k=>{const f=chFr(k);if(
 {const _t9=chToSet;chToSet=function(){const r=_t9.apply(this,arguments);chToHide();return r}}
 {const _e9=chEdit;chEdit=function(){const r=_e9.apply(this,arguments);chToHide();return r}}
 {const _s9=chSave;chSave=function(ed){const d=chFr('落地页')?.querySelector('div.inp');if(d&&!d.classList.contains('v')){d.textContent='';d.classList.add('v')}return _s9.apply(this,arguments)}}
+
+/* 11-05 回传事件：每条配置逐个事件开关；新增「事件回传记录」页 */
+function evOn(r){const p=PL.find(x=>x.name===r.plat);if(!p||!EV[p.name])return [];return evFor(p,r.end).filter(e=>!(r.off||[]).includes(e.n))}
+CONFIGS.forEach(c=>{if(c.id==='AC1003')c.off=(EV.TikTok||[]).filter(e=>e.zh!=='注册').map(e=>e.n)});
+{const _as9=adSave;adSave=function(){const src=ST.ad&&ST.ad.r&&ST.ad.r._src;const off=[...document.querySelectorAll('#dbody .evlist .sw[data-ev]')].filter(x=>!x.classList.contains('on')).map(x=>x.dataset.ev);
+ const res=_as9.apply(this,arguments);if(src&&!document.querySelector('#modal.on')){src.off=off;render()}return res}}
+const EVLOG=(()=>{const L=[],R=[['成功','ok',''],['成功','ok',''],['成功','ok',''],['失败','err','Access Token 过期（平台返回 190）'],['成功','ok',''],['失败','err','缺少点击编号，平台对不上广告'],['重试中','run','网络超时，第 2 次重试'],['成功','ok','']];
+ const cs=CONFIGS.filter(c=>EV[c.plat]&&CHANNELS.some(x=>x.cfg===c.name));let k=0;
+ for(let i=0;i<14;i++){const c=cs[i%cs.length],ch=CHANNELS.find(x=>x.cfg===c.name),ev=evOn(c),e=ev[i%Math.max(ev.length,1)];if(!e)continue;
+  const mid=String(88100231+i*17),pay=/充值|首充/.test(e.zh),ord=pay?'R2611'+String(40000+i*137):'--',t='2026-11-04 '+String(15-Math.floor(i/3)).padStart(2,'0')+':'+String(58-i*4).padStart(2,'0')+':'+String(10+i*3).padStart(2,'0');
+  const [rs,cl,why]=R[k++%R.length];L.push({t,ch,plat:c.plat,pix:c.plat==='Google Ads'?'--':c.pix,zh:e.zh,n:e.n,eid:(e.n.split(/[ (]/)[0].toLowerCase()+'_'+mid+'_'+(pay?ord:String(1730700000+i*911))),mid,ord,rs,cl,why})}
+ return L})();
+PAGES.mEvLog={end:'m',title:'事件回传记录',bd:['新',''],render(){
+ return flt([inp('商户',M,{req:1}),inp('回传时间','2026-11-04 ~ 2026-11-04',{w:200}),inp('广告平台'),inp('事件名称'),inp('回传结果'),inp('会员ID/订单号','',{t:1,ph:'多个以空格隔开'})])+
+  '<div class="evlog">'+table([{t:'商户',k:()=>pill(M)},{t:'回传时间',k:'t'},{t:'渠道',k:r=>`${r.ch.name}<span class="sub">${r.ch.id}</span>`},{t:'广告平台',k:'plat'},{t:'平台像素ID',k:'pix'},
+   {t:'事件名称',k:r=>`${r.zh}<span class="sub" style="font-family:Menlo,Consolas,monospace">${r.n}</span>`},{t:'事件ID',k:r=>mono(r.eid)},{t:'会员ID',k:'mid'},{t:'订单号',k:'ord'},
+   {t:'回传结果',k:r=>st(r.rs,r.cl)},{t:'失败原因',cls:'l',k:r=>r.why||'--'}],EVLOG)+'</div>'}};
+document.head.insertAdjacentHTML('beforeend','<style>.evlog th:last-child,.evlog td:last-child{position:static;box-shadow:none}</style>');
+OPTS['回传结果']=['成功','失败','重试中'];OPTS['广告平台']=PL.map(x=>x.name);
+Object.defineProperty(OPTS,'事件名称',{get:()=>[...new Set(Object.values(EV).flat().map(e=>e.zh))],configurable:true});
+MEGA.m['运营'].forEach(g=>{if(g[0]==='推广配置'){const i=g[1].findIndex(x=>x[1]==='mAd');g[1].splice(i+1,0,['事件回传记录','mEvLog',B('新')])}});
 </script>
 
 </body></html>
