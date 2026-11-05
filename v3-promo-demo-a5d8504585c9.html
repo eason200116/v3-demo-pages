@@ -41,7 +41,7 @@ button{font:inherit;cursor:pointer}a{color:var(--pri);text-decoration:none;curso
 /* 筛选 */
 .flt{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin-bottom:10px}
 .fi{display:flex;align-items:center;gap:8px}.fi label{color:#333;white-space:nowrap}.fi label i{color:var(--red);font-style:normal}
-.inp{height:28px;border:1px solid #d9dde3;border-radius:4px;padding:0 9px;min-width:170px;display:flex;align-items:center;justify-content:space-between;color:#999;background:#fff}.inp.v{color:#333}.inp:after{content:"⌄";color:#aaa;margin-left:8px}.inp.t:after{content:""}
+.inp{height:28px;border:1px solid #d9dde3;border-radius:4px;padding:0 9px;min-width:170px;display:flex;align-items:center;justify-content:space-between;color:#999;background:#fff}.inp.v{color:#333}.inp:after{content:"⌄";color:#aaa;margin-left:8px}.inp.t:after,.inp.cfgro:after{content:""}
 .btns{margin-left:auto;display:flex;gap:8px}
 .btn{height:28px;border-radius:4px;border:1px solid #d9dde3;background:#fff;padding:0 12px;color:#333;display:inline-flex;align-items:center;gap:5px}.btn.p{background:var(--pri);border-color:var(--pri);color:#fff}.btn.sm{height:24px;padding:0 9px;font-size:12px}
 .quick{display:flex;gap:4px}.quick span{border:1px solid #d9dde3;border-radius:4px;padding:1px 8px;font-size:12px;cursor:pointer}.quick span.on{background:var(--pri);border-color:var(--pri);color:#fff}
@@ -990,10 +990,10 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web'
   ['分享卡片',`<div class="radio" id="chShare">${['用默认','单独设置'].map(o=>`<span class="${o==='用默认'?'on':''}" onclick="chShareSet('${o}')">${o}</span>`).join('')}</div><div id="chShareX" style="display:none;margin-top:6px;gap:8px;align-items:center;width:100%"><input class="inp" style="width:200px;min-width:0" placeholder="标题"><input class="inp" style="width:240px;min-width:0" placeholder="描述"><div class="lpup" onclick="this.classList.add('on');this.innerHTML='已上传 ✓'">＋ 分享图</div></div>`,{full:1}],
   ['跳转域名',S(r.jp||'','选跳转域名'),{req:1}],
   ['归属代理',I(r.agent&&r.agent!=='--'?r.agent:'','输入代理 ID 或代理邀请码'),{req:1}],
-  ['广告接入配置',S(r.cfg&&r.cfg!=='--'&&r.cfg!=='不接广告平台'?r.cfg:'','不投广告平台就不选'),{}],
+  ['广告接入配置',`<div style="display:flex;align-items:center;gap:10px"><div class="inp v cfgro" style="background:#f5f6f8;color:#666;pointer-events:none;flex:1">${r.cfg&&r.cfg!=='--'&&r.cfg!=='不接广告平台'?r.cfg:'--'}</div><span class="note" style="white-space:nowrap">在广告接入里关联渠道</span></div>`,{}],
   ['状态',`<span class="sw ${id&&r.state?'on':''}" id="chSt" onclick="chStGuard(event)"></span>`],
   ['备注',I(r.rm||'')]],110)+
- '<div class="alert" id="chTip" style="display:none"></div>'+(id?'<div class="alert w">渠道类型、设备类型、推广域名建好后不能改；广告接入配置只能换同一平台的，改了只影响之后的事件和新用户。</div>':''),
+ '<div class="alert" id="chTip" style="display:none"></div>'+(id?'<div class="alert w">渠道类型、设备类型、推广域名建好后不能改。</div>':''),
  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="chSave(${id?1:0})">保存</button>`,860,id?[['渠道 code',r.id]]:null);
  chEndSet(e,0,1);chTypeSet(r.type||'代理');chToSet(to)}
 function chLay(){const ag=($('#chType .on')?.textContent||'')==='代理渠道',lp=($('#chTo .on')?.textContent||'')==='落地页';const rm=chFr('备注');if(rm){const sf=chFr('防封下载页')?.style.display!=='none';rm.classList.toggle('full',((ag?1:0)+(lp?1:0)+(sf?1:0))%2===1)}}
@@ -1004,7 +1004,6 @@ function chDmSet(i){document.querySelectorAll('#chDm span').forEach((x,j)=>x.cla
 function chEndSet(o,lock,init){if(lock)return toast('建好后设备类型不能改，要换设备类型请另建渠道');
  document.querySelectorAll('#chEnd span').forEach(x=>x.classList.toggle('on',x.textContent===o));const app=isApp(o);
  const r=chFr('母包');if(r)r.style.display=app?'':'none';const sf=chFr('防封下载页');if(sf)sf.style.display=(app||o==='PWA')?'':'none';chLay();
- if(!init){const c=chFr('广告接入配置').querySelector('.inp');c.textContent='不投广告平台就不选';c.classList.remove('v')}
  const m=$('#chMp');if(m)m.textContent=MPOF[o]||'';
  $('#chTip').textContent=chBtnTxt(o)}
 function chSave(ed){const ag=($('#chType .on')?.textContent||'')==='代理渠道',lp=($('#chTo .on')?.textContent||'')==='落地页';
@@ -1076,7 +1075,7 @@ const LPPATH=1;const LPS=[
  {id:'LP01',name:'daman 商城页',type:'PWA',path:'daman-store',logo:1,logo2:1,rate:'4.9',rcnt:'12K',dl:'1M+',shots:1,L:{英语:{app:'daman',desc:'Casino & Lottery',about:'Play 100+ games, fast deposit and withdrawal.'}}},
  {id:'LP02',name:'下载送 500（印地语）',type:'广告图',path:'bonus500-hi',priv:'https://www.1050.test/privacy',jump:'5 秒后自动点按钮',img:1,og:1,L:{英语:{txt:'Download and get ₹500 Bonus',btn:'Download',title:'Get ₹500 Bonus'},'印地语':{txt:'डाउनलोड करें और ₹500 बोनस पाएं',btn:'डाउनलोड',title:'₹500 बोनस पाएं'}}},
  {id:'LP03',name:'注册送 500',type:'广告图',path:'reg500',priv:'https://www.1050.test/privacy',jump:'不跳转',img:1,og:1,L:{英语:{txt:'Register to receive ₹500 Bonus',btn:'Get it now',title:'Register to receive ₹500'}}},
- {id:'LP04',name:'daman 商城页（葡语）',type:'PWA',path:'daman-store-pt',logo:1,logo2:1,rate:'4.7',rcnt:'3K',dl:'500K+',shots:1,L:{英语:{app:'daman',desc:'Casino & Lottery',about:'Play 100+ games.'},'葡萄牙语':{app:'daman',desc:'Cassino e Loteria',about:'Mais de 100 jogos, depósito e saque rápidos.'}}}];
+ {id:'LP04',name:'daman 商城页（葡语）',pub:0,type:'PWA',path:'daman-store-pt',logo:1,logo2:1,rate:'4.7',rcnt:'3K',dl:'500K+',shots:1,L:{英语:{app:'daman',desc:'Casino & Lottery',about:'Play 100+ games.'},'葡萄牙语':{app:'daman',desc:'Cassino e Loteria',about:'Mais de 100 jogos, depósito e saque rápidos.'}}}];
 const LPLF={PWA:['app','desc','about'],'广告图':['txt','btn','title']};
 const lpDone=(v,t)=>!!v&&(LPLF[t]||[]).every(k=>(v[k]||'').trim());
 const lpLangs=o=>OPTS['语言'].filter(l=>lpDone((o.L||{})[l],o.type)).map(l=>LN[l]||l).join(' / ')||'--';
@@ -1427,7 +1426,8 @@ const _cfo=chCfgOpts;chCfgOpts=function(){return ['不接广告平台（群发�
 const _mChR=PAGES.mCh.render;PAGES.mCh.render=function(){let h=_mChR.call(this);return h};
 function cfgCell(r){if(r.cfg==='--'||r.cfg==='不接广告平台'||!r.cfg)return '--';const c=CONFIGS.find(x=>x.name===r.cfg);if(!c)return r.cfg;const t=c.state?adStat(c):(c.test&&c.test[0]==='失败'?st('测试失败','err'):st('配置已关闭','no'));return `${r.cfg}<span class="sub">${t==='--'?'':t}</span>`}
 function lpViewN(n){const o=LPS.find(x=>x.name===n);if(o)lpView(o.id);else toast('没找到这个落地页')}
-function toCell(r){return (r.to==='落地页'?`<a onclick="lpViewN('${r.lp}')">${r.lp}</a><span class="sub">落地页 · 按钮：${BTNOF[r.end].replace(/（.*?）/g,'')}</span>`:`${r.to}<span class="sub">版面配置：${r.lay||DLAY}</span>`)}
+function lpPub(n){const o=LPS.find(x=>x.name===n);return o&&o.pub===0?st('未发布','no'):st('已发布','ok')}
+function toCell(r){return r.to==='落地页'?`<span style="white-space:nowrap"><a onclick="lpViewN('${r.lp}')">${r.lp}</a> ${lpPub(r.lp)}</span>`:(r.to||'--')}
 
 /* ---- 新增/编辑渠道：安装设置、分享卡片、不接平台 ---- */
 const _chEdit0=chEdit;chEdit=function(id){const r=CHANNELS.find(x=>x.id===id)||{};if(r.sys)return toast('「主站」渠道是系统自带的，不能改');CHE_R=r;_chEdit0(id);
