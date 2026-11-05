@@ -2276,7 +2276,7 @@ function pageLogQ(){const tp=$('#plogF div.inp[data-l="操作类型"]');const t=
 ['mAd','mCh','mApp','mLp','aApp'].forEach(k=>{const P=PAGES[k],_r=P.render;P.render=function(){const h=_r.call(this),b=`<button class="btn" style="margin-left:auto" onclick="pageLog('${k}')">${CLK}操作记录</button>`;
  const i=h.indexOf('<div class="bar">');if(i>=0){const j=h.indexOf('</div>',i);return h.slice(0,j)+b+h.slice(j)}
  const t=h.indexOf('<div class="tw">');return t>=0?h.slice(0,t)+`<div class="bar">${b}</div>`+h.slice(t):h}});
-{const h=location.hash.slice(1);if(PAGES[h])go(h);else render()}
+
 
 /* 11-05 落地页设置挪到域名：渠道表单不再选落到哪，在域名的新增/编辑里按渠道逐行选 */
 OPTS['落地指向D']=['落地页','主站首页','主站注册页'];OPTS['落地指向App']=['落地页'];
@@ -2323,6 +2323,7 @@ PAGES.mPromo={end:'m',title:'推广配置',bd:['新',''],tab:0,render(){
  const t=this.tab;return tabs(['广告接入','事件回传记录'],t,'promoTab')+(t===1?PAGES.mEvLog.render():PAGES.mAd.render.call(PAGES.mAd))}};
 function promoTab(i){PAGES.mPromo.tab=i;render()}
 const PROMO_ALIAS={mAd:0,mEvLog:1};
+{const h=location.hash.slice(1);if(PAGES[h])go(h);else render()}
 </script>
 
 </body></html>
