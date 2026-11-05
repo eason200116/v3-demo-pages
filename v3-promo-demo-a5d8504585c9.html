@@ -682,7 +682,7 @@ ol.iss li.p::before{background:var(--pend-soft);color:var(--pend);content:"定"}
 </section>
 <div class="mask" id="mask" onclick="closeDrawer()"></div>
 <div class="modal" id="modal" role="dialog"><div class="mh" id="dtitle"></div><div class="mb" id="dbody"></div><div class="mf" id="dfoot"></div></div>
-<div class="tipb" id="tipb"></div><div class="evtb" id="evtb"></div>
+<div class="tipb" id="tipb" style="white-space:pre-line"></div><div class="evtb" id="evtb"></div>
 <div class="toast" id="toast"></div>
 <script>
 var LAYS=['1050首页版面','1050节日版面','1050世界杯版面'],DLAY=LAYS[0];
@@ -745,7 +745,7 @@ const TIPS={
  '推广域名':'渠道的入口域名，链接带渠道 code。默认自动生成子域名（渠道 code.推广泛域名），也可以选独立推广域名。一对一：一个渠道一个，一个只属于一个渠道。',
  '跳转域名':'落地页按钮（或落地指向选主站时的推广链接）去主站、去下载时经过的中转域名。公共池，多个渠道共用，每个渠道必须选一个；被封时到「域名管理」换。跳转全程带着渠道 code，不影响统计。',
  '防封下载页':'主站被封后的救援页。已装 PWA / App 的用户打开时，系统弹出救援弹窗，让用户复制链接到浏览器打开这个页面，重新下载 PWA 或 App，再用原账号登录。',
- '域名类型':'主域名：主站。推广域名：渠道入口，一对一。跳转域名、防封下载页：公共池，多个渠道共用。下载域名：放母包，另备几个备用的。',
+ '域名类型':'主域名：玩家平时打开的主站网址，比如 www.1050.test。被封了自动切到备用主域名。一个商户同时只用 1 个，可配多个备用。\n推广泛域名：给渠道自动生成推广链接用，每个渠道自动分到一个自己的网址，比如 fb01.go1050.test。被封了人工换。1 个可给多个渠道用。\n独立推广域名：专门给某一个渠道用的推广网址。被封了人工换。1 个只给 1 个渠道。\n跳转域名：点推广链接后中间经过的网址，带上渠道信息再跳到落地页或主站。1 个给所有渠道共用。\n防封下载页：主站被封时，已装 App 的用户在救援窗里点进来，打开这个页面重新安装。在主域名的「防封救援」里选，1 个主域名可选多个，救援时随机打开一个。\n下载域名：放 App 安装包的网址，用户下载 App 走这里。同时只用 1 个，可配多个备用。',
  '页面路径':'这个落地页的预览地址后缀，如 reg500，只用来预览和区分页面，不出现在推广链接里。同一商户下不能重复。',
  '自动跳转':'打开几秒后自动点按钮。有的广告平台不允许，审核会被拒，默认不跳。',
  '隐私政策链接':'Facebook、Google 等审核落地页时要求页面上有隐私政策链接，不填容易被拒。',
@@ -775,7 +775,7 @@ document.addEventListener('compositionend',e=>{const t=e.target;if(t.classList&&
 document.addEventListener('blur',e=>{const t=e.target;if(t.classList&&t.classList.contains('vno'))vnoClean(t)},true);
 document.addEventListener('click',e=>{const b=e.target.closest('#dfoot .btn.p');if(!b)return;let bad=0;document.querySelectorAll('#dbody input.vno').forEach(el=>{const v=el.value.trim();const msg=!v?'请输入版本号':!VNO_RE.test(v)?'版本号只能填英文字母、数字和 . - _':'';vnoMark(el,!!msg,msg);if(msg)bad++});if(bad){e.preventDefault();e.stopImmediatePropagation();toast('版本号填写有误')}},true);
 const R=(opts,on)=>`<div class="radio">${opts.map(o=>`<span class="${o===on?'on':''}">${o}</span>`).join('')}</div>`;
-document.addEventListener('mouseover',e=>{const t=e.target.closest('.hi');const b=$('#tipb');if(!t){b.style.display='none';return}b.textContent=t.dataset.tip;b.style.display='block';const r=t.getBoundingClientRect();let x=r.left+r.width/2-b.offsetWidth/2;x=Math.max(8,Math.min(x,innerWidth-b.offsetWidth-8));b.style.left=x+'px';b.style.top=(r.top-b.offsetHeight-6)+'px'});
+document.addEventListener('mouseover',e=>{const t=e.target.closest('.hi');const b=$('#tipb');if(!t){b.style.display='none';return}b.textContent=t.dataset.tip;b.style.display='block';const r=t.getBoundingClientRect();let x=r.left+r.width/2-b.offsetWidth/2;x=Math.max(8,Math.min(x,innerWidth-b.offsetWidth-8));b.style.left=x+'px';b.style.top=(r.top-b.offsetHeight-6<8?r.bottom+6:r.top-b.offsetHeight-6)+'px'});
 const who=(n,t)=>`<span style="white-space:nowrap;display:inline-block">${n}<span class="sub">${t}</span></span>`;
 
 /* ============ 数据（贯穿例子：渠道 A1 绑定代理 8810021） ============ */
