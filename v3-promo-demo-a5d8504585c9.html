@@ -924,7 +924,7 @@ const wildOn=()=>WILD.find(w=>w[1]==='on')[0];
 const POOL=[['https://jump1.1050.test','跳转域名',1,'默认池'],['https://jump2.1050.test','跳转域名',1,'默认池'],['https://jump3.1050.test','跳转域名',0,'默认池'],['https://safe-g.1050.test','防封下载页',1,'默认'],['https://safe-h.1050.test','防封下载页',1,'默认']];
 const PDOMS=[['https://fb-a.1050.test','FB_WEB_IN_001',1],['https://spare1.1050.test','',1],['https://spare2.1050.test','',1],['https://old-fb.1050.test','x',0,'FB_WEB_IN_001']];
 /* 换域名记录：[范围, 旧, 新, 原因, 操作人, 时间] */
-const DOMHIS=[['FB_WEB_IN_001','https://old-fb.1050.test','https://fb-a.1050.test','被封','运营-李娜','2026-10-12 09:40'],['全部自动子域名','*.old1050.test','*.go1050c.test','被封','运营-李娜','2026-10-30 18:12'],['主域名','https://old-main.1050.test','https://www.1050.test','被封','运营-李娜','2026-10-30 18:12']];
+const DOMHIS=[['FB_WEB_IN_001','https://old-fb.1050.test','https://fb-a.1050.test','被封','运营-李娜','2026-10-12 09:40'],['全部自动子域名','*.old1050.test','*.go1050c.test','被封','运营-李娜','2026-10-30 18:12'],['主域名','https://old-main.1050.test','https://www.1050.test','被封','系统自动','2026-10-30 18:12']];
 const hostId=x=>String(x).toLowerCase().replace(/_/g,'-');const hostOf=r=>r.dm||`https://${hostId(r.id)}.${r.wr||wildOn()}`;
 {const W={self_WEB_IN_001:'go1050c.test',agt_WEB_IN_003:'go1050c.test',FB_SHELL_IN_001:'go1050d.test',GG_APK_IN_001:'go1050d.test'};CHANNELS.forEach(c=>{if(W[c.id])c.wr=W[c.id]})}
 const hostOk=r=>!r.dm||(PDOMS.find(d=>d[0]===r.dm)||[0,0,1])[2];
@@ -1478,18 +1478,19 @@ function layOf(r){if(r[2]==='主域名')return r[3]===0?'--':DLAY;const L=r[2]==
 PAGES.mDom={end:'m',title:'域名管理',bd:['改','c'],render(){
   const nm=id=>(CHANNELS.find(x=>x.id===id)||{}).name;const auto=CHANNELS.filter(c=>!c.dm).length;
   const rows=[['7000','https://www.1050.test','主域名',1,'公共'],
-   ['7001','https://www2.1050.test','主域名',1,'公共'],['7002','https://old-main.1050.test','主域名',0,'公共'],
+   ['7001','https://www2.1050.test','主域名',1,'公共'],['7003','https://www3.1050.test','主域名',1,'公共'],['7002','https://old-main.1050.test','主域名',0,'公共'],
    ...WILD.map((w,i)=>[String(7010+i),'*.'+w[0],'推广泛域名',w[2],w[1]==='on'?bindCh(wildCh(w[0])):'--',w[1]]),
    ...PDOMS.map((d,i)=>[String(7020+i),d[0],'独立推广域名',d[2],d[1]&&d[1]!=='x'&&d[2]!==3?bindCh(CHANNELS.filter(c=>c.id===d[1])):'--']),
    ...POOL.map((d,i)=>{const u=CHANNELS.filter(c=>c.jp===d[0]).length,dflt=CHANNELS.filter(c=>!c.jp&&!c.sys).length;return [String(7040+i),d[0],d[1],d[2],'公共','pool']}),
    ['7099','https://dl.1050.test','下载域名',2,'公共','dl'],['7100','https://dl2.1050.test','下载域名',1,'公共','dlbak'],['7101','https://dl3.1050.test','下载域名',1,'公共','dlbak']];
   return chg('chg','参考现有域名管理，按类型分 6 种：主域名（主站）、推广泛域名、独立推广域名（这两种是渠道入口，一对一）、跳转域名、防封下载页（公共池）、下载域名。推广泛域名同时用几个根域名，自动子域名的渠道分散在它们下面，一个根域名被封只换它下面的渠道；下载域名另备几个备用的，被封时换成备用的。新增、编辑先选类型，只填这一类要填的；保存后照提示加 DNS 解析，状态从「检测中」变「已生效」才能用。域名这里不设跳转方式：新增渠道时按链路一次选完（推广域名 → 落地指向 → 落地页或版面），这里只显示绑了哪个渠道、落到哪里。主域名要选一套版面配置，落地指向主站的渠道默认用它。原「PWA 设置」并到落地页「PWA」里。')+
   flt([inp('商户',M,{req:1}),`<div class="mark">${inp('域名类型')}</div>`,inp('域名','',{t:1,ph:'请输入'})])+
-  `<div class="bar"><button class="btn p" onclick="domEdit()">＋ 新增域名</button></div>`+
+  bakWarn(rows)+`<div class="bar"><button class="btn p" onclick="domEdit()">＋ 新增域名</button></div>`+
   table([{t:'商户',k:()=>pill(M)},{t:'域名ID',k:0},{t:'域名类型',cls:'newc',k:r=>tags([r[2]])},{t:'域名',k:1},{t:'能否访问',cls:'newc',k:r=>r[3]===3?st('检测中','run'):r[3]===2?`${st('证书将到期','wait')}<span class="sub">2026-11-15</span>`:r[3]?st('已生效','ok'):st('无法访问','err')},
+   {t:'使用情况',cls:'newc',k:r=>{const u=useOf(r);return u==='在用'?'<b style="font-weight:500">在用</b>':u}},
    {t:'绑定渠道',cls:'newc',k:4},{t:'版面配置',cls:'newc',k:r=>r[2]==='主域名'||r[2]==='独立推广域名'?layOf(r):'--'},{t:'状态',k:r=>`<span class="sw ${domOn(r)?'on':''}" onclick="domSw('${r[0]}')"></span>`},{t:'创建人/时间',k:r=>DOMC[r[0]]||who('运营-张伟','2026-09-01 10:00')},{t:'最后修改人/时间',k:r=>DOMU[r[0]]||DOMC[r[0]]||who('运营-张伟','2026-09-01 10:00')},{t:'备注',k:r=>DOMRM[r[0]]||'--'},
    {t:'操作',k:r=>`<span class="ops"><a onclick="domEdit('${r[0]}')">编辑</a><a onclick="toast('检查完成：${r[3]===3?'还在检测中，DNS 没生效':r[3]?'能正常访问':'打不开'}，详情见「解析检测记录」')">检查</a>${r[2]==='主域名'&&RESC.some(x=>x[0]===r[1])?`<a onclick="rescLog(RESC.findIndex(x=>x[0]==='${r[1]}'))">救援记录</a>`:''}${r[5]==='on'?`<a onclick="wildSwap('${r[1].slice(2)}')">一键替换</a>`:''}${r[5]==='pool'?`<a onclick="domSwap('${r[0]}')">替换</a>`:''}${r[5]==='dl'?`<a onclick="domSwap('${r[0]}')">换成备用</a>`:''}</span>`}],DOMROWS=rows)+
-  `<div class="sec">换域名记录</div>`+table([{t:'旧域名',k:1},{t:'换成',k:2},{t:'范围',k:r=>r[0]==='全部自动子域名'?'一键替换（*.old1050.test 下的渠道）':nm(r[0])?`只 ${nm(r[0])}（${r[0]}）`:r[0]},{t:'原因',k:3},{t:'操作人',k:4},{t:'时间',k:5}],[...DOMHIS].sort((a,b)=>b[5].localeCompare(a[5])))}};
+  `<div class="sec">换域名记录</div>`+table([{t:'旧域名',k:1},{t:'换成',k:2},{t:'范围',k:r=>r[0]==='全部自动子域名'?'一键替换（*.old1050.test 下的渠道）':nm(r[0])?`只 ${nm(r[0])}（${r[0]}）`:r[0]},{t:'原因',k:3},{t:'方式',k:r=>r[4]==='系统自动'?'自动':'手动'},{t:'操作人',k:4},{t:'时间',k:5}],[...DOMHIS].sort((a,b)=>b[5].localeCompare(a[5])))}};
 let DOMROWS=[];
 const DOMSW={};function domOn(r){return r[0] in DOMSW?DOMSW[r[0]]:r[3]!==0}
 function domSw(id){const r=DOMROWS.find(x=>x[0]===id);if(!r)return;DOMSW[id]=!domOn(r);toast(DOMSW[id]?'已开启':'已关闭')}
@@ -1499,7 +1500,7 @@ function domSwap(id){const r=DOMROWS.find(x=>x[0]===id);if(!r)return;const L=DOM
 function domSwapOk(id){const r=DOMROWS.find(x=>x[0]===id),b=$('#dbody');const d=b.querySelector('div.inp[data-l="换成"]'),t=d?d.textContent.trim():(b.querySelector('input.inp')?.value||'').trim();if(!t)return toast('请选或填新域名');
  const why=b.querySelector('.radio span.on')?.textContent.trim()||'被封';DOMHIS.push([r[2]==='下载域名'?'所有 App 渠道的下载链接':'用这个域名的所有渠道',r[1],t,why,'运营-张伟','2026-11-04 16:00']);closeDrawer();render();toast('已换成 '+t+'，记在「换域名记录」')}
 
-const DOMRM={'7000':'当前版面主域名','7001':'备用主域名','7002':'已被封，换成 www'},DOMU={'7002':who('运营-李娜','2026-10-30 18:12'),'7000':who('运营-张伟','2026-11-02 10:00')};
+const DOMRM={'7000':'当前版面主域名','7001':'备用主域名','7003':'备用主域名','7002':'已被封，换成 www'},DOMU={'7002':who('运营-李娜','2026-10-30 18:12'),'7000':who('运营-张伟','2026-11-02 10:00')};
 const DOMTYPES=['主域名','推广泛域名','独立推广域名','跳转域名','防封下载页','下载域名'];OPTS['域名类型']=DOMTYPES;
 function domFields(t,r){const d=r?r[1]:'';const base=[['域名类型',`<div class="inp v" data-l="域名类型">${t}</div>`,{req:1,full:1}]];
  const dm=(ph)=>['域名',I(d,ph),{req:1,full:1}];
@@ -1626,11 +1627,28 @@ function rescSum(d){const r=RESC.find(x=>x[0]===d);return r?(r[5]?`弹救援窗�
   ['救援弹窗',`<span class="sw ${R0[5]?'on':''}"></span>`,{}],['用户能否关闭',R(['能关','不能关'],R0[6]),{}],
   ['救援页',`<div class="ck">${POOL.filter(d=>d[1]==='防封下载页').map(d=>`<label><input type="checkbox" checked> ${d[0]}</label>`).join('')}</div><span class="note">从防封下载页里选，多个时随机打开一个</span>`,{full:1}],
   ['救援方式',R(['PWA','安装包'],R0[7]),{}]])}}
-OPTS['备用主域名']=['https://www2.1050.test','https://www.1050.test'];
+OPTS['备用主域名']=['https://www2.1050.test','https://www3.1050.test','https://www.1050.test'];
 TIPS['救援弹窗']='主域名打不开时，已装 PWA / App 的用户一打开就弹这个窗，让他复制链接到浏览器，进救援页重装，装好后自动登录原账号，渠道 code 不变。';
 {const _rl=rescLog;rescLog=function(i){const r=RESC[i];if(r&&r[2]==='normal')return openDrawer('救援记录','<div class="note" style="padding:24px 0;text-align:center">这个主域名还没被封过，没有救援记录。</div>',CLOSEF,600,[['主域名',r[0]]]);return _rl(i)}}
 RESC.push(['https://www2.1050.test','https://www2.1050.test','normal',0,'--',1,'不能关','PWA',20,0]);
 {const h=location.hash.slice(1);const m={mGuide:'mCh',mRescue:'mDom'};if(m[h])history.replaceState(null,'','#'+m[h])}
+/* 11-05 补：当前生效、备用标记、多个备用主域名、被封告警、备用不足提醒 */
+function useOf(r){const t=r[2];
+ if(t==='主域名')return r[0]==='7000'?'在用':r[0]==='7002'?'已换下':'备用';
+ if(t==='推广泛域名')return {on:'在用',bak:'备用',old:'已换下'}[r[5]]||'--';
+ if(t==='独立推广域名'){const d=PDOMS.find(x=>x[0]===r[1])||[];return d[1]==='x'?'已换下':d[1]?'在用':'空闲'}
+ if(t==='下载域名')return r[5]==='dl'?'在用':'备用';
+ return '在用'}
+function bakWarn(rows){const L=['主域名','推广泛域名','下载域名'].map(t=>[t,rows.filter(r=>r[2]===t&&r[3]&&useOf(r)==='备用').length]).filter(x=>x[1]<2);
+ return L.length?`<div class="alert w">备用不够：${L.map(x=>`${x[0]}只剩 ${x[1]} 个能用的备用`).join('；')}。每类少于 2 个时提醒，建议再加。</div>`:''}
+{const _df2=domFields;domFields=function(t,r){const a=_df2(t,r);
+ if(['主域名','推广泛域名','下载域名'].includes(t)){const u=r?useOf(r):'在用';a.splice(1,0,['使用情况',R(['在用','备用'],u==='备用'?'备用':'在用'),{full:1}])}
+ if(t!=='主域名')return a;
+ const i=a.findIndex(x=>x[0]==='备用主域名');const L=(DOMROWS.length?DOMROWS:[]).filter(x=>x[2]==='主域名'&&x[3]&&(!r||x[1]!==r[1])).map(x=>x[1]);
+ if(i>=0)a[i]=['备用主域名',`<div class="ck">${L.map(d=>`<label><input type="checkbox" checked> ${d}</label>`).join('')}</div><span class="note">可选多个，按顺序切：第一个也打不开就切下一个</span>`,{full:1}];
+ const j=a.findIndex(x=>x[0]==='自动切换');
+ a.splice(j+1,0,['被封告警','<div class="ck"><label><input type="checkbox" checked> 站内消息</label><label><input type="checkbox" checked> Telegram</label></div><span class="note">检测到打不开就通知，同时自动切到备用</span>',{full:1}]);
+ return a}}
 
 function layHtml(n){return '<span>'+n+(n===DLAY?'<span class="tag" style="background:#e8f7ee;color:#1a7f37;margin-left:6px">默认版面</span>':'')+'</span>'}
 Object.defineProperty(OPTS,'版面配置',{get:()=>LAYS.map(layHtml),configurable:true});
