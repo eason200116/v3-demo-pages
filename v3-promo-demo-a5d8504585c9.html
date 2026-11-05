@@ -68,11 +68,25 @@ tr.child td:first-child{padding-left:28px}tr.hl td{background:#fffbea}
 .ends{display:inline-flex;gap:3px}.ends i{white-space:nowrap;font-style:normal;font-size:11px;border-radius:3px;padding:0 4px;background:#eef2f7;color:#9aa3af}.ends i.on{background:#e3f0ff;color:var(--pri);font-weight:600}
 /* 弹层 */
 .mask{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:80;display:none}.mask.on{display:block}
-.modal{position:fixed;left:50%;top:8vh;transform:translateX(-50%);width:var(--w,600px);max-width:calc(100vw - 32px);max-height:84vh;background:#fff;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.2);z-index:90;display:none;flex-direction:column}.modal.on{display:flex}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:var(--w,600px);max-width:calc(100vw - 32px);max-height:84vh;background:#fff;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.2);z-index:90;display:none;flex-direction:column}.modal.on{display:flex}
 .mh{padding:16px 20px 12px;display:flex;align-items:center;gap:8px 16px;flex-wrap:wrap;font-size:16px;font-weight:600;padding-right:44px;position:relative}.mh .x{position:absolute;right:16px;top:14px;cursor:pointer;color:#888;font-weight:400;font-size:16px}
 .mh .vl{width:1px;height:14px;background:#d0d4da;margin:0 -4px}.mh .kv{font-size:14px;font-weight:400;white-space:nowrap}.mh .kv span{color:var(--mut)}.mh .kv b{font-weight:500}
-.mb{padding:4px 20px 0;overflow:auto}.mf{padding:16px 20px 20px;display:flex;justify-content:flex-end;gap:12px}
-.modal table{min-width:0}.modal td,.modal th{white-space:normal}.modal .ops{white-space:nowrap}.modal .foot{display:none}
+.mb{padding:16px 20px;overflow:auto;min-height:0;overscroll-behavior:contain;scrollbar-gutter:stable}.mf{padding:16px 20px;display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap;flex-shrink:0;border-top:1px solid var(--line)}
+.modal .mh{flex-shrink:0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.modal .mh .kv{white-space:normal;min-width:0;max-width:100%;overflow-wrap:anywhere}.modal .mh .kv b{overflow-wrap:anywhere}.modal .mh .vl{flex-shrink:0}
+.modal .fm{--dialog-row-gap:16px;gap:var(--dialog-row-gap) 24px}.modal .fm+.fm{margin-top:var(--dialog-row-gap,16px)}
+.modal .fr{align-items:start;min-width:0}.modal .fr>label{min-height:32px;line-height:20px;padding-top:6px;padding-bottom:6px;font-weight:400;gap:4px}.modal .fr>label .hi{flex-shrink:0}.modal .fr>label .rq{top:6px}
+.modal .fc{min-width:0;max-width:100%;min-height:32px;line-height:20px;overflow-wrap:anywhere}.modal .fr.ro>.fc{padding-top:6px;padding-bottom:6px}.modal .fr.upload>.fc{padding:0}
+.modal .fc .inp{max-width:100%;height:32px}.modal .fc textarea.inp{height:80px;min-height:80px}.modal .fc>span,.modal .fc>b,.modal .fc>a{max-width:100%;overflow-wrap:anywhere}.modal .fc>.note{display:block;margin:4px 0 0!important}.modal .fc>.note:first-child{margin-top:0!important}
+.modal .radio{min-height:32px;align-items:center;flex-wrap:wrap;gap:8px 16px}.modal .radio span{white-space:normal}.modal .ck{min-width:0;gap:8px 16px}.modal .ck label{min-width:0;overflow-wrap:anywhere}.modal .ck input{flex-shrink:0}
+.modal .upl,.modal .lpup{width:80px;height:80px;flex-shrink:0;border-color:var(--line);background:var(--th)}.modal .upload-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0}.modal .upload-row>.note{min-width:0;overflow-wrap:anywhere}
+.modal .field-inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}.modal .field-inline>.inp{flex:1 1 160px;width:auto;min-width:0}.modal .field-inline>.lpup{flex:0 0 80px}
+.modal .package-name{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}.modal .package-name #subPkgPre{min-width:0;max-width:100%;white-space:normal!important;overflow-wrap:anywhere}.modal .package-name #subPkgSuf{flex:1 1 160px!important;width:auto;min-width:0}
+.modal #chDmPick{max-width:100%}.modal #chShareX{flex-wrap:wrap}.modal #chShareX input{flex:1 1 160px;width:auto!important}.modal .bar,.modal .flt{flex-wrap:wrap;min-width:0}.modal .fi{min-width:0;max-width:100%;flex-wrap:wrap}.modal .fi .inp{min-width:0;max-width:100%}
+.modal .tw{max-width:100%;overflow-x:auto}.modal td,.modal th{overflow-wrap:anywhere}.modal .ops{white-space:normal}.modal .ops a{display:inline-block;white-space:nowrap}.modal pre{max-width:100%;overflow-wrap:anywhere;white-space:pre-wrap}.modal .alert{overflow-wrap:anywhere}.modal .alert:first-child{margin-top:0}
+.modal .lpwrap{grid-template-columns:minmax(0,1fr) 270px}.modal .lppv{min-width:0;padding-left:16px}.modal #lpF{min-width:0}.modal .lptabs{flex-wrap:wrap;gap:8px 16px;margin:16px 0}.modal .preview-layout{display:flex;gap:20px;align-items:flex-start;min-width:0}.modal .preview-layout>.preview-phone{width:280px;max-width:100%;flex-shrink:0}.modal .preview-layout>.preview-fields{flex:1;min-width:0}
+@media(max-width:740px){.modal{max-width:calc(100vw - 24px);max-height:calc(100dvh - 32px)}.modal .fm{grid-template-columns:minmax(0,1fr)}.modal .lpwrap{grid-template-columns:minmax(0,1fr)}.modal .lppv{border-left:0;border-top:1px solid var(--line);padding:16px 0 0}.modal #lpP{max-width:280px;margin:auto}.modal .preview-layout{flex-direction:column}.modal .preview-layout>.preview-phone{align-self:center}.modal .preview-layout>.preview-fields{width:100%}.modal .mh{padding-left:16px}.modal .mb,.modal .mf{padding:16px}.modal .mf .btn{height:auto;min-height:32px;white-space:normal}.modal .fc .field-inline{align-items:flex-start}}
+@media(max-width:420px){.modal .fm{--lw:112px!important}.modal .fr{grid-template-columns:var(--lw) minmax(0,1fr)}.modal .fr>label{white-space:normal}.modal .mh .vl{display:none}.modal .mh .kv{flex-basis:100%}.modal .fi{width:100%}.modal .fi .inp{flex:1}.modal .field-inline>.inp{flex-basis:100%}}
+.modal table{min-width:0}.modal td,.modal th{white-space:normal}.modal .ops{white-space:normal}.modal .foot{display:none}
 .fm{display:grid;grid-template-columns:repeat(var(--cols,1),minmax(0,1fr));gap:16px 24px}.fm .full{grid-column:1/-1}
 .fr{display:grid;grid-template-columns:var(--lw,110px) minmax(0,1fr);align-items:center}.fr>label{position:relative;white-space:nowrap;text-align:right;padding-right:12px;color:#333;display:flex;justify-content:flex-end;align-items:center;gap:4px}
 .fr>label i.rq{position:absolute;right:1px;color:var(--red);font-style:normal}.fr .inp{min-width:0;width:100%}.ell{display:inline-block;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}.fr .inp.bad{border-color:var(--red)!important;box-shadow:0 0 0 2px var(--red-soft)}.ferr{color:var(--red);font-size:12px;margin-top:4px}.inp{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.radio{flex-wrap:wrap;gap:4px 16px}.fr.ro>label{color:var(--mut)}
@@ -679,7 +693,7 @@ const CLOSEF='<button class="btn" onclick="closeDrawer()">关闭</button>';
 const OKF='<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="closeDrawer();toast(\'已保存\')">确定</button>';
 /* 弹窗：宽度只用 440/520/600/720/860；标题带信息按「标题 | 标签：值」 */
 function openDrawer(title,body,foot,w=600,kv){const t=title+(kv?'<i class="vl"></i>'+kv.map(([k,v])=>`<span class="kv"><span>${k}：</span><b>${v||'--'}</b></span>`).join(''):'');
- $('#dtitle').innerHTML=t+'<span class="x" onclick="closeDrawer()">✕</span>';$('#dbody').innerHTML=body;$('#dfoot').innerHTML=foot??OKF;const m=$('#modal');m.style.setProperty('--w',w+'px');$('#mask').classList.add('on');m.classList.add('on')}
+ $('#dtitle').innerHTML=t+'<span class="x" onclick="closeDrawer()">✕</span>';$('#dbody').innerHTML=body;$('#dfoot').innerHTML=foot??OKF;const m=$('#modal');m.style.setProperty('--w',Math.max(w,$('#dbody .fm.cols-2')?720:0)+'px');$('#dbody').scrollTop=0;$('#mask').classList.add('on');m.classList.add('on')}
 function closeDrawer(){$('#mask').classList.remove('on');$('#modal').classList.remove('on');const d=$('#pdr');if(d)d.classList.remove('on')}
 /* 统一「?」：只给改名后仍需解释的字段加，说明集中在 TIPS */
 const TIPS={
@@ -734,8 +748,9 @@ const TIPS={
 };
 const hi=k=>TIPS[k]?`<span class="hi" data-tip="${TIPS[k]}">?</span>`:'';
 /* 表单：标题左置右对齐、? 在标题前、必填星号挂在右侧；≥6 个字段一行两列 */
-function F(fields,lw=110){const n=fields.filter(f=>!(f[2]||{}).full).length;const cols=n>=6?2:1;
- return `<div class="fm" style="--cols:${cols}">${fields.map(([l,v,o={}])=>`<div class="fr ${o.full?'full':''} ${o.ro?'ro':''}" style="--lw:${lw}px${o.hide?';display:none':''}"><label>${hi(l)}${l}${o.req?'<i class="rq">*</i>':''}</label><div>${String(v).replace('class="inp ','data-l="'+l+'" class="inp ')}</div></div>`).join('')}</div>`}
+function F(fields,lw=110){const wide=(l,v,o={})=>o.full||/^(备注|包名|文件名|文件|Access Token|平台 Key|Test Event Code|域名|主域名|备用主域名|当前生效域名|推广链接|隐私政策链接|更新说明|兼容的母包版本)$/.test(l)||/<textarea/.test(String(v));const n=fields.filter(f=>!(f[2]||{}).hide).length;const cols=n>=6&&fields.some(([l,v,o])=>!wide(l,v,o))?2:1;
+ const labelWidth=Math.max(lw,...fields.map(([l])=>Math.min(156,[...l].reduce((n,c)=>n+(c.charCodeAt(0)>255?13:7),0)+(TIPS[l]?18:0)+23)));
+ return `<div class="fm cols-${cols}" style="--cols:${cols};--lw:${labelWidth}px">${fields.map(([l,v,o={}])=>`<div class="fr ${wide(l,v,o)?'full':''} ${o.ro?'ro':''} ${/class="(?:upl|lpup)(?: |")/.test(String(v))?'upload':''}"${o.hide?' style="display:none"':''}><label>${hi(l)}${l}${o.req?'<i class="rq">*</i>':''}</label><div class="fc">${String(v).replace('class="inp ','data-l="'+l+'" class="inp ')}</div></div>`).join('')}</div>`}
 const I=(v,ph)=>`<input class="inp" value="${v||''}" placeholder="${ph||'请输入'}">`, S=(v,ph)=>`<div class="inp ${v?'v':''}">${v||ph||'请选择'}</div>`;
 /* 版本号：只收英文字母、数字和 . - _ */
 const VNO_RE=/^[A-Za-z0-9._-]+$/;
@@ -862,9 +877,9 @@ function adTest(){const app=ST.ad.r.end==='APP'||ST.ad.r.end==='SHELL',code=ST.a
  toast(!okIn?'请先填'+tn:'测试事件已发出')}
 function renderAd(){const {r,step,p}=ST.ad;
   let b='';
-  if(step===0)b+=`<div class="banner" style="align-items:flex-start;flex-direction:column;gap:4px;margin-bottom:14px"><div><b>${p.name}</b>　${p.intro}</div><div class="note">要准备：<span id="adNeed">${adjCred(p,r.end).need}</span>　·　测试：${p.testTxt}　·　<a href="${p.doc}" target="_blank" rel="noopener">${p.docT} ↗</a></div></div>`+F([['商户',S(M),{req:1}],['配置名称',I(r.name),{req:1}],['广告平台',r.id?`<b style="font-weight:500">${p.name}</b>`:`<div class="radio">${PL.map(x=>`<span class="${x.name===p.name?'on':''}" onclick="adPlatSet('${x.name}')">${x.name}</span>`).join('')}</div>`,r.id?{ro:1}:{req:1,full:1}],['投放端',`<div class="radio" id="adEnd">${Object.values(KNAME).map(o=>`<span class="${o===KNAME[r.end]?'on':''}" onclick="adEndSet('${o}')">${o}</span>`).join('')}</div>`,{req:1,full:1}],
+  if(step===0)b+=F([['商户',S(M),{req:1}],['配置名称',I(r.name),{req:1}],['广告平台',r.id?`<b style="font-weight:500">${p.name}</b>`:`<div class="radio">${PL.map(x=>`<span class="${x.name===p.name?'on':''}" onclick="adPlatSet('${x.name}')">${x.name}</span>`).join('')}</div>`,r.id?{ro:1}:{req:1,full:1}],['投放端',`<div class="radio" id="adEnd">${Object.values(KNAME).map(o=>`<span class="${o===KNAME[r.end]?'on':''}" onclick="adEndSet('${o}')">${o}</span>`).join('')}</div>`,{req:1,full:1}],
    ['关联渠道',S(adChOf(r)||'','请选择渠道'),{req:1}],...(p.idL?[[adjCred(p,r.end).idL,I(r.pix,adjCred(p,r.end).idPh).replace('<input','<input id="adPix"'),{req:1}]]:[]),...(p.name==='TikTok'?[['TikTok App ID',`<input class="inp" id="ttAppId" value="${r.ttApp||''}" placeholder="粘贴 TikTok 后台的 App ID">`,{req:1,hide:!(r.end==='APP'||r.end==='SHELL')}]]:[]),...(p.keyL?[[adjCred(p,r.end).keyL,I(r.id?tok(r):'',adjCred(p,r.end).keyPh).replace('<input','<input id="adKey"'),{req:1}]]:[]),['状态',`<span class="sw ${!r.id||r.state?'on':''}"></span>`,{full:!p.keyL}],['备注',I(''),{full:1}]],120)+
-   (p.name==='Adjust'?'':`<div class="sec">回传事件<a href="${p.doc}" target="_blank" rel="noopener" style="margin-left:auto;font-weight:400">${p.docT} ↗</a></div>${adEvList(p,r.end)}`);
+   (p.name==='Adjust'?`<div class="bar"><a href="${p.doc}" target="_blank" rel="noopener">${p.docT} ↗</a></div>`:`<div class="sec">回传事件<a href="${p.doc}" target="_blank" rel="noopener" style="margin-left:auto;font-weight:400">${p.docT} ↗</a></div>${adEvList(p,r.end)}`);
   if(step===1){const app=r.end==='APP'||r.end==='SHELL',evs=evFor(p,r.end);
    b+=(p.test==='code'?F([p.name==='Kwai'?['测试点击编号','<input class="inp tcode" placeholder="从 Kwai 后台复制" style="min-width:0;width:100%">']:['Test Event Code',`<input class="inp tcode" placeholder="如 TEST12345，从 ${p.name} 后台的「Test Events」页复制" style="min-width:0;width:100%">`]],140):'')+
     F([['测试渠道',`<span>${adChOf(r)||'<span class="note">还没关联渠道，先去<a onclick="go(\'mCh\')">渠道管理</a>绑定</span>'}${(CHANNELS.find(c=>c.cfg===r.name)||{state:1}).state?'':' '+st('已停用','no')+'<span class="note" style="margin-left:8px">正式事件不发，测试事件照发</span>'}</span>`,{ro:1,full:1}]],140)+
@@ -913,12 +928,12 @@ function chH5Row(e,id){e.stopPropagation();const r=CHANNELS.find(x=>x.id===id);i
 function chCkAll(b){document.querySelectorAll('#page .chck').forEach(x=>x.checked=b.checked)}
 function chHis(id){const r=CHANNELS.find(x=>x.id===id);const L=DOMHIS.filter(x=>x[0]===id||(!r.dm&&x[0]==='全部自动子域名'&&(r.wr||wildOn())===x[2].slice(2)&&chT(r)<x[5]));if(r.sys)return toast('系统自带渠道，没有换域名记录');
  openDrawer('换域名记录',(L.length?table([{t:'旧域名',k:1},{t:'换成',k:2},{t:'范围',k:r=>r[0]==='全部自动子域名'?'一键替换（*.old1050.test 下的渠道）':'只这个渠道'},{t:'原因',k:3},{t:'操作人',k:4},{t:'时间',k:5}],L):'<div style="padding:28px;text-align:center;color:var(--sub)">这个渠道没换过域名</div>')+
- '<div class="alert">换域名不换渠道：渠道 code 不变，换之前、换之后注册的用户和充值都算这个渠道。换下的旧域名不再分配给别的渠道，免得数据混。</div>',CLOSEF,720,[['渠道',r.name],['渠道 code',r.id],['现在的链接',chOut(r)]])}
+ '<div class="alert">旧域名换下后不再分配给其他渠道。</div>',CLOSEF,720,[['渠道',r.name],['渠道 code',r.id],['现在的链接',chOut(r)]])}
 function chSwap(id){const r=CHANNELS.find(x=>x.id===id);
  openDrawer('换域名',F([['现在的域名',`<span>${r.dm}</span> ${hostOk(r)?st('正常','ok'):st('无法访问','err')}`,{full:1,ro:1}],
   ['新域名','<div class="inp" data-l="可用域名">选一个空闲的独立推广域名</div>',{req:1,full:1}],
   ['原因',R(['被封','到期','其他'],hostOk(r)?'其他':'被封'),{full:1}]],90)+
- `<div class="alert">换之后：渠道 code（${r.id}）不变，数据还算这个渠道；推广链接变成新域名。已经投出去的广告用的是旧链接，要到广告后台换成新链接。旧域名换下后不再分配给别的渠道。这次更换会记到「换域名记录」。</div>`,
+ `<div class="alert">更换后请同步更新广告后台的推广链接；旧域名不再分配给其他渠道。</div>`,
  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="chSwapSave()">确认更换</button>`,520,[['渠道',r.name],['渠道 code',r.id]])}
 function chSwapSave(){const v=$('#dbody div.inp[data-l="可用域名"]');if(!v.classList.contains('v')||v.textContent.includes('没有空闲'))return toast('请选新域名');closeDrawer();toast('已更换，推广链接已更新，已记入换域名记录')}
 let CHE='';
@@ -930,11 +945,10 @@ function freeDoms(){const L=PDOMS.filter(d=>!d[1]&&d[2]).map(d=>d[0]);return L.l
 function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web';CHE=id||'';const to=r.to||'落地页';
  openDrawer(id?'编辑渠道':'新增渠道',
  F([['商户',S(M),{req:1}],['渠道ID',id?`<span>${chCid(r)}</span>`:'<span class="note">保存后自动生成</span>',{ro:1}],['渠道名',I(r.name),{req:1}],['分组',S(r.grp||'','选择分组（可不选）')],
-  ['渠道类型',`<div class="radio${id?' dis':''}" id="chType">${['代理','官方'].map(o=>`<span class="${o===(r.type||'代理')?'on':''}" onclick="chTypeSet('${o}',${id?1:0})">${o}渠道</span>`).join('')}</div><span class="note" style="margin-left:10px">代理渠道挂一个代理（哪个等级都行，相当于这个代理的分享），必须填；官方渠道不挂代理</span>`,{req:1,full:1}],
+  ['渠道类型',`<div class="radio${id?' dis':''}" id="chType">${['代理','官方'].map(o=>`<span class="${o===(r.type||'代理')?'on':''}" onclick="chTypeSet('${o}',${id?1:0})">${o}渠道</span>`).join('')}</div><span class="note" style="margin-left:10px">代理渠道必填归属代理。</span>`,{req:1,full:1}],
   ['设备类型',`<div class="radio${id?' dis':''}" id="chEnd">${ENDS.map(o=>`<span class="${o===e?'on':''}" onclick="chEndSet('${o}',${id?1:0})">${o}</span>`).join('')}</div>`,{req:1,full:1}],
-  ['母包',`<span id="chMp">${MPOF[e]||''}</span><span class="note" style="margin-left:8px">按端自动带出；只有这一个母包，用户下载时系统把渠道号写进去，不重新打包</span>`,{full:1,ro:1}],
-  ['落地指向',`<div class="radio" id="chTo">${['落地页','主站首页','主站注册页'].map(o=>`<span class="${o===to?'on':''}" onclick="chToClk('${o}')">${o}</span>`).join('')}</div><span class="note" style="margin-left:10px">用户点广告后先到哪</span>`,{req:1,full:1}],
-  ['域名配置',(v=>`<div id="chDmPick" style="display:inline-block;width:320px;vertical-align:middle"><div class="inp ${v?'v':''}" data-l="域名配置">${v||'选一个空闲的独立推广域名'}</div></div><span class="note" style="margin-left:10px">只列出没被别的渠道用过、能访问的域名</span>`)(id?hostOf(r):''),{req:1,full:1}],
+  ['APP包',`<span id="chMp">${motherHtml(channelAppText(id?r:null))}</span>`,{full:1,ro:1}],
+  ['落地指向',`<div class="radio" id="chTo">${['落地页','主站首页','主站注册页'].map(o=>`<span class="${o===to?'on':''}" onclick="chToClk('${o}')">${o}</span>`).join('')}</div>`,{req:1,full:1}],
   ['落地页',S(r.lp||'','选落地页'),{req:1}],
   ['版面配置',`<div class="inp v" data-l="版面配置">${layHtml(r.lay||DLAY)}</div>`,{req:1}],
   ['安装设置',`<div style="display:flex;align-items:center;white-space:nowrap"><div class="radio" id="chIns">${['跟主站','单独设置'].map(o=>`<span class="${o===(r.ins||'跟主站')?'on':''}" onclick="chInsSet('${o}')">${o}</span>`).join('')}</div><a style="margin-left:10px" onclick="go('mGuide')">看主站默认</a></div><div id="chInsX" style="display:none;margin-top:6px;gap:8px;flex-wrap:wrap;align-items:center;width:100%"><span class="note">引导装</span><div class="inp v" data-l="引导装" style="width:110px">${(r.insv||{}).g||'PWA'}</div><span class="note">弹窗时机</span><div class="inp v" data-l="弹窗时机" style="width:190px">${(r.insv||{}).t||'访问首页'}</div><span class="note">安装奖励 ₹</span><input class="inp" style="width:80px;min-width:0" value="${(r.insv||{}).m||20}"></div>`,{full:1}],
@@ -953,13 +967,12 @@ function chToSet(t){document.querySelectorAll('#chTo span').forEach(x=>x.classLi
 function chBtnTxt(o){const to=$('#chTo .on')?.textContent||'落地页';return to==='落地页'?'落地页上的按钮会'+BTNOF[o]+'。':isApp(o)?'用户直接到'+to+'，页面上的下载按钮下载安装包（下载时写入渠道号）；主站入口同样读取点击编号，交给服务端。':'用户直接到'+to+'，渠道 code 和点击编号跟着带过去；主站入口同样读取点击编号，交给服务端。'}
 function chEndSet(o,lock,init){if(lock)return toast('建好后设备类型不能改，要换设备类型请另建渠道');
  document.querySelectorAll('#chEnd span').forEach(x=>x.classList.toggle('on',x.textContent===o));const app=isApp(o);
- const r=chFr('母包');if(r)r.style.display=app?'':'none';const sf=chFr('防封下载页');if(sf)sf.style.display=(app||o==='PWA')?'':'none';chLay();
- const m=$('#chMp');if(m)m.textContent=MPOF[o]||'';
+ const r=chFr('APP包');if(r)r.style.display=app?'':'none';const sf=chFr('防封下载页');if(sf)sf.style.display=(app||o==='PWA')?'':'none';chLay();
+ const m=$('#chMp');if(m)m.textContent=channelAppText(CHE?CHANNELS.find(c=>c.id===CHE):null);
  $('#chTip').textContent=chBtnTxt(o)}
 function chSave(ed){const ag=($('#chType .on')?.textContent||'')==='代理渠道',lp=($('#chTo .on')?.textContent||'')==='落地页';
  const v=k=>{const x=chFr(k)?.querySelector('div.inp');return !x||x.classList.contains('v')&&!x.textContent.includes('没有')};
  if(!chFr('渠道名').querySelector('input').value.trim())return toast('请填渠道名');
- if(!v('域名配置'))return toast('请选域名配置');
  if(lp&&!v('落地页'))return toast('请选落地页');
  if(ag&&!chFr('归属代理').querySelector('input').value.trim())return toast('代理渠道要填归属代理（代理 ID 或代理邀请码）');
  closeDrawer();toast(ed?'已保存':'已保存，推广链接已生成')}
@@ -1080,11 +1093,11 @@ PAGES.mLp={end:'m',title:'落地页管理',bd:['新',''],tab:0,render(){
   `<div class="lpgrid">${LPS.map(o=>{const u=lpUsed(o.name);return `<div class="lpcard"><div class="lpch"><span title="${o.name}">${o.name}</span><span class="tag">${lpLangs(o)}</span><span class="tag" style="background:#e8f6ee;color:#16794a">${o.type}</span></div>${lpPhone(o)}
    <div class="lpcf"><span class="ops"><a onclick="lpEdit('${o.id}')">编辑</a><a onclick="lpView('${o.id}')">预览</a><a onclick="lpCopy('${o.id}')">复制</a><a class="r" style="color:var(--red)" onclick="lpDel('${o.id}')">删除</a></span><span class="note">${u?`<a onclick="go('mCh')">${u} 个渠道在用</a>`:'没有渠道在用'}</span></div></div>`}).join('')}</div>`}};
 let LPEID='',LPL={},LPCUR='英语';function lpEdit(id){const o=LPS.find(x=>x.id===id)||{};LPEID=id||'';LPL=JSON.parse(JSON.stringify(o.L||{}));LPCUR='英语';
- openDrawer(id?'编辑落地页':'新增落地页',`<div class="lpwrap"><div id="lpF"></div><div class="lppv"><div class="sec" style="margin-top:0">实时预览 <span class="note">按钮点了去哪由渠道的端决定</span></div><div id="lpP"></div></div></div>`,
+ openDrawer(id?'编辑落地页':'新增落地页',`<div class="lpwrap"><div id="lpF"></div><div class="lppv"><div class="sec" style="margin-top:0">实时预览</div><div id="lpP"></div></div></div>`,
   `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="lpSave()">保存</button>`,860,id?[['页面路径','/lp/'+o.path]]:null);
  lpForm(o);$('#lpF').addEventListener('pick',ev=>{if(ev.target.closest('.fr')?.querySelector('label').textContent.includes('页面类型'))lpForm({...lpVals(),type:ev.target.textContent.trim()});else lpPrev()});
  $('#lpF').addEventListener('input',lpPrev);$('#lpF').addEventListener('click',e=>{if(e.target.closest('.radio span'))setTimeout(lpPrev,0)})}
-const lpUp=(on,note)=>`<div style="display:flex;align-items:center;gap:8px"><div class="lpup ${on?'on':''}" onclick="this.classList.add('on');this.innerHTML='已上传 ✓';lpPrev()">${on?'已上传 ✓':'＋ 上传'}</div>${note?`<span class="note">${note}</span>`:''}</div>`;
+const lpUp=(on,note)=>`<div class="upload-row"><div class="lpup ${on?'on':''}" onclick="this.classList.add('on');this.innerHTML='已上传 ✓';lpPrev()">${on?'已上传 ✓':'＋ 上传'}</div>${note?`<span class="note">${note}</span>`:''}</div>`;
 function lpForm(o){const t=o.type,lv=LPL[LPCUR]||{},en=LPCUR==='英语',ta=(v,ph)=>`<textarea class="inp ta" placeholder="${ph}">${v||''}</textarea>`;
  let a=[['页面名称',I(o.name,'给自己看的名字，如 注册送 500'),{req:1}],['页面类型',S(t,'请选择'),{req:1}],['页面路径',I(o.path,'如 reg500，用于预览链接'),{req:1}],['绑定域名',S(o.dom,'选绑定域名'),{req:1}]],g=[],b=[];
  if(t==='PWA'){a=a.concat([['logo上传',lpUp(o.logo,'512×512'),{req:1}],['logo上传-快捷方式',lpUp(o.logo2,'192×192'),{req:1}]]);
@@ -1108,7 +1121,7 @@ function lpSave(){const o=lpVals(),ks=LPLF[o.type]||[];for(const r of $('#lpF').
  const miss=ks.find(k=>!((LPL['英语']||{})[k]||'').trim());if(miss){if(LPCUR!=='英语'){LPCUR='英语';lpForm(o)}return toast('英语是默认语言，必须配置：请填写'+LPN[miss])}
  const part=OPTS['语言'].find(l=>l!=='英语'&&ks.some(k=>((LPL[l]||{})[k]||'').trim())&&!lpDone(LPL[l],o.type));if(part){if(LPCUR!==part){LPCUR=part;lpForm(o)}return toast('「'+(LN[part]||part)+'」只填了一部分，请填完或清空')}
  if(LPS.some(x=>x.path===o.path&&x.id!==LPEID))return toast('页面路径「'+o.path+'」已被占用，换一个');closeDrawer();toast('已保存')}
-function lpView(id){const o=LPS.find(x=>x.id===id);openDrawer('预览落地页',`<div style="display:flex;gap:20px;align-items:flex-start"><div style="width:280px;flex:none">${lpPhone(o,500)}</div><div style="min-width:0">${F([['页面路径','/lp/'+o.path,{ro:1}],['在用的渠道',CHANNELS.filter(c=>c.to==='落地页'&&c.lp===o.name).map(c=>c.name+'（'+c.id+'）').join('<br>')||'--',{ro:1}]],90)}<p class="note">推广链接在渠道管理里拿。落地页本身不带渠道，哪个渠道的落地指向选了它，就挂在那个渠道的推广域名上。</p></div></div>`,`<button class="btn" onclick="closeDrawer()">关闭</button><button class="btn p" onclick="toast('演示：已复制在用渠道的推广链接')">复制在用渠道的链接</button>`,720)}
+function lpView(id){const o=LPS.find(x=>x.id===id);openDrawer('预览落地页',`<div class="preview-layout"><div class="preview-phone">${lpPhone(o,500)}</div><div class="preview-fields">${F([['页面路径','/lp/'+o.path,{ro:1}],['在用的渠道',CHANNELS.filter(c=>c.to==='落地页'&&c.lp===o.name).map(c=>c.name+'（'+c.id+'）').join('<br>')||'--',{ro:1}]],90)}</div></div>`,`<button class="btn" onclick="closeDrawer()">关闭</button><button class="btn p" onclick="toast('演示：已复制在用渠道的推广链接')">复制在用渠道的链接</button>`,720)}
 function lpCopy(id){const o=LPS.find(x=>x.id===id);LPS.push({...o,id:'LP0'+(LPS.length+1),name:o.name+'-副本',path:o.path+'-copy'});render();toast('已复制，新页面在最后')}
 function lpDel(id){const o=LPS.find(x=>x.id===id),u=lpUsed(o.name);
  if(u)return openDrawer('删除',`<div class="alert w">「${o.name}」有 ${u} 个渠道在用，不能删除。先到渠道管理里给这些渠道换一个落地页。</div>`,`<button class="btn" onclick="closeDrawer()">知道了</button><button class="btn p" onclick="go('mCh')">去渠道管理</button>`,440);
@@ -1166,28 +1179,59 @@ function pwaPub(){const d=PWA.d;
 
 /* ---- 总控 · 应用与版本 ---- */
 PAGES.aApp={end:'a',title:'应用与版本',bd:['新',''],tab:0,render(){
-  const t=this.tab;let h=chg('new','总控维护母包、发布版本、处理更新问题，合在一页，两个页签：母包、版本（原「版本发布」和「更新与维护」合并，每个版本带升级进度、问题数、处理状态）。每个商户一个母包，先选商户和应用，再切页签；版本只发给这个商户。商户端只能用这里发布的版本。')+
-  `<div class="selrow">${inp('集团','亚太集团')}${inp('商户',M)}${inp('应用','daman（安卓原生 / 安卓壳包）',{w:260})}<span class="note" style="margin-left:auto">选「全部商户」时看所有母包</span></div>`+
-  tabs(['母包','版本'],t,'aAppTab');
-  if(t===0)h+=`<div class="bar"><button class="btn p" onclick="motherNew()">＋ 新增母包</button></div>`+table([
-   {t:'集团',k:()=>'亚太集团'},{t:'商户',k:()=>pill(M)},{t:'应用',k:()=>'daman'},{t:'母包ID',k:0},{t:'母包名称',k:1},{t:'类型',k:r=>`<span class="tag">${r[2]}</span>`},{t:'版本号',k:3},{t:'状态',k:6},{t:'最后修改人/时间',k:7},{t:'操作',k:r=>`<span class="ops"><a onclick="motherEdit('${r[0]}')">编辑</a></span>`}].map(c=>c),MPS.length?MPS:(MPS=[
-   ['MP01','安卓原生母包','安卓原生','v3.1.0','AR-Release · 2027-08-30',['读取渠道号'],st('启用','ok'),who('admin01','2026-11-02 15:00')],
-   ['MP02','安卓壳包母包','安卓壳包','v2.3.1','AR-Shell · 2027-03-12',['读取渠道号','壳内网页桥接'],st('启用','ok'),who('admin02','2026-10-30 18:00')]]));
-  if(t===1)h+=flt([inp('母包'),inp('发布状态'),inp('问题类型'),inp('处理状态')])+`<div class="bar"><button class="btn p" onclick="verNew()">＋ 新建版本</button></div>`+table([
-   {t:'版本ID',k:r=>(VEXT[r[0]]||{}).id||'--'},{t:'版本号',k:0},{t:'母包',k:1},{t:'更新方式',k:3},{t:'更新类型',k:r=>VTYPE[r[0]]==='强制更新'?'<span class="tag" style="background:#fdecee;color:#c03">强制更新</span>':'<span class="tag">建议更新</span>'},{t:'更新说明',l:1,k:4},{t:'测试结果',k:6},{t:'发布状态',k:7},{t:'文件大小',k:r=>(VEXT[r[0]]||{}).size||'--'},{t:'下载地址',k:r=>r[7].includes('草稿')&&!(VEXT[r[0]]||{}).size?'--':`<a onclick="toast('演示：开始下载 daman_${r[0]}${/热更/.test(r[3])?'.zip':'.apk'}')">下载</a>`},
+  const t=this.tab;let h=chg('new','两个页签：母包、自动打包队列。母包页维护每个母包的当前版本；自动打包队列查看各商户渠道的打包状态、进度和日志。')+tabs(['母包','自动打包队列'],t,'aAppTab');
+  if(t===1)return h+aQueuePage();
+  ensureMothers();
+  const rows=MPS.map(m=>motherCurrent(m));
+  h+=`<div class="selrow">${inp('集团','亚太集团')}${inp('商户',M)}${inp('应用','daman（安卓原生 / 安卓壳包）',{w:260})}<span class="note" style="margin-left:auto">选「全部商户」时看所有母包</span></div>`+
+   flt([inp('母包'),inp('发布状态'),inp('问题类型'),inp('处理状态')])+`<p class="note">启用/停用控制能否生成新子包；发布/下架控制商户能否选择版本；已发旧包不变。</p><div class="bar"><button class="btn p" onclick="motherNew()">＋ 新增母包</button></div>`+table([
+   {t:'商户',k:r=>pill(r._mother._merchant||M)},{t:'集团',k:r=>AGROUPS[r._mother._merchant||M]||'--'},{t:'应用',k:r=>motherApp(r._mother)},
+   {t:'版本ID',k:r=>r._mother._meta.id},{t:'版本号',k:0},{t:'母包ID',k:r=>r._mother[0]},{t:'母包名称',k:r=>motherHtml(r._mother[1])},{t:'类型',k:r=>`<span class="tag">${r._mother[2]}</span>`},{t:'母包状态',k:r=>r._mother[6]},
+   {t:'更新方式',k:3},{t:'更新类型',k:r=>st(r._mother._updateType,'no')},{t:'更新说明',l:1,k:r=>motherHtml(r[4])},{t:'发布状态',k:7},{t:'文件大小',k:r=>r._mother._meta.size||'--'},{t:'下载地址',k:r=>r._mother._meta.size?`<a onclick="motherAction('${r._mother[0]}','download')">下载</a>`:'--'},
    {t:'升级进度',cls:'newc',k:r=>r[8]?`<span class="prog"><i style="width:${r[8][0]}%"></i></span>${r[8][1]}`:'--'},
-   {t:'问题数',cls:'newc',k:r=>{const n=ISSUES.filter(x=>x[8]===r[0]).length;return `<a onclick="verIssues('${r[0]}')">${n}</a>`+`<span style="display:none">${ISSUES.filter(x=>x[8]===r[0]).map(x=>x[1]).join(' ')}</span>`}},
-   {t:'问题类型',cls:'newc',k:r=>{const L=[...new Set(ISSUES.filter(x=>x[8]===r[0]).map(x=>x[1]))];return L.length?L.join('、'):'--'}},{t:'处理状态',cls:'newc',k:r=>{const L=ISSUES.filter(x=>x[8]===r[0]);return !L.length?'--':L.some(x=>x[6]!=='已修复')?st('处理中','run'):st('已修复','ok')}},{t:'最后修改人/时间',k:r=>(VEXT[r[0]]||{}).u||'--'},
-   {t:'操作',k:r=>`<span class="ops">${r[7].includes('草稿')?`<a onclick="verEdit('${r[0]}')">编辑</a><a onclick="verPub('${r[0]}')" ${/已通过/.test(r[6])?'':'style="color:var(--mut)"'}>发布</a><a class="r" onclick="verDel('${r[0]}')">删除</a>`:`<a onclick="verView('${r[0]}')">查看</a>`}${r[7].includes('已发布')?`<a onclick="verRollback('${r[0]}')">回滚</a><a class="r">下架</a>`:''}</span>`}],VERS)+
-   `<p class="note">原「更新与维护」并到这里：每个版本的升级进度、问题数、处理状态放在同一行，点「问题」看这个版本的问题并处理。强制更新：系统自动重建这个商户所有渠道的子包，下载链接不变，商户端只收到只读通知和更新记录，不用重新上传；传到应用商店的子包不会自己更新，商户端会标「需人工重新上传」。建议更新：商户在「版本更新」里点「更新」选渠道，系统重建这些渠道的子包。热更（网页内容）不用重建子包。子包用母包的签名证书；App 启动时检查版本、提示用户更新，强制更新靠这个让已装的 App 也升级。</p>`;
+   {t:'问题数',cls:'newc',k:r=>`<a onclick="motherIssues('${r._mother[0]}')">${motherIssueRows(r._mother).length}</a>`},
+   {t:'问题类型',cls:'newc',k:r=>[...new Set(motherIssueRows(r._mother).map(x=>x[1]))].join('、')||'--'},
+   {t:'处理状态',cls:'newc',k:r=>{const L=motherIssueRows(r._mother);return !L.length?'--':L.some(x=>x[6]!=='已修复')?st('处理中','run'):st('已修复','ok')}},
+   {t:'最后修改人/时间',k:r=>r._mother[7]},
+   {t:'操作',k:r=>{const id=r._mother[0];return `<span class="ops"><a onclick="motherEdit('${id}')">编辑母包</a><a onclick="motherAction('${id}','view')">查看</a>${r[7].includes('草稿')?`<a onclick="motherAction('${id}','publish')">发布</a><a class="r" onclick="motherAction('${id}','delete')">删除</a>`:''}${r[7].includes('已发布')?`<a onclick="motherAction('${id}','rollback')">回滚</a><a class="r" onclick="motherAction('${id}','unpublish')">下架</a>`:''}</span>`}}],rows);
   return h}};
-function aAppTab(i){PAGES.aApp.tab=i;render()}
-function verNew(d){d=d||{};const ed=!!d.v;openDrawer(ed?'编辑版本':'新建版本',
+function aAppTab(i){PAGES.aApp.tab=i===1?1:0;render()}
+/* 总控自动打包队列：本地内存演示，刷新才推进打包进度。 */
+// 集团归属来源：V3 src/config/merchantList.ts 的 MERCHANT_ORG_LIST。
+const AGROUPS={'(1050)daman':'亚太集团','(1048)91club':'亚太集团','(1021)55club':'南亚集团','(1070)bdggame':'东南亚集团'};
+const AQUEUE={now:'2026-11-04 16:00:00',refreshes:0,draft:{merchant:'',status:'',mother:''},query:{merchant:'',status:'',mother:''},rows:[
+ {id:'Q20261104009',merchant:'(1050)daman',channel:'渠道 C',code:'FB_SHELL_IN_001',mother:'安卓壳包母包',mp:'MP02',version:'v2.3.1',trigger:'母包发布',status:'run',progress:45,submit:'2026-11-04 15:57:30',start:'2026-11-04 15:58:00',finish:''},
+ {id:'Q20261104008',merchant:'(1048)91club',channel:'官方安卓',code:'self_APK_IN_001',mother:'91club 安卓原生母包',mp:'MP1048-01',version:'v3.1.0',trigger:'商户手动',status:'run',progress:35,submit:'2026-11-04 15:50:00',start:'2026-11-04 15:50:30',finish:''},
+ {id:'Q20261104007',merchant:'(1021)55club',channel:'代理安卓',code:'agt_APK_IN_001',mother:'55club 安卓原生母包',mp:'MP1021-01',version:'v3.1.0',trigger:'母包发布',status:'pending',progress:0,submit:'2026-11-04 15:59:20',start:'',finish:''},
+ {id:'Q20261104006',merchant:'(1070)bdggame',channel:'官方壳包',code:'self_SHELL_BD_001',mother:'bdggame 安卓壳包母包',mp:'MP1070-02',version:'v2.4.0',trigger:'商户手动',status:'pending',progress:0,submit:'2026-11-04 15:59:00',start:'',finish:''},
+ {id:'Q20261104005',merchant:'(1050)daman',channel:'官方安卓',code:'self_APK_IN_001',mother:'安卓原生母包',mp:'MP01',version:'v3.1.0',trigger:'商户手动',status:'ok',progress:100,submit:'2026-11-04 15:40:00',start:'2026-11-04 15:40:20',finish:'2026-11-04 15:43:10'},
+ {id:'Q20261104004',merchant:'(1050)daman',channel:'渠道 F',code:'KW_SHELL_IN_001',mother:'安卓壳包母包',mp:'MP02',version:'v2.3.1',trigger:'母包发布',status:'err',progress:65,submit:'2026-11-04 15:30:00',start:'2026-11-04 15:30:30',finish:'2026-11-04 15:32:40',error:'签名配置校验失败，请检查母包签名'},
+ {id:'Q20261104003',merchant:'(1021)55club',channel:'官方壳包',code:'self_SHELL_IN_001',mother:'55club 安卓壳包母包',mp:'MP1021-02',version:'v2.3.1',trigger:'商户手动',status:'ok',progress:100,submit:'2026-11-04 14:10:00',start:'2026-11-04 14:10:20',finish:'2026-11-04 14:13:00'},
+ {id:'Q20261104002',merchant:'(1070)bdggame',channel:'代理安卓',code:'agt_APK_BD_001',mother:'bdggame 安卓原生母包',mp:'MP1070-01',version:'v3.1.0',trigger:'商户手动',status:'timeout',progress:30,submit:'2026-11-04 13:30:00',start:'2026-11-04 13:30:20',finish:'2026-11-04 13:41:00',error:'打包超过10分钟，任务已超时，进度保留在30%'},
+ {id:'Q20261103001',merchant:'(1050)daman',channel:'代理安卓',code:'agt_APK_IN_001',mother:'安卓原生母包',mp:'MP01',version:'v3.1.0',trigger:'母包发布',status:'ok',progress:100,submit:'2026-11-03 17:00:00',start:'2026-11-03 17:00:20',finish:'2026-11-03 17:03:00'}]};
+const AQMOTHERS=[...new Map(AQUEUE.rows.map(r=>[r.mp,r.mother])).entries()];
+const AQSTATUS={pending:'排队中',run:'打包中',ok:'成功',err:'失败',timeout:'超时'};
+function aQueueSelect(key,label,options){return `<div class="fi"><label>${label}</label><select class="inp v" aria-label="${label}" onchange="AQUEUE.draft.${key}=this.value"><option value="">全部</option>${options.map(([value,name])=>`<option value="${value}"${AQUEUE.draft[key]===value?' selected':''}>${name}</option>`).join('')}</select></div>`}
+function aQueueFilter(reset){if(reset)AQUEUE.draft={merchant:'',status:'',mother:''};AQUEUE.query={...AQUEUE.draft};render()}
+function aQueueElapsed(r){return r.start?Math.max(0,(Date.parse(AQUEUE.now.replace(' ','T')+'Z')-Date.parse(r.start.replace(' ','T')+'Z'))/1000):0}
+function aQueueTime(r){if(!r.start)return '--';const end=r.finish||AQUEUE.now;const seconds=Math.max(0,(Date.parse(end.replace(' ','T')+'Z')-Date.parse(r.start.replace(' ','T')+'Z'))/1000);return `${Math.floor(seconds/60)}分${seconds%60}秒`+(r.finish?`<span class="sub">${r.finish}</span>`:'')}
+function aQueuePage(){const q=AQUEUE.query,L=AQUEUE.rows.filter(r=>(!q.merchant||r.merchant===q.merchant)&&(!q.status||r.status===q.status)&&(!q.mother||r.mp===q.mother)).sort((a,b)=>({run:0,pending:1,ok:2,err:2,timeout:2}[a.status]-{run:0,pending:1,ok:2,err:2,timeout:2}[b.status])||b.submit.localeCompare(a.submit));
+ const n=status=>AQUEUE.rows.filter(r=>r.status===status).length;const today=AQUEUE.rows.filter(r=>r.status==='ok'&&r.finish.slice(0,10)===AQUEUE.now.slice(0,10)).length;
+ return `<div class="flt">${aQueueSelect('merchant','商户',OPTS['商户'].map(m=>[m,m]))}${aQueueSelect('status','状态',Object.entries(AQSTATUS))}${aQueueSelect('mother','母包',AQMOTHERS)}<div class="btns"><button class="btn p" onclick="aQueueFilter(false)">⌕ 搜索</button><button class="btn" onclick="aQueueFilter(true)">↻ 重置</button></div></div>`+
+ `<div class="bar"><span>排队中 <b>${n('pending')}</b>　打包中 <b>${n('run')}</b>　今日成功 <b>${today}</b>　失败 <b>${n('err')}</b>　超时 <b>${n('timeout')}</b></span><button class="btn" style="margin-left:auto" onclick="aQueueRefresh()">↻ 刷新</button></div>`+
+ table([{t:'商户',k:r=>pill(r.merchant)},{t:'集团',k:r=>AGROUPS[r.merchant]||'--'},{t:'队列号',k:'id'},{t:'渠道',l:1,k:r=>`${r.channel}<span class="sub">${r.code}</span>`},{t:'母包',k:r=>`${r.mother}<span class="sub">${r.mp}</span>`},{t:'目标版本号',k:'version'},{t:'<span>触发方式</span>',k:'trigger'},{t:'状态',k:r=>st(AQSTATUS[r.status],r.status==='pending'?'no':r.status==='timeout'?'err':r.status)},{t:'进度',k:r=>`<span class="prog"><i style="width:${r.progress}%;background:var(${['err','timeout'].includes(r.status)?'--red':'--pri'})"></i></span><span${['err','timeout'].includes(r.status)?' style="color:var(--red)"':''}>${r.progress}%</span>`},{t:'提交时间',k:'submit'},{t:'开始时间',k:r=>r.start||'--'},{t:'耗时/完成时间',k:aQueueTime},{t:'操作',k:r=>`<span class="ops">${r.status==='pending'?`<a class="r" onclick="aQueueCancel('${r.id}')">取消</a>`:r.status==='run'?`<a onclick="aQueueLog('${r.id}')">查看日志</a>`:['err','timeout'].includes(r.status)?`${r.status==='timeout'?`<a onclick="aQueueLog('${r.id}')">查看日志</a>`:''}<a onclick="aQueueRetry('${r.id}')">重试</a>`:`<a onclick="aQueueView('${r.id}')">查看</a>`}</span>`}],L)+(!L.length?'<p class="note">没有符合条件的数据</p>':'')}
+function aQueueRefresh(merchant){AQUEUE.refreshes++;AQUEUE.now=new Date(Date.parse(AQUEUE.now.replace(' ','T')+'Z')+30000).toISOString().slice(0,19).replace('T',' ');AQUEUE.rows.forEach((r,i)=>{if(merchant&&r.merchant!==merchant)return;if(!['pending','run'].includes(r.status))return;if(r.status==='run'&&aQueueElapsed(r)>600){r.status='timeout';r.finish=AQUEUE.now;r.error='打包超过10分钟，任务已超时，进度保留在'+r.progress+'%';return}if(r.artifact){const error=subQueueCheck(r);if(error){r.status='err';r.finish=AQUEUE.now;r.error=error;return}}if(r.status==='pending'){r.status='run';r.start=AQUEUE.now;r.finish='';r.progress=0}if(aQueueElapsed(r)>600){r.status='timeout';r.finish=AQUEUE.now;r.error='打包超过10分钟，任务已超时，进度保留在'+r.progress+'%';return}r.progress=Math.min(100,r.progress+10+(AQUEUE.refreshes+i)%4*5);if(r.progress===100){r.status='ok';r.finish=AQUEUE.now;subQueueComplete(r)}});render();toast('已刷新打包进度')}
+function aQueueCancel(id){const i=AQUEUE.rows.findIndex(r=>r.id===id&&r.status==='pending');if(i<0)return;if(CUR==='mApp'&&AQUEUE.rows[i].merchant!==M)return toast('当前商户不能操作此任务');AQUEUE.rows.splice(i,1);render();toast('已取消，现有成功包保持不变')}
+function aQueueRetry(id){const r=AQUEUE.rows.find(r=>r.id===id&&['err','timeout'].includes(r.status));if(!r)return;if(CUR==='mApp'&&r.merchant!==M)return toast('当前商户不能操作此任务');ensureMothers();if(r.artifact){const error=subQueueCheck(r);if(error)return toast(error);if(AQUEUE.rows.some(q=>q!==r&&q.artifact&&q.merchant===r.merchant&&q.code===r.code&&['pending','run'].includes(q.status)))return toast('这个渠道已有排队或打包中的任务')}
+ const mother=MPS.find(m=>m[0]===r.mp&&(m._merchant||M)===r.merchant);if(mother&&!/启用/.test(mother[6]))return toast('母包已停用，不能重新打包；已发旧包不变');if(mother&&!motherCurrent(mother)[7].includes('已发布'))return toast('母包当前版本未发布或已下架，不能重新打包');Object.assign(r,{status:'pending',progress:0,submit:AQUEUE.now,start:'',finish:'',error:''});render();toast('已重新排队')}
+function aQueueLog(id){const r=AQUEUE.rows.find(r=>r.id===id);if(!r)return;const lines=[`${r.submit} 已提交：${r.merchant} / ${r.code}`,`${r.start||AQUEUE.now} 已校验母包 ${r.mp}，目标版本 ${r.version}`,['err','timeout'].includes(r.status)?`${r.finish} ${r.error||AQSTATUS[r.status]}`:`${AQUEUE.now} 正在生成渠道安装包，进度 ${r.progress}%`];openDrawer('查看日志',`<div class="note">演示日志</div><pre style="white-space:pre-wrap;line-height:1.8">${lines.join('\n')}</pre>`,CLOSEF,600,[['队列号',id]])}
+function aQueueView(id){const r=AQUEUE.rows.find(r=>r.id===id&&r.status==='ok');if(!r)return;openDrawer('查看',F([['商户',r.merchant,{ro:1}],['渠道',`${r.channel}（${r.code}）`,{ro:1}],['母包',`${r.mother}（${r.mp}）`,{ro:1}],['目标版本号',r.version,{ro:1}],...(r.artifact?[['APP包',motherHtml(r.artifact.file),{ro:1}],['文件大小',r.artifact.size,{ro:1}]]:[]),['状态',st('成功','ok'),{ro:1}],['进度','100%',{ro:1}],['完成时间',r.finish,{ro:1}],['耗时',aQueueTime(r).split('<')[0],{ro:1}]],110),CLOSEF,720,[['队列号',id]])}
+function verNew(d){if(CUR==='aApp'){const r=d?.v&&VERS.find(v=>v[0]===d.v);const m=r&&MPS.find(x=>x[0]===r._motherId||x[1]===r[1]);return m?motherEdit(m[0]):motherNew()}d=d||{};const ed=!!d.v;openDrawer(ed?'编辑版本':'新建版本',
  F([['商户',`<span>${M}</span>`,{ro:1}],['母包',S(d.mp||'安卓壳包母包'),{req:1}],['版本号',VNO(d.v||'v2.4.1'),{req:1}],['更新方式',R(['安装包升级','热更网页内容','热更配置'],d.how||'热更网页内容'),{req:1,full:1}],['更新类型',R(['强制更新','建议更新'],d.type||'建议更新'),{req:1}],
   ['兼容的母包版本',I(d.cp||'≥ v2.3.0')],['更新说明',`<textarea class="inp ta" placeholder="请输入">${d.note||''}</textarea>`,{req:1,full:1}],['上传文件',d.size?`<span>daman_${d.v}.apk（${d.size}）</span> <button class="btn sm">重新选择</button>`:'<button class="btn sm">选择文件</button>',{full:1}]],140),
  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn" onclick="verSaveD('${d.v||''}',0)">存草稿</button><button class="btn p" onclick="verSaveD('${d.v||''}',1)">确定</button>`,720,ed?[['版本ID',d.id]]:undefined)}
 function verEdit(v){const r=VERS.find(x=>x[0]===v);if(!r)return;const e=VEXT[v]||{};verNew({v,mp:r[1],how:r[3],type:VTYPE[v],cp:/^--/.test(r[9])?'':r[9],note:r[4],size:e.size,id:e.id})}
-function verSaveD(old,sub){const b=$('#dbody');const v=(b.querySelector('input.vno').value||'').trim();const note=(b.querySelector('textarea').value||'').trim();if(!v)return toast('请填版本号');if(!note)return toast('请填更新说明');
+function verSaveD(old,sub){if(CUR==='aApp')return toast('请通过编辑母包修改版本');const b=$('#dbody');const v=(b.querySelector('input.vno').value||'').trim();const note=(b.querySelector('textarea').value||'').trim();if(!v)return toast('请填版本号');if(!note)return toast('请填更新说明');
  const r=old&&VERS.find(x=>x[0]===old);if(r){const mp=chFr('母包')?.querySelector('div.inp')?.textContent.trim();const how=chFr('更新方式')?.querySelector('.radio .on')?.textContent;const ty=chFr('更新类型')?.querySelector('.radio .on')?.textContent;
   if(v!==old){VERS[VERS.indexOf(r)][0]=v;VEXT[v]=VEXT[old];VTYPE[v]=VTYPE[old]}r[1]=mp||r[1];r[3]=how||r[3];r[4]=note;VTYPE[v]=ty||VTYPE[v];(VEXT[v]||{}).u=who('admin01','2026-11-04 16:00');if(sub)r[6]=st('验证中','run')}
  closeDrawer();render();toast(sub?'已提交测试，测试通过后才能发布':'已存草稿')}
@@ -1280,7 +1324,7 @@ function confirmAct(a,act){const o=rowObj(a);const [tip,kind,ok,stTxt]=CONFIRM[a
   if(sc&&stTxt){const k={'已下架':'no','已停止':'no','写入中':'run','平台已接收':'ok','已发布':'ok','验证中':'run','已选用':'ok','处理中':'run','已授权':'ok'}[stTxt]||'ok';sc.innerHTML=st(stTxt,k)}
   if(act==='发布'){const v=o.get('测试结果');}}}
 function domainNew(){openDrawer('新增域名',F([['商户',S(M),{req:1}],['域名',I('','须以 https:// 开头'),{req:1}],['用途',S(''),{req:1}],['状态','<span class="sw on"></span>'],['备注',I('')]],110),null,720)}
-function motherNew(){openDrawer('新增母包',F([['集团','<span>亚太集团</span>',{ro:1}],['商户',S(M),{req:1}],['应用','<span>daman</span>',{ro:1}],['母包名称',I(''),{req:1}],['类型',S(''),{req:1}],['版本号',VNO('','如 v1.0.0'),{req:1}],['上传安装包','<button class="btn sm" onclick="toast(\'演示：选择文件\')">选择文件</button>',{full:1}]],120),null,720)}
+function motherNew(){motherForm(null)}
 function updateNew(){openDrawer('安排更新',F([['目标版本',S('安卓壳包 v2.4.0'),{req:1}],['更新方式','<span>打开时自动更新</span> <span class="note">（由总控发布时定）</span>',{ro:1}],['更新范围',R(['全部 App 渠道','指定渠道'],'全部 App 渠道'),{req:1,full:1}],['渠道',S('','指定渠道时选择')],['开始时间',I('立即')]],110)+'<div class="alert">打开时自动更新：用户不用重装，下次打开应用就是新版本。提示下载新包：用户打开应用时会提示下载安装新包。</div>',
  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="closeDrawer();toast('已安排更新')">确定</button>`,600)}
 function historyModal(){openDrawer('配置历史',table([{t:'版本',k:0},{t:'修改内容',k:1},{t:'修改人',k:2},{t:'时间',k:3}],[['v3','更换 Access Token','运营-李娜','2026-11-01 16:40'],['v2','更换 Pixel ID','运营-李娜','2026-10-30 11:02'],['v1','新建','运营-李娜','2026-10-28 10:12']]),CLOSEF,600)}
@@ -1494,7 +1538,7 @@ const DOMRM={'7000':'当前版面主域名','7001':'备用主域名','7003':'备
 const DOMTYPES=['主域名','推广泛域名','独立推广域名','跳转域名','防封下载页','下载域名'];OPTS['域名类型']=DOMTYPES;
 function domFields(t,r){const d=r?r[1]:'';const base=[['域名类型',`<div class="inp v" data-l="域名类型">${t}</div>`,{req:1,full:1}]];
  const dm=(ph)=>['域名',I(d,ph),{req:1,full:1}];
- const m={'主域名':[['版面配置',`<div class="inp v" data-l="版面配置">${layHtml(DLAY)}</div>`,{req:1,full:1}],dm('如 https://www.1050.test'),['默认分享卡片',`<div style="display:flex;gap:8px;align-items:center"><input class="inp" style="width:180px" placeholder="标题" value="daman - Play & Win"><input class="inp" style="width:220px" placeholder="描述"><div class="lpup on">已上传 ✓</div></div>`,{full:1}]],
+ const m={'主域名':[['版面配置',`<div class="inp v" data-l="版面配置">${layHtml(DLAY)}</div>`,{req:1,full:1}],dm('如 https://www.1050.test'),['默认分享卡片',`<div class="field-inline"><input class="inp" style="width:180px" placeholder="标题" value="daman - Play & Win"><input class="inp" style="width:220px" placeholder="描述"><div class="lpup on">已上传 ✓</div></div>`,{full:1}]],
   '推广泛域名':[dm('如 *.go1050.test，渠道自动生成 渠道code.go1050.test'),['绑定渠道','<span>自动给每个渠道生成子域名</span><span class="note" style="margin-left:8px">渠道建好后，在下面给每个渠道选落到哪</span>',{full:1,ro:1}]],
   '独立推广域名':[dm('如 https://fb-a.1050.test，一个只给一个渠道'),(()=>{const ch=r&&CHANNELS.find(c=>c.dm===r[1]);return ch?['绑定渠道',`<span>${ch.name}（${ch.id}）</span>`,{full:1,ro:1}]:['绑定渠道','<span class="note">空闲。新增渠道时在「推广域名」里选它，绑好后在这里选落到哪</span>',{full:1,ro:1}]})()],
   '跳转域名':[dm('如 https://jump1.1050.test')],
@@ -1643,7 +1687,7 @@ TIPS['版面配置']='V3 的商户版面（总控「商户版面配置」里给�
 TIPS['绑定渠道']='渠道管理里用到这个域名的渠道，没有渠道用到显示 --。主域名：落地指向是主站首页或注册页的渠道；推广域名、跳转域名：渠道里选的那个；防封下载页：安卓和 PWA 渠道（用默认的随机轮换）；下载域名：安卓渠道下载安装包。用户打开后落到哪里（落地页、主站首页、主站注册页），在新增渠道时按链路选，域名这里不设。';
 document.addEventListener('pick',ev=>{const el=ev.target;if(el&&el.dataset&&el.dataset.l==='版面配置'){const n=el.textContent.replace('默认版面','').trim();el.innerHTML=layHtml(n)}});
 function dTo(id){const c=CHANNELS.find(c=>c.id===id)||{};return c.to==='落地页'?'落地页 '+(c.lp||''):(c.to||'--')+' · '+(c.lay||DLAY)}
-{const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','设备类型','母包','域名配置','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转落地页','防封下载页','状态','备注'];
+{const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','设备类型','APP包','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转落地页','防封下载页','状态','备注'];
  const FULL=['商户','归属代理','落地页','版面配置','广告接入配置'];
  const _ce=chEdit;chEdit=function(id){const r=_ce.apply(this,arguments);const b=$('#dbody');const g=b&&b.querySelector('.fr')?.parentElement;if(!g||!chFr('渠道类型'))return r;
   ORD.forEach(k=>{const f=chFr(k);if(f){g.appendChild(f);if(FULL.includes(k))f.classList.add('full')}});
@@ -1753,7 +1797,7 @@ function grpTag(g){return g?`<span class="tag">${g}</span>`:'--'}
 Object.defineProperty(OPTS,'分组',{get:()=>['未分组',...GROUPS.map(g=>g.name)],configurable:true});
 TIPS['分组']='自己给渠道归类用的标签，比如「Facebook 组」「印度 Web 组」。一个渠道只能在一个分组里，也可以不分组；分组只用来筛选和汇总，不影响渠道链接、域名和配置。在渠道管理点「分组管理」新建、改名、删除。';
 function grpMgr(){const cnt=g=>CHANNELS.filter(c=>c.grp===g).length;
- openDrawer('分组管理',`<div class="bar" style="margin-bottom:10px"><button class="btn p" onclick="grpEdit(-1)">＋ 新增分组</button><span class="note" style="margin-left:10px">分组只用来归类、筛选和汇总，不影响渠道本身</span></div>`+
+ openDrawer('分组管理',`<div class="bar" style="margin-bottom:10px"><button class="btn p" onclick="grpEdit(-1)">＋ 新增分组</button></div>`+
   table([{t:'分组名称',k:r=>`<b style="font-weight:500">${r.name}</b>`},{t:'渠道数',k:r=>cnt(r.name)?`<a onclick="closeDrawer();grpGo('${r.name}')">${cnt(r.name)} 个</a>`:'0'},{t:'备注',k:r=>r.rm||'--'},{t:'操作',k:(r)=>{const i=GROUPS.indexOf(r);return `<span class="ops"><a onclick="grpEdit(${i})">编辑</a><a onclick="grpDel(${i})">删除</a></span>`}}],GROUPS)+
   `<p class="note">未分组的渠道 ${CHANNELS.filter(c=>!c.grp).length} 个。渠道在「新增 / 编辑渠道」里选分组。</p>`,CLOSEF,640)}
 function grpGo(g){go('mCh');setTimeout(()=>{const fi=[...document.querySelectorAll('#page .flt .fi')].find(x=>x.querySelector('label').textContent.replace(/[?*\s]/g,'')==='分组');const d=fi&&fi.querySelector('div.inp');if(d){d.textContent=g;d.classList.add('v');doSearch(document.querySelector('#page .flt .btn.p'))}},0)}
@@ -1872,40 +1916,52 @@ TIPS['渠道 code']='保存时系统自动生成，不能改。格式：类型_�
 
 var SUBS=[{id:'SP-1102-02',ch:'FB_SHELL_IN_001',ver:'安卓壳包 v2.3.1',file:'daman_FB_SHELL_IN_001_v2.3.1.apk',size:'18.6 MB',st:'ok',who:who('运营-李娜','2026-11-02 15:20'),rm:'发给 Facebook 投放组上传'}];
 const subCh=id=>CHANNELS.find(c=>c.id===id)||{};
+function subProduct(channel,merchant=M){if(!channel?.id||(channel.merchant||M)!==merchant)return null;return SUBS.find(p=>(p.merchant||M)===merchant&&p.ch===channel.id&&p.st==='ok')||null}
+function channelAppText(channel){const product=subProduct(channel,M);return product?product.file+'（'+product.ver+'）':'未生成'}
+let SUBQSEQ=0;
 const SUBVER={'安卓原生':['安卓原生 v3.1.0（最新）','安卓原生 v3.0.2'],'安卓壳包':['安卓壳包 v2.3.1（最新）','安卓壳包 v2.3.0']};
-function subPage(){return flt([inp('商户',M,{req:1}),inp('子包渠道','',{ph:'全部'})])+`<div class="bar"><button class="btn p" onclick="subNew()">＋ 自动打包</button><span class="note" style="margin-left:10px">只列安卓原生、安卓壳包的渠道；一个渠道只有一个子包，推广链接下载的就是它</span></div>`+
+function subResolveMother(channel,merchant=M){ensureMothers();if(!channel?.id||(channel.merchant||M)!==merchant)return {error:'当前商户没有这个渠道'};
+ const candidates=MPS.filter(m=>(m._merchant||M)===merchant&&m[2]===channel.end);const linked=channel.motherId&&candidates.find(m=>m[0]===channel.motherId);const mother=linked||(candidates.length===1?candidates[0]:null);
+ if(!mother)return {error:candidates.length?'当前商户有多个同类型母包，暂不能确定打包母包':'当前商户没有'+channel.end+'母包'};
+ const record=motherCurrent(mother);if(!/启用/.test(mother[6]))return {error:'母包已停用，不能生成新子包'};if(!record[7].includes('已发布'))return {error:'母包当前版本未发布或已下架，不能生成新子包'};if(!mother._meta.size)return {error:'母包文件不可用，不能生成新子包'};
+ return {mother,record,label:mother[2]+' '+record[0]}}
+function subApplyMother(channel){const result=subResolveMother(channel,M);OPTS['母包版本']=result.error?[]:[result.label];const el=document.querySelector('#dbody [data-l="母包版本"]');if(el){el.textContent=result.error||result.label;el.classList.toggle('v',!result.error);el.classList.toggle('note',!!result.error);el.style.color=result.error?'var(--red)':''}return result}
+function subEnqueue(channel,config={}){const selected=subResolveMother(channel,M);if(selected.error){toast(selected.error);return false}if(AQUEUE.rows.some(q=>q.artifact&&q.merchant===M&&q.code===channel.id&&['pending','run'].includes(q.status))){toast('这个渠道已有排队或打包中的任务');return false}
+ const old=subProduct(channel,M),id='Q-DEMO-'+String(++SUBQSEQ).padStart(4,'0');const artifact={...(old||{}),...config,id:old?.id||'SP-'+id,ch:channel.id,merchant:M,motherId:selected.mother[0],ver:selected.label,file:old?.file||`daman_${channel.id}.apk`,size:selected.mother._meta.size,st:'ok',who:who('当前账号',AQUEUE.now)};
+ AQUEUE.rows.unshift({id,merchant:M,channel:channel.name,code:channel.id,mother:selected.mother[1],mp:selected.mother[0],version:selected.record[0],trigger:'商户手动',status:'pending',progress:0,submit:AQUEUE.now,start:'',finish:'',artifact});if(!AQMOTHERS.some(x=>x[0]===selected.mother[0]))AQMOTHERS.push([selected.mother[0],selected.mother[1]]);closeDrawer();render();toast('已进入自动打包队列，现有成功包保持不变');return true}
+function subQueueCheck(q){const channel=CHANNELS.find(c=>c.id===q.code&&(c.merchant||M)===q.merchant);const selected=subResolveMother(channel,q.merchant);if(selected.error)return selected.error;if(selected.mother[0]!==q.mp||selected.record[0]!==q.version)return '母包版本已变化，请重新提交打包任务';return ''}
+function subQueueComplete(q){if(!q.artifact||q.artifact.merchant!==q.merchant||q.artifact.ch!==q.code)return;const i=SUBS.findIndex(p=>(p.merchant||M)===q.merchant&&p.ch===q.code);const product={...q.artifact,st:'ok',who:who('当前账号',q.finish)};if(i>=0)Object.assign(SUBS[i],product);else SUBS.unshift(product);const current=CHE&&CHANNELS.find(c=>c.id===CHE&&(c.merchant||M)===M),label=document.getElementById('chMp');if(label&&current)label.textContent=channelAppText(current)}
+function subQueueProgress(q){return `<span class="prog"><i style="width:${q.progress}%;background:var(${['err','timeout'].includes(q.status)?'--red':'--pri'})"></i></span><span${['err','timeout'].includes(q.status)?' style="color:var(--red)"':''}>${q.progress}%</span>`}
+function subQueueTable(){const rows=AQUEUE.rows.filter(q=>q.artifact&&q.merchant===M);if(!rows.length)return '';return `<div class="bar"><b>打包任务</b><button class="btn" style="margin-left:auto" onclick="aQueueRefresh(M)">↻ 刷新</button></div>`+table([{t:'队列号',k:'id'},{t:'渠道',k:r=>r.channel+'<span class="sub">'+r.code+'</span>'},{t:'目标母包版本',k:r=>r.mother+' '+r.version},{t:'状态',k:r=>st(AQSTATUS[r.status],r.status==='timeout'?'err':r.status==='pending'?'no':r.status)},{t:'进度',k:subQueueProgress},{t:'提交时间',k:'submit'},{t:'开始时间',k:r=>r.start||'--'},{t:'耗时/完成时间',k:aQueueTime},{t:'操作',k:r=>r.status==='pending'?`<a class="r" onclick="aQueueCancel('${r.id}')">取消</a>`:r.status==='run'?`<a onclick="aQueueLog('${r.id}')">查看日志</a>`:['err','timeout'].includes(r.status)?`<span class="ops"><a onclick="aQueueLog('${r.id}')">查看日志</a><a onclick="aQueueRetry('${r.id}')">重试</a></span>`:`<a onclick="aQueueView('${r.id}')">查看</a>`}],rows)}
+function subPage(){return flt([inp('商户',M,{req:1}),inp('子包渠道','',{ph:'全部'})])+`<div class="bar"><button class="btn p" onclick="subNew()">＋ 自动打包</button><span class="note" style="margin-left:10px">只列安卓原生、安卓壳包的渠道；一个渠道只有一个子包，推广链接下载的就是它</span></div>`+subQueueTable()+`<div class="bar"><b>已生成APP包</b></div>`+
  table([{t:'商户',k:()=>pill(M)},{t:'子包ID',k:'id'},{t:'渠道',l:1,k:r=>`${subCh(r.ch).name||'--'}<span class="sub" style="font-family:Menlo,Consolas,monospace">${r.ch}</span>`},{t:'包名',l:1,k:r=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${subPkg(r)}</span>`},{t:'应用名称',k:r=>r.app||'daman'},{t:'应用图标',k:()=>SUBICON},{t:'设备类型',k:r=>subCh(r.ch).end||'--'},{t:'母包版本',k:'ver'},{t:'文件',l:1,k:r=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${r.file}</span><span class="sub">${r.size}</span>`},{t:'状态',k:r=>(r.st==='ok'?st('已生成','ok'):st('生成中','run'))+(subRe(r)?`<span class="sub"><span class="tag" style="background:#fdecee;color:#c03">需人工重新上传</span></span><span class="sub">应用商店里还是 ${r.sv}</span>`:'')},{t:'生成人/时间',k:'who'},{t:'备注',k:r=>r.rm||'--'},
-  {t:'操作',k:r=>`<span class="ops"><a onclick="subView('${r.id}')">详情</a>`+(r.st==='ok'?`<a onclick="subEdit('${r.id}')">编辑</a><a onclick="toast('演示：开始下载 ${r.file}')">下载</a><a onclick="toast('演示：已复制下载链接')">复制链接</a><a class="r" onclick="subDel('${r.id}')">删除</a>`:'<a onclick="toast(\'生成中，生成好后才能操作\')">生成中…</a>')+'</span>'}],SUBS)}
-function subNew(){const L=CHANNELS.filter(c=>c.end==='安卓原生'||c.end==='安卓壳包').map(c=>`${c.name}（${c.id}）`);OPTS['子包渠道']=L;OPTS['母包版本']=[];
- openDrawer('自动打包',F([['商户',S(M),{req:1}],['渠道',`<div class="inp" data-l="子包渠道">选择渠道</div>`,{req:1}],['应用名称',I('daman','装到手机上显示的名字'),{req:1}],
-  ['包名',`<div style="display:flex;align-items:center;gap:4px;width:100%"><span id="subPkgPre" style="font-family:Menlo,Consolas,monospace;font-size:12px;white-space:nowrap">com.ar.1050.渠道code.</span><input class="inp" id="subPkgSuf" style="flex:1;min-width:0" value="daman"></div>`,{req:1,full:1}],
-  ['母包版本',`<span data-l="母包版本" class="note">先选渠道</span>`,{ro:1}],['文件名',`<span id="subFile" class="note">选好后自动生成</span>`,{ro:1}],
+  {t:'操作',k:r=>`<span class="ops"><a onclick="subView('${r.id}')">详情</a>`+(r.st==='ok'?`<a onclick="subEdit('${r.id}')">编辑</a><a onclick="toast('演示：开始下载 ${r.file}')">下载</a><a onclick="toast('演示：已复制下载链接')">复制链接</a><a class="r" onclick="subDel('${r.id}')">删除</a>`:'<a onclick="toast(\'生成中，生成好后才能操作\')">生成中…</a>')+'</span>'}],SUBS.filter(r=>(r.merchant||M)===M&&r.st==='ok'))}
+function subNew(){ensureMothers();const L=CHANNELS.filter(c=>(c.merchant||M)===M&&(c.end==='安卓原生'||c.end==='安卓壳包')).map(c=>`${c.name}（${c.id}）`);OPTS['子包渠道']=L;OPTS['母包版本']=[];
+ openDrawer('自动打包',F([['商户',`<span>${M}</span>`,{ro:1}],['渠道',`<div class="inp" data-l="子包渠道">选择渠道</div>`,{req:1}],['应用名称',I('daman','装到手机上显示的名字'),{req:1}],
+  ['包名',`<div class="package-name"><span id="subPkgPre" style="font-family:Menlo,Consolas,monospace;font-size:12px;white-space:nowrap">com.ar.1050.渠道code.</span><input class="inp" id="subPkgSuf" style="flex:1;min-width:0" value="daman"></div>`,{req:1,full:1}],
+  ['母包版本',`<span data-l="母包版本" class="note">先选渠道</span>`,{ro:1,full:1}],['文件名',`<span id="subFile" class="note">选好后自动生成</span>`,{ro:1}],
   ['应用图标',SUBUP,{}],['启动图',SUBUP,{}],['引导图',SUBUP,{}],
   ['签名配置','<span>用母包的签名证书</span>',{ro:1}],['打包配置',`<textarea class="inp ta" placeholder='选填，JSON 格式，如 {"minSdk":21}'></textarea>`,{full:1}],
   ['备注',I('','选填，如发给谁、传到哪'),{full:1}]],90)+
- `<div class="alert">子包 = 当前母包 + 写进去的渠道 code，不重新签名。一个渠道只有一个子包，再打包会替换原来的。生成要几十秒，生成好后可以下载、复制链接。</div>`,`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="subSave()">生成</button>`,560)}
-document.addEventListener('pick',e=>{const d=e.target;if(!d||!d.dataset)return;if(d.dataset.l==='子包渠道'&&document.querySelector('#modal.on')){const m=d.textContent.match(/（([^（）]+)）$/);const c=m&&subCh(m[1]);if(!c||!c.end)return;OPTS['母包版本']=SUBVER[c.end]||[];const v=document.querySelector('#dbody [data-l="母包版本"]');if(v){v.textContent=OPTS['母包版本'][0];v.classList.add('v');v.classList.remove('note')}subFn()}
+ `<div class="alert">生成后替换该渠道现有子包。</div>`,`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="subSave()">生成</button>`,560)}
+document.addEventListener('pick',e=>{const d=e.target;if(!d||!d.dataset)return;if(d.dataset.l==='子包渠道'&&document.querySelector('#modal.on')){const match=d.textContent.match(/（([^（）]+)）$/);const c=match&&subCh(match[1]);if(!c||!c.end)return;subApplyMother(c);subFn()}
  if(d.dataset.l==='母包版本')subFn()});
-function subFn(){const c=document.querySelector('#dbody div.inp[data-l="子包渠道"]'),v=document.querySelector('#dbody [data-l="母包版本"]'),f=document.getElementById('subFile');if(!c||!v||!f)return;const m=c.textContent.match(/（([^（）]+)）$/);const pp=document.getElementById('subPkgPre');if(pp&&m)pp.textContent='com.ar.1050.'+m[1].toLowerCase()+'.',ver=(v.textContent.match(/v[\d.]+/)||[''])[0];if(m&&ver){f.textContent=`daman_${m[1]}.apk`;f.className='';f.style.fontFamily='Menlo,Consolas,monospace'}}
-function subSave(){const c=document.querySelector('#dbody div.inp[data-l="子包渠道"]'),v=document.querySelector('#dbody [data-l="母包版本"]');const m=c&&c.classList.contains('v')&&c.textContent.match(/（([^（）]+)）$/);if(!m)return toast('请选择渠道');
- const ver=v.textContent.replace('（最新）','');const n=String(SUBS.length+1).padStart(2,'0');const r={id:'SP-1104-'+n,ch:m[1],ver,file:`daman_${m[1]}.apk`,size:subCh(m[1]).end==='安卓壳包'?'18.6 MB':'42.3 MB',st:'run',who:who('当前账号','2026-11-04 16:00'),rm:(chFr('备注')?.querySelector('input')||{}).value||'',app:(chFr('应用名称')?.querySelector('input')||{}).value||'daman',suf:($('#subPkgSuf')||{}).value||'daman'};
- const o=SUBS.findIndex(x=>x.ch===r.ch);if(o>=0){r.store=SUBS[o].store;r.sv=SUBS[o].sv;SUBS.splice(o,1)}SUBS.unshift(r);closeDrawer();render();toast(o>=0?'已开始打包，打好后替换这个渠道原来的子包':'已开始自动打包');setTimeout(()=>{r.st='ok';if(CUR==='mApp')render();toast('已打包：'+r.file)},1500)}
+function subFn(){const el=document.querySelector('#dbody div.inp[data-l="子包渠道"]'),file=document.getElementById('subFile');if(!el||!file)return;const match=el.textContent.match(/（([^（）]+)）$/);if(!match)return;const selected=subResolveMother(subCh(match[1]),M),prefix=document.getElementById('subPkgPre');if(prefix)prefix.textContent='com.ar.1050.'+match[1].toLowerCase()+'.';file.textContent=selected.error?'暂无可用母包':`daman_${match[1]}.apk`;file.className=selected.error?'note':'';file.style.fontFamily='Menlo,Consolas,monospace'}
+function subSave(){const input=document.querySelector('#dbody div.inp[data-l="子包渠道"]'),match=input&&input.classList.contains('v')&&input.textContent.match(/（([^（）]+)）$/);if(!match)return toast('请选择渠道');const channel=subCh(match[1]);subEnqueue(channel,{rm:chFr('备注')?.querySelector('input')?.value||'',app:chFr('应用名称')?.querySelector('input')?.value||'daman',suf:document.getElementById('subPkgSuf')?.value||'daman'})}
 const SUBICON='<span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:var(--pri);color:#fff;align-items:center;justify-content:center;font-weight:600;font-size:13px">d</span>';
 const SUBUP='<div class="upl" onclick="this.innerHTML=\'已上传 ✓\'">＋ 上传</div>';
 function subPkg(r){return 'com.ar.1050.'+r.ch.toLowerCase()+'.'+(r.suf||'daman')}
 function subView(id){const r=SUBS.find(x=>x.id===id);const c=subCh(r.ch);
  openDrawer('详情',F([['渠道',`${c.name||'--'}（${r.ch}）`,{ro:1}],['应用名称',r.app||'daman',{ro:1}],['包名',subPkg(r),{ro:1}],['母包版本',r.ver,{ro:1}],['文件',`${r.file}（${r.size}）`,{ro:1}],['应用图标',SUBICON,{ro:1}],['签名配置','用母包的签名证书',{ro:1}],['状态',r.st==='ok'?st('已生成','ok'):st('生成中','run'),{ro:1}],['生成人/时间',r.who,{ro:1}],['备注',r.rm||'--',{ro:1}]],100),CLOSEF,600,[['子包ID',id]])}
-function subTask(id){const r=SUBS.find(x=>x.id===id);
- openDrawer('创建任务',F([['子包ID',`<b style="font-weight:500">${id}</b>`,{ro:1}]],96)+'<div class="alert">确定要为此打包配置创建构建任务吗？打好后替换这个渠道原来的子包，下载链接不变。</div>',`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="cfok">确定</button>`,440);
- $('#cfok').onclick=()=>{r.tasks=(r.tasks||1)+1;r.st='run';closeDrawer();render();toast('任务创建成功');setTimeout(()=>{r.st='ok';if(CUR==='mApp')render()},1500)}}
-function subEdit(id){const r=SUBS.find(x=>x.id===id);const c=subCh(r.ch);subNew();$('#dtitle').firstChild.textContent='编辑打包配置';
- const d=$('#dbody div.inp[data-l="子包渠道"]');d.textContent=`${c.name}（${r.ch}）`;d.classList.add('v','ro');OPTS['母包版本']=SUBVER[c.end]||[];const v=$('#dbody [data-l="母包版本"]');v.textContent=(SUBVER[c.end]||[r.ver])[0];v.classList.add('v');v.classList.remove('note');subFn();
+function subTask(id){const product=SUBS.find(p=>p.id===id&&(p.merchant||M)===M);if(!product)return toast('当前商户没有这个子包');const channel=subCh(product.ch),selected=subResolveMother(channel,M);if(selected.error)return toast(selected.error);openDrawer('创建任务',F([['子包ID',id,{ro:1}]],96)+'<div class="alert">提交后进入自动打包队列，成功前保留原包。</div>',`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="cfok">确定</button>`,440);document.getElementById('cfok').onclick=()=>subEnqueue(channel,{app:product.app,suf:product.suf,rm:product.rm})}
+function subEdit(id){const r=SUBS.find(x=>x.id===id&&(x.merchant||M)===M);if(!r)return toast('当前商户没有这个子包');const c=subCh(r.ch);if(!c.id||(c.merchant||M)!==M)return toast('当前商户没有这个渠道');subNew();$('#dtitle').firstChild.textContent='编辑打包配置';
+ const d=$('#dbody div.inp[data-l="子包渠道"]');d.textContent=`${c.name}（${r.ch}）`;d.classList.add('v','ro');subApplyMother(c);subFn();
  const a=chFr('应用名称')?.querySelector('input');if(a)a.value=r.app||'daman';const sf=$('#subPkgSuf');if(sf)sf.value=r.suf||'daman';const rm=chFr('备注')?.querySelector('input');if(rm)rm.value=r.rm||'';
  $('#dfoot').innerHTML=`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="subEok">保存并重新打包</button>`;
- $('#subEok').onclick=()=>{r.app=a?a.value:r.app;r.suf=sf?sf.value:r.suf;r.rm=rm?rm.value:r.rm;r.st='run';r.who=who('当前账号','2026-11-04 16:00');closeDrawer();render();toast('已保存，正在重新打包，打好后替换原来的子包，下载链接不变');setTimeout(()=>{r.st='ok';if(CUR==='mApp')render()},1500)}}
+ $('#subEok').onclick=()=>subEnqueue(subCh(r.ch),{app:a?a.value:r.app,suf:sf?sf.value:r.suf,rm:rm?rm.value:r.rm})}
 function subDel(id){openDrawer('删除',F([['子包ID',`<b style="font-weight:500">${id}</b>`,{ro:1}]],96)+'<div class="alert w">删除后这个渠道没有子包，用户下载时改为系统把渠道 code 写进母包。</div>',`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="cfok">确定</button>`,440);
  $('#cfok').onclick=()=>{const i=SUBS.findIndex(x=>x.id===id);if(i>=0)SUBS.splice(i,1);closeDrawer();render();toast('已删除')}}
-TIPS['母包版本']='固定用当前母包版本，不能选旧版本。之后总控强制更新会自动重建；建议更新要在「版本更新」里点「更新」。';
+TIPS['母包版本']='只使用当前商户、对应设备类型下已启用且已发布的母包版本；开始重新打包前，已有子包保持不变。';
 
 
 var VTYPE={'v3.2.0':'建议更新','v2.4.0':'强制更新','v3.1.0':'建议更新','v2.3.1':'强制更新'};
@@ -2123,7 +2179,7 @@ var PD={
   howL:'怎么配',how:['点「＋ 新增页面」，选页面类型：PWA / 广告图','填页面名称、路径和各语言内容，右边实时预览','保存后到「域名管理」编辑域名，把落地指向选成这个落地页','按钮点了去哪由渠道的设备类型决定'],
   flow:[['运营','选页面类型','PWA / 广告图'],['运营','填内容看预览','右边实时预览'],['运营','在域名里选它','落地指向选落地页'],['用户','点广告打开','进这个落地页'],['用户','点按钮','进网站 / 加桌面 / 下载']],
   terms:[['PWA','可以装到手机桌面的网页'],['广告图','一张图加按钮的落地页'],['落地指向','渠道落到哪：落地页、主站首页或主站注册页']]},
- aApp:{end:'a',name:'应用与版本',sub:'含 母包、版本 两个页签',
+ aApp:{end:'a',name:'应用与版本',sub:'含 母包、自动打包队列 两个页签',
   use:['总控维护各商户的母包和版本：发布、回滚、处理更新问题。'],
   diff:['商户端只有「版本更新」「自动打包」，母包和版本由这里管','这里可以回滚、下架任一已发布版本，影响所有用到它的商户','原「更新与维护」并到这里'],
   howL:'怎么配',how:['先选集团、商户和应用','「母包」页签维护母包','「版本」页签新增版本，写更新说明、选更新类型','测试通过后发布','看升级进度和问题数，有问题可回滚或下架'],
@@ -2253,13 +2309,72 @@ function spUpd(id){const r=SPREC.find(x=>x.id===id);const b=$('#dbody'),d=b.quer
  r.dt=d.textContent.trim()||r.dt;r.amt=amt;r.rm=(ins[1]&&ins[1].value||'').trim();closeDrawer();spRef();toast('已保存')}
 function spDel(id){const r=SPREC.find(x=>x.id===id);if(!r)return;cf2('删除花费记录',`删除 ${r.ch} ${r.dt} 的花费 ${rxM(r.amt)}？删除后花费和成本会重新计算。`,()=>{SPREC.splice(SPREC.indexOf(r),1);spRef();toast('已删除')})}
 /* 总控 母包编辑 */
-var MPS=[];
-function motherEdit(id){const r=MPS.find(x=>x[0]===id);if(!r)return;
- openDrawer('编辑母包',F([['集团','<span>亚太集团</span>',{ro:1}],['商户',`<span>${M}</span>`,{ro:1}],['应用','<span>daman</span>',{ro:1}],['母包ID',`<span>${r[0]}</span>`,{ro:1}],['类型',`<span>${r[2]}</span>`,{ro:1}],['版本号',`<span>${r[3]}</span>`,{ro:1}],
-  ['母包名称',I(r[1]),{req:1}],['状态',`<span class="sw ${/启用/.test(r[6])?'on':''}"></span>`],['最后修改人/时间',r[7],{ro:1}]],120),
-  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="motherSave('${id}')">保存</button>`,720,[['母包ID',id]])}
-function motherSave(id){const r=MPS.find(x=>x[0]===id);const b=$('#dbody'),nm=(b.querySelector('input.inp').value||'').trim();if(!nm)return toast('请填母包名称');
- r[1]=nm;r[6]=b.querySelector('.sw.on')?st('启用','ok'):st('停用','no');r[7]=who('admin01','2026-11-04 16:00');closeDrawer();render();toast('已保存')}
+var MPS=[],MPS_READY=false,MOTHER_SEQ=2;
+function ensureMothers(){if(MPS_READY)return;{MPS_READY=true;MPS.push(...[
+   ['MP01','安卓原生母包','安卓原生','v3.1.0','AR-Release · 2027-08-30',['读取渠道号'],st('启用','ok'),who('admin01','2026-11-02 15:00')],
+   ['MP02','安卓壳包母包','安卓壳包','v2.3.1','AR-Shell · 2027-03-12',['读取渠道号','壳内网页桥接'],st('启用','ok'),who('admin02','2026-10-30 18:00')]]);MPS.forEach(m=>{if(!m._merchant)m._merchant=M});}}
+
+let MOTHER_FILE=null;
+function motherApp(m){return (m?m._merchant||M:M).replace(/^\([^)]*\)/,'')}
+function motherCurrent(m){if(!m._current){const source=VERS.find(v=>v[0]===m[3]&&v[1]===m[1]);m._current=source?[...source]:[m[3],m[1],'安装包','安装包升级','','','',st('草稿','no'),null,'',''];m._meta={...(VEXT[m[3]]||{id:'VER-'+m[0],size:''})};m._updateType=VTYPE[m[3]]||'建议更新';m._deviceTotal=source?.[8]?Number(source[8][1].split('/')[1].replace(/[^0-9]/g,'')):0}m._current._mother=m;m._current[6]='';m._current[3]='安装包升级';m[3]=m._current[0];m._current[1]=m[1];return m._current}
+function motherIssueRows(m){return ISSUES.filter(x=>x[8]===motherCurrent(m)[0]&&x[3]===(m._merchant||M))}
+function motherUpload(){return `<button class="btn sm" onclick="document.getElementById('motherFile').click()">选择文件</button><input id="motherFile" type="file" accept=".apk" hidden onchange="motherFilePick(this)"><span class="note" id="motherFileName"></span><div id="motherPackageCheck"></div>`}
+function motherFilePick(input){const file=input.files?.[0];if(!file)return;MOTHER_FILE={name:file.name,size:file.size,check:'idle',mockVersion:''};document.getElementById('motherFileName').textContent=file.name;motherPackageUI()}
+function motherPackageUI(){const el=document.getElementById('motherPackageCheck');if(!el)return;if(!MOTHER_FILE){el.innerHTML='';return}const f=MOTHER_FILE;
+ const labels={idle:'未检测',run:'检测中（Demo模拟）',pass:'包内版本一致（Demo模拟）',fail:'包内版本不一致（Demo模拟）'};
+ el.innerHTML=`<p class="note">Demo模拟检测：不读取APK内容，也不从文件名识别版本。</p><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><label for="motherMockVersion">模拟包内版本</label><input class="inp" id="motherMockVersion" style="width:140px;min-width:0" value="${motherHtml(f.mockVersion||'')}" placeholder="如 v1.0.0" onchange="motherMockVersion(this.value)"><button class="btn sm" onclick="motherMockSample(true)">一致样例</button><button class="btn sm" onclick="motherMockSample(false)">不一致样例</button><button class="btn sm" onclick="motherMockDetect(${f.check==='run'})">${f.check==='run'?'完成模拟检测':'开始模拟检测'}</button></div><p>${st(labels[f.check],f.check==='pass'?'ok':f.check==='fail'?'err':f.check==='run'?'run':'no')}</p>`}
+function motherMockVersion(value){if(!MOTHER_FILE)return;MOTHER_FILE.mockVersion=value.trim();MOTHER_FILE.check='idle';MOTHER_FILE.checkedTarget='';motherPackageUI()}
+function motherMockSample(equal){if(!MOTHER_FILE)return;const value=motherVersionCheck(document.querySelector('#dbody input.vno'));if(!value)return;MOTHER_FILE.mockVersion=equal?value:value+'.1';MOTHER_FILE.check='idle';MOTHER_FILE.checkedTarget='';motherPackageUI()}
+function motherMockDetect(complete){if(!MOTHER_FILE)return;const target=motherVersionCheck(document.querySelector('#dbody input.vno'));if(!target)return;const detected=document.getElementById('motherMockVersion')?.value.trim()||MOTHER_FILE.mockVersion;MOTHER_FILE.mockVersion=detected;
+ if(!/^v?\d+(?:\.\d+)*$/i.test(detected))return toast('请填写模拟包内版本，或选择一致/不一致样例');
+ if(!complete){MOTHER_FILE.check='run';MOTHER_FILE.checkedTarget=target;MOTHER_FILE.checkedVersion=detected}
+ else if(MOTHER_FILE.checkedTarget!==target||MOTHER_FILE.checkedVersion!==detected){MOTHER_FILE.check='idle';MOTHER_FILE.checkedTarget='';toast('版本已变化，请重新开始模拟检测')}
+ else MOTHER_FILE.check=motherCompareVersion(target,detected)===0?'pass':'fail';motherPackageUI()}
+function motherCompareVersion(next,previous){const parts=v=>v.replace(/^[vV]/,'').split('.').map(x=>BigInt(x));const a=parts(next),b=parts(previous);for(let i=0;i<Math.max(a.length,b.length);i++){const x=a[i]??0n,y=b[i]??0n;if(x!==y)return x>y?1:-1}return 0}
+function motherVersionCheck(el,previous){const value=(el?.value||'').trim();const message=!value?'请输入版本号':!/^v?\d+(?:\.\d+)*$/i.test(value)?'版本号请按 v1.0.0 填写':previous&&value!==previous&&motherCompareVersion(value,previous)<=0?'新版本号必须大于当前版本 '+previous:'';if(el)vnoMark(el,!!message,message);if(message){toast(message);return ''}return value}
+function motherForm(m){MOTHER_FILE=null;const r=m?motherCurrent(m):null,merchant=m?m._merchant||M:M;const fields=[
+ ['集团',`<span id="motherGroup">${AGROUPS[merchant]}</span>`,{ro:1}],['商户',m?merchant:S(merchant),m?{ro:1}:{req:1}],
+ ['应用',`<span id="motherApp">${motherApp(m)}</span>`,{ro:1}],['母包ID',m?m[0]:'保存后生成',{ro:1}],
+ ['母包名称',I(m?motherHtml(m[1]):''),{req:1}],['类型',m?m[2]:S(''),m?{ro:1}:{req:1}],
+ ['版本号',VNO(r?r[0]:''),{req:1}],['母包状态',`<span class="sw ${!m||/启用/.test(m[6])?'on':''}"></span>`],
+ ['更新方式','安装包升级',{ro:1}],
+ ['更新类型',R(['强制更新','建议更新'],m?m._updateType:'建议更新'),{req:1}],
+ ['更新说明','<textarea class="inp ta" id="motherNote" placeholder="请输入"></textarea>',{req:1,full:1}],
+ ['上传安装包',motherUpload(),{req:!m,full:1}],
+ ['发布状态',r?r[7]:st('草稿','no'),{ro:1}],
+ ['升级进度',r&&r[8]?r[8][1]:'--',{ro:1}],['最后修改人/时间',m?m[7]:'--',{ro:1}]];
+ openDrawer(m?'编辑母包':'新增母包',`<div id="motherForm">${F(fields,120)}</div>`,`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="motherSave('${m?m[0]:''}')">${m?'保存':'确定'}</button>`,720,m?[['母包ID',m[0]]]:undefined);
+ document.getElementById('motherNote').value=r?r[4]:'';document.getElementById('motherFileName').textContent=m?m._file?.name||'':'';
+ document.getElementById('motherForm').addEventListener('input',e=>{if(e.target.matches('input.vno')&&MOTHER_FILE){MOTHER_FILE.check='idle';MOTHER_FILE.checkedTarget='';motherPackageUI()}});
+ document.getElementById('motherForm').addEventListener('pick',e=>{if(e.target.closest('.fr')?.querySelector('label')?.textContent.replace(/[?*\s]/g,'')!=='商户')return;const v=e.target.textContent.trim();document.getElementById('motherGroup').textContent=AGROUPS[v]||'--';document.getElementById('motherApp').textContent=v.replace(/^\([^)]*\)/,'')})}
+function motherEdit(id){const m=MPS.find(x=>x[0]===id);if(m)motherForm(m)}
+function motherSave(id){let m=id&&MPS.find(x=>x[0]===id);if(id&&!m)return toast('母包不存在');const r=m?motherCurrent(m):null;const val=k=>chFr(k)?.querySelector('input,textarea')?.value.trim()||'',picked=k=>chFr(k)?.querySelector('div.inp.v')?.textContent.trim()||'',radio=k=>chFr(k)?.querySelector('.radio .on')?.textContent.trim()||'';
+ const name=val('母包名称');if(!name)return toast('请填母包名称');const version=motherVersionCheck(document.querySelector('#dbody input.vno'),r?r[0]:null);if(!version)return;
+ const merchant=m?m._merchant||M:picked('商户');if(!AGROUPS[merchant])return toast('请选择商户');const type=m?m[2]:picked('类型');if(!type)return toast('请选择类型');const note=val('更新说明');if(!note)return toast('请填更新说明');const packageChanged=!m||version!==r[0]||!!MOTHER_FILE;if(packageChanged&&!MOTHER_FILE)return toast('新增或修改版本号时必须选择新的安装包');if(m&&MOTHER_FILE&&motherCompareVersion(version,r[0])<=0)return toast('更换安装包时，版本号必须大于当前版本 '+r[0]);if(packageChanged&&(MOTHER_FILE.check!=='pass'||MOTHER_FILE.checkedTarget!==version))return toast('请先完成Demo模拟包内版本检测，检测通过后才能保存');
+ if(!m){const newId='MP'+String(++MOTHER_SEQ).padStart(2,'0');m=[newId,name,type,version,'',[],st('启用','ok'),''];m._merchant=merchant;m._current=[version,name,'安装包','安装包升级',note,'','',st('草稿','no'),null,'',''];m._meta={id:'VER-'+newId,size:''};MPS.push(m)}
+ else if(version!==r[0]){m._rollback={current:[...r],meta:{...m._meta},updateType:m._updateType,file:m._file,};r[0]=version;r[6]='';r[7]=st('草稿','no');r[8]=null}
+ const current=m._current;m[1]=name;current[1]=name;m[3]=version;current[3]='安装包升级';current[4]=note;current[9]='';m._updateType=radio('更新类型');m[6]=chFr('母包状态')?.querySelector('.sw.on')?st('启用','ok'):st('停用','no');
+ if(MOTHER_FILE){m._file={...MOTHER_FILE};m._meta.size=(MOTHER_FILE.size/1024/1024).toFixed(2)+' MB';current[6]='';current[7]=st('草稿','no');current[8]=null}
+ if(packageChanged)current[7]=st('草稿','no');m[7]=who('admin01','2026-11-04 16:00');OPTS['母包']=MPS.map(x=>x[1]);closeDrawer();render();toast('已保存当前母包版本')}
+function motherPrevious(m){let old=m._rollback;const current=motherCurrent(m);if(!old&&(m._merchant||M)===M){const version=VPREV[current[0]],row=VERS.find(x=>x[0]===version&&x[1]===m[1]),meta=VEXT[version];if(row&&meta?.size)old={current:[...row],meta:{...meta},updateType:VTYPE[version]||m._updateType}}
+ return old?.current&&old.current[0]!==current[0]&&(old.file?.name||old.meta?.size&&old.meta.size!=='--')?old:null}
+function motherAction(id,action){const m=MPS.find(x=>x[0]===id);if(!m)return;const r=motherCurrent(m),merchant=m._merchant||M;
+ if(action==='download')return toast('演示：开始下载 '+(m._file?.name||motherApp(m)+'_'+r[0]+'.apk'));
+ if(action==='view')return openDrawer('查看母包',F([['商户',merchant,{ro:1}],['集团',AGROUPS[merchant],{ro:1}],['母包名称',motherHtml(m[1]),{ro:1}],['类型',m[2],{ro:1}],['版本号',r[0],{ro:1}],['母包状态',m[6],{ro:1}],['更新方式',r[3],{ro:1}],['更新类型',m._updateType,{ro:1}],['文件大小',m._meta.size||'--',{ro:1}],['更新说明',motherHtml(r[4]),{ro:1,full:1}],['发布状态',r[7],{ro:1}],['升级进度',r[8]?r[8][1]:'--',{ro:1}],['最后修改人/时间',m[7],{ro:1}]],120),CLOSEF,720,[['母包ID',id],['版本ID',m._meta.id]]);
+ const oldPackage=motherPrevious(m),previous=oldPackage?.current[0];
+ if(action==='rollback'&&!oldPackage)return toast('没有可用的旧包，无法回滚');
+ const names={publish:'发布',unpublish:'下架',rollback:'回滚',delete:'删除'},message={publish:'发布当前母包版本后，商户可以安排更新。',unpublish:'下架后商户不能选择这个版本；已发旧包及其下载不变。',rollback:'回滚到 '+previous+'，覆盖当前版本，下载链接不变。',delete:'删除这个母包及其当前版本，重新打开演示才能恢复。'};
+ if(!names[action])return;
+ openDrawer(names[action],F([['母包ID',id,{ro:1}],['当前版本',r[0],{ro:1}]],96)+`<div class="alert w">${message[action]}</div>`,`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" id="motherConfirm">确定</button>`,440);
+ document.getElementById('motherConfirm').onclick=()=>{if(action==='delete'){MPS.splice(MPS.indexOf(m),1);OPTS['母包']=MPS.map(x=>x[1])}
+  if(action==='publish'){r[7]=st('已发布','ok');r[8]=[0,'0 / '+(m._deviceTotal||0)+' 台']}
+  if(action==='unpublish')r[7]=st('已下架','no');
+  if(action==='rollback'){const old=motherPrevious(m);if(!old){closeDrawer();return toast('没有可用的旧包，无法回滚')}m._current=[...old.current];m._meta={...old.meta};m._updateType=old.updateType;m._file=old.file;m._rollback=null;motherCurrent(m);
+   if(merchant===M)UPS.unshift({id:'UP-MP-'+id+'-'+UPS.length,ver:m[2]+' '+m[3],how:'安装包',type:'回滚',chs:CHANNELS.filter(c=>c.end===m[2]).map(c=>c.name),sub:'已回滚当前母包版本，下载链接不变',app:'--',st:['已完成','ok'],by:'总控 · 当前账号',t:'2026-11-04 16:00',note:'总控回滚 '+r[0]})}
+  m[7]=who('admin01','2026-11-04 16:00');closeDrawer();render();toast('已'+names[action])}}
+function motherIssues(id){const m=MPS.find(x=>x[0]===id);if(!m)return;const rows=motherIssueRows(m);openDrawer('版本问题',(rows.length?table([{t:'问题ID',k:0},{t:'类型',k:1},{t:'说明',l:1,k:2},{t:'影响范围',k:r=>`${r[3]}<span class="sub">${r[4]}</span>`},{t:'发现时间',k:5},{t:'处理状态',k:r=>st(r[6],r[6]==='已修复'?'ok':'run')+`<span class="sub">${r[7]}</span>`},{t:'操作',k:r=>`<span class="ops">${r[6]!=='已修复'?`<a onclick="motherIssueFixed('${id}','${r[0]}')">标为已修复</a>`:''}<a onclick="toast('演示：${r[0]} 处理记录')">记录</a></span>`}],rows):'<p class="note">这个版本还没有问题。</p>')+`<div class="bar"><button class="btn" onclick="toast('演示：已登记新问题')">＋ 登记问题</button></div>`,CLOSEF,860,[['母包ID',id],['版本',m[3]]])}
+function motherIssueFixed(id,issue){const m=MPS.find(x=>x[0]===id);const r=m&&motherIssueRows(m).find(x=>x[0]===issue);if(!r)return;r[6]='已修复';closeDrawer();render();toast('已标为已修复')}
+function motherHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 /* 渠道详情 */
 function chDetail(id){const r=CHANNELS.find(x=>x.id===id);if(!r)return;const x=r.cx||CHX0,app=isApp(r.end),sp=t=>`<span>${t}</span>`;
  const fs=[['商户',sp(M)],['渠道ID',sp(chCid(r))],['渠道 code',sp(r.id)],['渠道名',sp(r.name)],['分组',r.grp?grpTag(r.grp):sp('--')],['渠道类型',tyTag(r.type)],['归属代理',sp(r.type==='代理'?r.agent:'--')],['设备类型',sp(r.end)],
@@ -2310,8 +2425,7 @@ CHANNELS.forEach((c,i)=>{if(!c.jp)c.jp=i%2?'https://jump2.1050.test':'https://ju
 {const _sn=chSave;chSave=function(ed){if(ed)return _sn.apply(this,arguments);
  const tx=k=>{const x=chFr(k)?.querySelector('div.inp.v');return x?x.textContent.trim():''},iv=k=>chFr(k)?.querySelector('input')?.value.trim()||'';
  const type=($('#chType .on')?.textContent||'').replace('渠道','')||'官方',end=$('#chEnd .on')?.textContent||'Web',to=$('#chTo .on')?.textContent||'落地页';
- const dm=tx('域名配置');
- const o={name:iv('渠道名'),grp:tx('分组'),type,agent:type==='代理'?iv('归属代理'):'--',end,to,lp:tx('跳转落地页')||(to==='落地页'?tx('落地页'):''),dm:/^选/.test(dm)?'':dm,
+ const o={name:iv('渠道名'),grp:tx('分组'),type,agent:type==='代理'?iv('归属代理'):'--',end,to,lp:tx('跳转落地页')||(to==='落地页'?tx('落地页'):''),dm:'',
   jp:chFr('跳转域名')?.querySelector('.inp')?.textContent.trim().replace(/^选跳转域名$/,'')||'',cfg:(x=>x&&!x.startsWith('没有')?x:'不接广告平台')(tx('广告接入配置')),state:$('#chSt')?.classList.contains('on')?1:0,rm:iv('备注')};
  const res=_sn.apply(this,arguments);
  if(!document.querySelector('#modal.on')){const E={'Web':'WEB','PWA':'PWA','安卓原生':'APK','安卓壳包':'SHELL'}[end]||'WEB',pre=(type==='代理'?'agt':'self')+'_'+E+'_IN_';
@@ -2436,12 +2550,6 @@ PAGES.mPromo={end:'m',title:'推广配置',bd:['新',''],tab:0,render(){
  const t=this.tab;return tabs(['广告接入','事件记录'],t,'promoTab')+(t===1?rptFlt(2)+evRecTbl():PAGES.mAd.render.call(PAGES.mAd))}};
 function promoTab(i){PAGES.mPromo.tab=i;render()}
 const PROMO_ALIAS={mAd:0,mEvLog:1};
-/* 11-05 渠道弹窗「域名配置」：只留下拉，从空闲的独立推广域名里选；编辑时带出当前域名 */
-Object.defineProperty(OPTS,'域名配置',{get:()=>{const c=CHE&&CHANNELS.find(x=>x.id===CHE);const L=PDOMS.filter(d=>!d[1]&&d[2]).map(d=>d[0]);if(c)L.unshift(hostOf(c));return L.length?L:['没有空闲的独立推广域名，先去「域名管理」新增']},configurable:true});
-{const _dm13=chSave;chSave=function(ed){const id=CHE,n=CHANNELS.length,pk=chFr('域名配置')?.querySelector('div.inp.v')?.textContent.trim()||'';const res=_dm13.apply(this,arguments);
- if(!document.querySelector('#modal.on')){const c=ed?CHANNELS.find(x=>x.id===id):CHANNELS.length>n?CHANNELS[0]:null;
-  if(c&&pk&&(!ed||pk!==hostOf(c))){const nw=PDOMS.find(d=>d[0]===pk);if(nw){if(ed&&c.dm){const od=PDOMS.find(d=>d[0]===c.dm);if(od)od[1]=''}c.dm=pk;nw[1]=c.id;render()}}}
- return res}}
 {const h=location.hash.slice(1);if(PAGES[h]||h in PROMO_ALIAS)go(h);else render()}
 </script>
 
