@@ -1426,7 +1426,8 @@ const _cfo=chCfgOpts;chCfgOpts=function(){return ['不接广告平台（群发�
 /* ---- 渠道管理列表：重写列，带安装设置、不接平台、系统渠道 ---- */
 const _mChR=PAGES.mCh.render;PAGES.mCh.render=function(){let h=_mChR.call(this);return h};
 function cfgCell(r){if(r.cfg==='--'||r.cfg==='不接广告平台'||!r.cfg)return '--';const c=CONFIGS.find(x=>x.name===r.cfg);if(!c)return r.cfg;const t=c.state?adStat(c):(c.test&&c.test[0]==='失败'?st('测试失败','err'):st('配置已关闭','no'));return `${r.cfg}<span class="sub">${t==='--'?'':t}</span>`}
-function toCell(r){return (r.to==='落地页'?`<a onclick="go('mLp')">${r.lp}</a><span class="sub">落地页 · 按钮：${BTNOF[r.end].replace(/（.*?）/g,'')}</span>`:`${r.to}<span class="sub">版面配置：${r.lay||DLAY}</span>`)}
+function lpViewN(n){const o=LPS.find(x=>x.name===n);if(o)lpView(o.id);else toast('没找到这个落地页')}
+function toCell(r){return (r.to==='落地页'?`<a onclick="lpViewN('${r.lp}')">${r.lp}</a><span class="sub">落地页 · 按钮：${BTNOF[r.end].replace(/（.*?）/g,'')}</span>`:`${r.to}<span class="sub">版面配置：${r.lay||DLAY}</span>`)}
 
 /* ---- 新增/编辑渠道：安装设置、分享卡片、不接平台 ---- */
 const _chEdit0=chEdit;chEdit=function(id){const r=CHANNELS.find(x=>x.id===id)||{};if(r.sys)return toast('「主站」渠道是系统自带的，不能改');CHE_R=r;_chEdit0(id);
