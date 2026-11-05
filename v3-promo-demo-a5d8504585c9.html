@@ -41,7 +41,7 @@ button{font:inherit;cursor:pointer}a{color:var(--pri);text-decoration:none;curso
 /* 筛选 */
 .flt{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin-bottom:10px}
 .fi{display:flex;align-items:center;gap:8px}.fi label{color:#333;white-space:nowrap}.fi label i{color:var(--red);font-style:normal}
-.inp{height:28px;border:1px solid #d9dde3;border-radius:4px;padding:0 9px;min-width:170px;display:flex;align-items:center;justify-content:space-between;color:#999;background:#fff}.inp.v{color:#333}.inp:after{content:"⌄";color:#aaa;margin-left:8px}.inp.t:after,.inp.cfgro:after{content:""}
+.inp{height:28px;border:1px solid #d9dde3;border-radius:4px;padding:0 9px;min-width:170px;display:flex;align-items:center;justify-content:space-between;color:#999;background:#fff}.inp.v{color:#333}.inp.v.clr:hover:after{content:"×"}.inp:after{content:"⌄";color:#aaa;margin-left:8px}.inp.t:after,.inp.cfgro:after{content:""}
 .btns{margin-left:auto;display:flex;gap:8px}
 .btn{height:28px;border-radius:4px;border:1px solid #d9dde3;background:#fff;padding:0 12px;color:#333;display:inline-flex;align-items:center;gap:5px}.btn.p{background:var(--pri);border-color:var(--pri);color:#fff}.btn.sm{height:24px;padding:0 9px;font-size:12px}
 .quick{display:flex;gap:4px}.quick span{border:1px solid #d9dde3;border-radius:4px;padding:1px 8px;font-size:12px;cursor:pointer}.quick span.on{background:var(--pri);border-color:var(--pri);color:#fff}
@@ -942,7 +942,7 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web'
   ['分享卡片',`<div class="radio" id="chShare">${['用默认','单独设置'].map(o=>`<span class="${o==='用默认'?'on':''}" onclick="chShareSet('${o}')">${o}</span>`).join('')}</div><div id="chShareX" style="display:none;margin-top:6px;gap:8px;align-items:center;width:100%"><input class="inp" style="width:200px;min-width:0" placeholder="标题"><input class="inp" style="width:240px;min-width:0" placeholder="描述"><div class="lpup" onclick="this.classList.add('on');this.innerHTML='已上传 ✓'">＋ 分享图</div></div>`,{full:1}],
   ['跳转落地页',S(r.lp||'','选跳转落地页'),{req:1}],
   ['归属代理',I(r.agent&&r.agent!=='--'?r.agent:'','输入代理 ID 或代理邀请码'),{req:1}],
-  ['广告接入配置',S(r.cfg&&r.cfg!=='--'&&r.cfg!=='不接广告平台'?r.cfg:'','选广告接入配置'),{}],
+  ['广告接入配置',(v=>`<div class="inp clr ${v?'v':''}" data-ph="选广告接入配置">${v||'选广告接入配置'}</div>`)(r.cfg&&r.cfg!=='--'&&r.cfg!=='不接广告平台'?r.cfg:''),{}],
   ['状态',`<span class="sw ${id&&r.state?'on':''}" id="chSt" onclick="chStGuard(event)"></span>`],
   ['备注',I(r.rm||'')]],110)+
  '<div class="alert" id="chTip" style="display:none"></div>'+(id?'<div class="alert w">渠道类型、设备类型、推广域名建好后不能改。</div>':''),
@@ -1498,9 +1498,9 @@ function domFields(t,r){const d=r?r[1]:'';const base=[['域名类型',`<div clas
   '防封下载页':[dm('如 https://safe-g.1050.test'),['页面',S('daman 商城页','选一个PWA落地页'),{req:1,full:1}],['点按钮后','<span class="note">按主域名里设的救援方式走：装 PWA 或下载安装包，这里不用选</span>',{full:1}]],
   '下载域名':[dm('如 https://dl.1050.test')]};
  return base.concat(t?m[t]:[])}
-function domEdit(id){const r=id==null?null:DOMROWS.find(x=>x[0]===id);const t=r?r[2]:'';
+function domEdit(id){const r=id==null?null:DOMROWS.find(x=>x[0]===id);const t=r?r[2]:'主域名';
  openDrawer(r?'编辑域名':'新增域名',`<div id="domF">${F(domFields(t,r),100)}</div>`,
-  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="domSave(${r?1:0})">保存</button>`,600,r?[['域名ID',r[0]]]:null);
+  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="domSave(${r?1:0})">保存</button>`,600,[['域名ID',r?r[0]:'保存后生成']]);
  if(r){$('#domF div.inp[data-l="域名类型"]').classList.add('ro');}
  $('#domF').addEventListener('pick',ev=>{if(ev.target.closest('.fr')?.querySelector('label').textContent.includes('域名类型')){const nt=ev.target.textContent.trim();$('#domF').innerHTML=F(domFields(nt,null),100)}})}
 function domSave(ed){const t=$('#domF div.inp[data-l="域名类型"]');if(!t.classList.contains('v'))return toast('请先选域名类型');const d=$('#domF .fr:has(label) input.inp');
@@ -1566,9 +1566,9 @@ CONFIGS.find(c=>c.id==='AC1007').rm='预留，还没有渠道用';
  const used=CONFIGS.filter(c=>c!==(ST.ad&&ST.ad.r)).map(c=>c.site);const okEnd=e=>k==='PWA'?e==='PWA':e==='Web';const okJ=d=>{const j=DJUMP[d];return !j||j==='按渠道（推荐）'||(k==='PWA'?j.startsWith('PWA'):j.startsWith('Web'))};
  const L=[...CHANNELS.filter(c=>!c.sys&&okEnd(c.end)).map(hostOf),...PDOMS.filter(d=>!d[1]&&d[2]===1&&okJ(d[0])).map(d=>d[0])].filter(x=>!used.includes(x));return [UNB,...L]},configurable:true})}
 /* 渠道保存：选了未绑定的配置 → 带出推广域名；旧配置变回未绑定 */
-{const _cs=chSave;chSave=function(ed){const d=chFr('广告接入配置')?.querySelector('.inp.v');const nv=d&&d.textContent.trim();const before=document.querySelector('#modal.on');
+{const _cs=chSave;chSave=function(ed){const d=chFr('广告接入配置')?.querySelector('div.inp');const nv=d&&(d.classList.contains('v')?d.textContent.trim():'不接广告平台');const before=document.querySelector('#modal.on');
  const r=_cs(ed);if(document.querySelector('#modal.on')||!nv||!CHE)return r;const ch=CHANNELS.find(c=>c.id===CHE);if(!ch)return r;
- const name=nv==='不关联'||nv.startsWith('不接广告平台')?'不接广告平台':nv;if(ch.cfg===name)return r;const old=CONFIGS.find(c=>c.name===ch.cfg),nw=CONFIGS.find(c=>c.name===name);
+ const name=nv.startsWith('不接广告平台')||nv.startsWith('没有')?'不接广告平台':nv;if(ch.cfg===name)return r;const old=CONFIGS.find(c=>c.name===ch.cfg),nw=CONFIGS.find(c=>c.name===name);
  if(old)old.rm='预留，还没有渠道用';
  if(nw)nw.rm=ch.name+' 在用';ch.cfg=name;render();toast('已保存');return r}}
 const adChOf=r=>{const c=r&&r.name&&CHANNELS.find(c=>c.cfg===r.name);return c?c.name+'（'+c.id+'）':''};
@@ -2020,7 +2020,7 @@ document.addEventListener('click',e=>{const sp=e.target.closest&&e.target.closes
 const DOMT3={'主域名':'主域名','推广域名':'独立推广域名','PWA防封域名':'防封下载页'};
 Object.defineProperty(OPTS,'域名类型',{get:()=>document.querySelector('#modal.on #domF')?Object.keys(DOMT3):DOMTYPES,configurable:true});
 {const _df10=domFields;domFields=function(t,r){if(r)return _df10(t,r);const a=_df10(DOMT3[t]||t,r);const b=a.find(x=>x[0]==='域名类型');
- if(b)b[1]=`<div class="inp ${t?'v':''}" data-l="域名类型">${t||'请选择域名类型'}</div>`;if(!t&&b)a.splice(a.indexOf(b)+1,0,['域名',I(''),{req:1,full:1}]);return a}}
+ if(b)b[1]=`<div class="inp ${t?'v':''}" data-l="域名类型">${t||'请选择域名类型'}</div>`;if(['独立推广域名','推广泛域名'].includes(DOMT3[t])&&!a.some(x=>x[0]==='落地指向')){const i=a.findIndex(x=>x[0]==='绑定渠道');a.splice(i<0?a.length:i+1,0,['落地指向','<div class="tw"><table class="domTo" style="width:100%"><thead><tr><th>渠道</th><th>落地指向</th><th>落地页 / 版面配置</th></tr></thead><tbody><tr><td colspan="3" class="note" style="text-align:center">暂无</td></tr></tbody></table></div>',{req:1,full:1}])}if(!t&&b)a.splice(a.indexOf(b)+1,0,['域名',I(''),{req:1,full:1}]);return a}}
 {const dmIn=()=>[...document.querySelectorAll('#domF .fr')].find(f=>f.querySelector('label')?.textContent.replace(/[*?\s]/g,'')==='域名')?.querySelector('input');let keep='';
  document.addEventListener('pick',e=>{if(e.target.dataset?.l==='域名类型'&&e.target.closest('#domF'))keep=dmIn()?.value||''},true);
  document.addEventListener('pick',e=>{if(e.target.dataset?.l!=='域名类型'||!$('#domF'))return;const x=dmIn();if(x&&keep)x.value=keep;keep=''})}
@@ -2180,7 +2180,7 @@ var PD_BTN=`<span class="docb" onclick="openDoc()"><svg viewBox="0 0 16 16" fill
 /* 域名表单：补 V3 的商户、状态、备注，主域名编辑时可解除版面绑定 */
 {const _df3=domFields;domFields=function(t,r){const a=_df3(t,r);
  const mer=r?['商户',`<span>${M}</span>`,{ro:1,full:1}]:['商户',S(M),{req:1,full:1}];
- if(r&&t==='主域名'){const L=a.find(x=>x[0]==='版面配置');if(L)L[1]=`<div style="display:flex;gap:8px;align-items:center;width:100%"><div style="flex:1;min-width:0">${L[1]}</div><button class="btn" onclick="domUnbind(this)">解除绑定</button></div>`}
+ if(t==='主域名'){const L=a.find(x=>x[0]==='版面配置');if(L)L[1]=`<div style="display:flex;gap:8px;align-items:center;width:100%"><div style="flex:1;min-width:0">${L[1]}</div><button class="btn" onclick="domUnbind(this)">解除绑定</button></div>`}
  const on=!r||r[3]===1||r[3]===2;
  return [mer].concat(a,[['状态',`<span class="sw ${on?'on':''}"></span>`,{}],['备注',I(r?(DOMRM[r[0]]||''):''),{full:1}]])}}
 function domUnbind(b){const d=b.parentElement.querySelector('div.inp');if(d){d.classList.remove('v');d.innerHTML='选择版面配置'}toast('已解除绑定，保存前请重新选一套版面配置')}
@@ -2309,7 +2309,7 @@ CHANNELS.forEach((c,i)=>{if(!c.jp)c.jp=i%2?'https://jump2.1050.test':'https://ju
  const type=($('#chType .on')?.textContent||'').replace('渠道','')||'官方',end=$('#chEnd .on')?.textContent||'Web',to=$('#chTo .on')?.textContent||'落地页';
  const own=$('#chDm span:last-child')?.classList.contains('on'),dm=own?($('#chDmPick .inp')?.textContent.trim()||''):'';
  const o={name:iv('渠道名'),grp:tx('分组'),type,agent:type==='代理'?iv('归属代理'):'--',end,to,lp:tx('跳转落地页')||(to==='落地页'?tx('落地页'):''),dm:/^选/.test(dm)?'':dm,
-  jp:chFr('跳转域名')?.querySelector('.inp')?.textContent.trim().replace(/^选跳转域名$/,'')||'',cfg:(x=>x&&x!=='不关联'?x:'不接广告平台')(tx('广告接入配置')),state:$('#chSt')?.classList.contains('on')?1:0,rm:iv('备注')};
+  jp:chFr('跳转域名')?.querySelector('.inp')?.textContent.trim().replace(/^选跳转域名$/,'')||'',cfg:(x=>x&&!x.startsWith('没有')?x:'不接广告平台')(tx('广告接入配置')),state:$('#chSt')?.classList.contains('on')?1:0,rm:iv('备注')};
  const res=_sn.apply(this,arguments);
  if(!document.querySelector('#modal.on')){const E={'Web':'WEB','PWA':'PWA','安卓原生':'APK','安卓壳包':'SHELL'}[end]||'WEB',pre=(type==='代理'?'agt':'self')+'_'+E+'_IN_';
   let k=1;while(CHANNELS.some(c=>c.id===pre+String(k).padStart(3,'0')))k++;
@@ -2318,7 +2318,15 @@ CHANNELS.forEach((c,i)=>{if(!c.jp)c.jp=i%2?'https://jump2.1050.test':'https://ju
  return res}}
 {const _cf9=chCfgOpts;chCfgOpts=function(){const L=_cf9().filter(x=>!x.startsWith('不接广告平台'));return L.length?L:['没有匹配的配置']}}
 /* 11-05 渠道弹窗广告接入配置可选：只列同设备类型、没被别的渠道绑的；可选「不关联」 */
-{const _cf10=chCfgOpts;chCfgOpts=function(){return ['不关联',..._cf10().filter(n=>CONFIGS.some(c=>c.name===n)&&!CHANNELS.some(c=>c.id!==CHE&&c.cfg===n))]}}
+{const _cf10=chCfgOpts;chCfgOpts=function(){const L=_cf10().filter(n=>CONFIGS.some(c=>c.name===n)&&!CHANNELS.some(c=>c.id!==CHE&&c.cfg===n));return L.length?L:['没有可选的配置，先去「广告接入」新建']}}
+/* 选填下拉：选了值后悬停出 ×，点 × 清空 */
+window.addEventListener('click',e=>{const d=e.target.closest&&e.target.closest('.inp.v.clr');if(!d||e.clientX<d.getBoundingClientRect().right-26)return;e.stopPropagation();e.preventDefault();closePop();d.textContent=d.dataset.ph||'请选择';d.classList.remove('v')},true);
+/* 11-05 补未绑渠道的广告接入配置（各设备类型各一份） */
+{const cl=(id,o)=>{const t=CONFIGS.find(c=>c.id===id);if(t)CONFIGS.push(Object.assign({},t,{site:UNB,links:0,pkgs:0,state:1,rm:'预留，还没有渠道用'},o))},w=t=>({c:who('运营-李娜',t),u:who('运营-李娜',t)});
+ cl('AC1001',Object.assign({id:'AC1010',name:'FB-Web-B',test:['未测试','no']},w('2026-11-03 10:20')));
+ cl('AC1008',Object.assign({id:'AC1011',name:'TikTok-PWA-B'},w('2026-11-03 10:35')));
+ cl('AC1002',Object.assign({id:'AC1012',name:'FB-安卓原生',end:'APP',site:'com.daman.app'},w('2026-11-03 11:00')));
+ cl('AC1007',Object.assign({id:'AC1013',name:'Kwai-安卓壳包-B',site:'com.daman.shell'},w('2026-11-03 11:15')))}
 {const _ce10=chEndSet;chEndSet=function(o,lock,init){const r=_ce10.apply(this,arguments);if(lock||init)return r;const d=chFr('广告接入配置')?.querySelector('div.inp');if(d&&d.classList.contains('v')&&!chCfgOpts().includes(d.textContent.trim())){d.textContent='选广告接入配置';d.classList.remove('v')}return r}}
 /* 表格按住左右拖动 */
 {let D=null,moved=false;const skip='a,button,input,select,textarea,.sw,.inp,[onclick]';
