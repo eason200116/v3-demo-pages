@@ -1146,7 +1146,7 @@ function lpForm(o){const t=o.type,lv=LPL[LPCUR]||{},en=LPCUR==='英语',ta=(v,ph
   g=[['宣传文案',I(lv.txt,'如 Register to receive ₹500 Bonus'),{req:en}],['按钮文字',I(lv.btn,'如 Get it now'),{req:en}],['页面标题',I(lv.title,'浏览器标签和分享时显示'),{req:en}]];
   b=[['分享图',lpUp(o.og,'发到 WhatsApp、Telegram 时显示，1200×630')],['隐私政策链接',I(o.priv,'https://…（广告平台审核要求）'),{req:1}],['自动跳转',R(['不跳转','3 秒后自动点按钮','5 秒后自动点按钮'],o.jump||'不跳转')],['内置浏览器里',R(['先引导用 Chrome 打开','不处理'],o.inapp||'先引导用 Chrome 打开')]]}
  const fx=x=>x.length?F(x.map(y=>[y[0],y[1],{...y[2],full:1}]),t==='PWA'?130:100):'';
- $('#lpF').innerHTML=fx(a)+(t?`<div class="ptabs lptabs" id="lpTabs">${lpTabsH(t)}</div>`:'')+fx(g)+fx(b)+(t==='广告图'?'<div class="alert">广告点击编号（fbclid、ttclid、gclid 等）和渠道 code 由系统自动带上，不用配置。自动跳转有的广告平台审核不通过，默认不跳。在 Facebook、TikTok、Kwai 的内置浏览器里下载常被拦：按钮先变成「用 Chrome 打开」，跳不过去就提示复制链接到浏览器，跳过去带着渠道 code 和点击编号。</div>':'');lpPrev()}
+ $('#lpF').innerHTML=fx(a)+(t?`<div class="ptabs lptabs" id="lpTabs">${lpTabsH(t)}</div>`:'')+fx(g)+fx(b);lpPrev()}
 const lpTabsH=t=>OPTS['语言'].map(l=>`<span class="${l===LPCUR?'on':''}" onclick="lpTab('${l}')">${LN[l]||l}${l==='英语'?' <span class="tag">默认</span>':''}${lpDone(LPL[l],t)?' <b style="color:var(--green)">✓</b>':''}</span>`).join('');
 function lpTab(l){const o=lpVals();LPCUR=l;lpForm(o)}
 const LPK={'页面名称':'name','页面类型':'type','页面路径':'path','logo上传':'logo','logo上传-快捷方式':'logo2','应用名称':'app','应用简介':'desc','评分':'rate','评分人数':'rcnt','下载人数':'dl','应用图片':'shots','关于应用':'about','主图':'img','宣传文案':'txt','按钮文字':'btn','页面标题':'title','分享图':'og','隐私政策链接':'priv','自动跳转':'jump','内置浏览器里':'inapp'};
@@ -1475,7 +1475,7 @@ function rescLog(i){const r=RESC[i];openDrawer('救援记录',F([['主域名',r[
 PDOMS.push(['https://spare3.1050.test','',3]);
 function bindCh(L){return L.length?L.map(c=>`<a onclick="go('mCh')">${c.name}</a>`).join('、'):'--'}
 /* 绑定渠道＝渠道管理里实际用到这个域名的渠道（推广域名、跳转域名），没有就 -- */
-function domCh(r){const t=r[2],d=r[1];return bindCh(t==='推广泛域名'?wildCh(d.slice(2)):t==='独立推广域名'?CHANNELS.filter(c=>c.dm===d):t==='跳转域名'?CHANNELS.filter(c=>c.jp===d):[])}
+function domCh(r){const t=r[2],d=r[1],on=useOf(r)==='在用';return bindCh(t==='推广泛域名'?wildCh(d.slice(2)):t==='独立推广域名'?CHANNELS.filter(c=>c.dm===d):t==='跳转域名'?CHANNELS.filter(c=>c.jp===d):t==='主域名'&&on?CHANNELS.filter(c=>c.to&&c.to!=='落地页'):t==='防封下载页'&&r[3]?CHANNELS.filter(c=>(isApp(c.end)||c.end==='PWA')&&(!c.sf||c.sf===d)):t==='下载域名'&&on?CHANNELS.filter(c=>isApp(c.end)):[])}
 function layOf(r){if(r[2]==='主域名')return r[3]===0?'--':DLAY;const L=r[2]==='推广泛域名'?(r[5]==='on'?wildCh(r[1].slice(2)):[]):CHANNELS.filter(c=>c.dm===r[1]);const v=[...new Set(L.filter(c=>c.to!=='落地页').map(c=>c.lay||DLAY))];return v.length?v.join('、'):'--'}
 PAGES.mDom={end:'m',title:'域名管理',bd:['改','c'],render(){
   const nm=id=>(CHANNELS.find(x=>x.id===id)||{}).name;const auto=CHANNELS.filter(c=>!c.dm).length;
@@ -1488,11 +1488,15 @@ PAGES.mDom={end:'m',title:'域名管理',bd:['改','c'],render(){
   return chg('chg','参考现有域名管理，按类型分 6 种：主域名（主站）、推广泛域名、独立推广域名（这两种是渠道入口，一对一）、跳转域名、防封下载页（公共池）、下载域名。推广泛域名同时用几个根域名，自动子域名的渠道分散在它们下面，一个根域名被封只换它下面的渠道；下载域名另备几个备用的，被封时换成备用的。新增、编辑先选类型，只填这一类要填的；保存后照提示加 DNS 解析，状态从「检测中」变「已生效」才能用。域名这里不设跳转方式：新增渠道时按链路一次选完（推广域名 → 落地指向 → 落地页或版面），这里只显示绑了哪个渠道、落到哪里。主域名要选一套版面配置，落地指向主站的渠道默认用它。原「PWA 设置」并到落地页「PWA」里。')+
   flt([inp('商户',M,{req:1}),`<div class="mark">${inp('域名类型')}</div>`,inp('域名','',{t:1,ph:'请输入'})])+
   bakWarn(rows)+`<div class="bar"><button class="btn p" onclick="domEdit()">＋ 新增域名</button><button class="btn" style="margin-left:auto" onclick="domLog()">${CLK}操作记录</button></div>`+
-  table([{t:'商户',k:()=>pill(M)},{t:'域名ID',k:0},{t:'域名类型',cls:'newc',k:r=>tags([r[2]])},{t:'域名',k:1},{t:'能否访问',cls:'newc',k:r=>r[3]===3?st('检测中','run'):r[3]?st('已生效','ok'):st('无法访问','err')},
+  table([{t:'商户',k:()=>pill(M)},{t:'域名ID',k:0},{t:'域名类型',cls:'newc',k:r=>tags([r[2]])},{t:'域名',k:1},{t:'NS',cls:'newc',l:1,k:r=>nsCell(nsOf(r[1]))},{t:'能否访问',cls:'newc',k:r=>r[3]===3?st('检测中','run'):r[3]?st('已生效','ok'):st('无法访问','err')},
    {t:'使用情况',cls:'newc',k:r=>{const u=useOf(r);return u==='在用'?'<b style="font-weight:500">在用</b>':u}},
    {t:'绑定渠道',cls:'newc',k:domCh},{t:'版面配置',cls:'newc',k:r=>r[2]==='主域名'||r[2]==='独立推广域名'?layOf(r):'--'},{t:'状态',k:r=>`<span class="sw ${domOn(r)?'on':''}" onclick="domSw('${r[0]}')"></span>`},{t:'创建人/时间',k:r=>DOMC[r[0]]||who('运营-张伟','2026-09-01 10:00')},{t:'最后修改人/时间',k:r=>DOMU[r[0]]||DOMC[r[0]]||who('运营-张伟','2026-09-01 10:00')},{t:'备注',k:r=>DOMRM[r[0]]||'--'},
    {t:'操作',k:r=>`<span class="ops"><a onclick="domEdit('${r[0]}')">编辑</a><a onclick="toast('检查完成：${r[3]===3?'还在检测中，DNS 没生效':r[3]?'能正常访问':'打不开'}，详情见「解析检测记录」')">检查</a>${r[2]==='主域名'&&RESC.some(x=>x[0]===r[1])?`<a onclick="rescLog(RESC.findIndex(x=>x[0]==='${r[1]}'))">救援记录</a>`:''}${r[5]==='on'?`<a onclick="wildSwap('${r[1].slice(2)}')">一键替换</a>`:''}${r[5]==='pool'?`<a onclick="domSwap('${r[0]}')">替换</a>`:''}${r[5]==='dl'?`<a onclick="domSwap('${r[0]}')">换成备用</a>`:''}</span>`}],DOMROWS=rows)}};
 let DOMROWS=[];
+/* NS：域名加进 Cloudflare 后分到的两个，同一个根域名同一对 */
+const NSP=[['luke','peaches'],['amy','walt'],['kara','tom'],['nina','rob']];
+function nsOf(d){const h=d.replace(/^https?:\/\//,'').replace(/^\*\./,'').split('.').slice(-2).join('.');let n=0;for(const c of h)n=(n*31+c.charCodeAt(0))%997;return NSP[n%NSP.length].map(x=>x+'.ns.cloudflare.com')}
+function nsCell(ns){return `<div style="display:flex;gap:12px;align-items:center"><div style="white-space:nowrap;line-height:20px">${ns.join('<br>')}</div><a style="white-space:nowrap" onclick="toast('已复制 NS')">复制</a></div>`}
 /* ---- 域名管理：操作记录（照 V3 版面列表「操作记录」：按钮放新增旁，点开弹窗，筛选 + 5 列） ---- */
 const CLK='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:4px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
 /* [域名, 操作类型, [[改了什么, 修改前, 修改后]...], 备注, 操作人, 时间] */
@@ -1546,7 +1550,7 @@ function domEdit(id){const r=id==null?null:DOMROWS.find(x=>x[0]===id);const t=r?
  $('#domF').addEventListener('pick',ev=>{if(ev.target.closest('.fr')?.querySelector('label').textContent.includes('域名类型')){const nt=ev.target.textContent.trim();$('#domF').innerHTML=F(domFields(nt,null),100)}})}
 function domSave(ed){const t=$('#domF div.inp[data-l="域名类型"]');if(!t.classList.contains('v'))return toast('请先选域名类型');const d=$('#domF .fr:has(label) input.inp');
  if(!ed&&(!d||!d.value.trim()))return toast('请填域名');if(ed){closeDrawer();return toast('已保存')}
- const v=d.value.trim().replace(/^https?:\/\//,'');openDrawer('请添加 DNS 解析',table([{t:'记录类型',k:0},{t:'主机记录',k:1},{t:'记录值',k:2}],[['CNAME',v.startsWith('*.')?'*':'@','edge-1050.v3cdn.test']])+'<div class="alert">到域名服务商后台加上面这条解析。系统每 10 分钟检测一次，生效后状态自动变「已生效」；检测结果在「解析检测记录」里看。</div>',CLOSEF,600,[['域名',v],['状态','检测中']])}
+ const v=d.value.trim().replace(/^https?:\/\//,'');openDrawer('请修改 NS 并添加 DNS 解析','<div style="font-weight:600;margin-bottom:8px">1. 去注册商（买域名的地方）把 NS 改成这两个</div>'+nsCell(nsOf(v))+'<div style="font-weight:600;margin:16px 0 8px">2. 添加 DNS 解析</div>'+table([{t:'记录类型',k:0},{t:'主机记录',k:1},{t:'记录值',k:2}],[['CNAME',v.startsWith('*.')?'*':'@','edge-1050.v3cdn.test']])+'<div class="alert">到域名服务商后台加上面这条解析。系统每 10 分钟检测一次，生效后状态自动变「已生效」；检测结果在「解析检测记录」里看。</div>',CLOSEF,600,[['域名',v],['状态','检测中']])}
 
 /* ---- 广告接入测试：生成测试链接 ---- */
 function adTestLink(){const r=ST.ad&&ST.ad.r,p=ST.ad&&ST.ad.p;if(!p||p.test!=='code')return;const kw=p.name==='Kwai';const ch=r&&r.name?CHANNELS.find(x=>x.cfg===r.name):null;if(!ch){$('#tlink').innerHTML=`<div class="alert w" style="margin-top:8px">这份配置还没关联渠道。测试链接用渠道的真实推广链接生成，先到<a onclick="go('mCh')">渠道管理</a>新增或编辑渠道，选上这份配置。</div>`;return toast('还没关联渠道，先去渠道管理绑定')}const code=$('#dbody .tcode');if(!code||!code.value.trim())return toast(kw?'请先填测试点击编号':'请先填 Test Event Code');
@@ -1565,8 +1569,8 @@ const _ds2=doSearch;doSearch=function(btn){_ds2(btn);if(!/^[am]Rpt$/.test(CUR)||
 const VERS=[
  ['v3.2.0','安卓原生母包','安装包 + 配置','安装包升级','充值页提速、修复部分机型闪退','--',st('验证中','run'),st('草稿','no'),null,'--（新安装包）','--'],
  ['v2.4.0','安卓壳包母包','网页内容','热更网页内容','修复充值页白屏','--',st('已通过','ok'),st('已发布','ok'),[22,'412 / 1,904 台'],'≥ v2.3.0','--'],
- ['v3.1.0','安卓原生母包','安装包','安装包升级','充值页改版','--',st('已通过','ok'),st('已发布','ok'),[21,'86 / 410 台'],'--（新安装包）','--'],
- ['v2.3.1','安卓壳包母包','安装包','安装包升级','修复登录态丢失','--',st('已通过','ok'),st('已发布','ok'),[100,'1,904 / 1,904 台'],'--（新安装包）','--']];
+ ['v2.3.1','安卓壳包母包','安装包','安装包升级','修复登录态丢失','--',st('已通过','ok'),st('已发布','ok'),[100,'1,904 / 1,904 台'],'--（新安装包）','--'],
+ ['v3.1.0','安卓原生母包','安装包','安装包升级','充值页改版','--',st('已通过','ok'),st('已发布','ok'),[21,'86 / 410 台'],'--（新安装包）','--']];
 const ISSUES=[
  ['IS3002','写入渠道号失败','渠道 B 用 v3.1.0 重建子包时写入渠道号失败（超时），已自动重试，还没成功','(1050)daman','1 个渠道','2026-11-02 16:32','处理中','admin02','v3.1.0'],
  ['IS3003','更新失败','安装包部分机型安装失败','(1050)daman','2 个渠道 · 约 120 用户','2026-10-31 20:40','已修复','admin01','v2.3.1']];
@@ -1666,7 +1670,7 @@ function useOf(r){const t=r[2];
  if(t==='推广泛域名')return {on:'在用',bak:'备用',old:'已换下'}[r[5]]||'--';
  if(t==='独立推广域名'){const d=PDOMS.find(x=>x[0]===r[1])||[];return d[1]==='x'?'已换下':d[1]?'在用':'空闲'}
  if(t==='下载域名')return r[5]==='dl'?'在用':'备用';
- return '在用'}
+ return r[3]===0?'已换下':'在用'}
 function bakWarn(rows){return '<div class="alert">系统每 10 分钟检查一遍所有域名是否生效、能否打开，结果看「能否访问」列。</div>'}
 {const _df2=domFields;domFields=function(t,r){const a=_df2(t,r);
  if(['主域名','推广泛域名','下载域名'].includes(t)){const u=r?useOf(r):'在用';a.splice(1,0,['使用情况',R(['在用','备用'],u==='备用'?'备用':'在用'),{full:1}])}
@@ -1680,7 +1684,7 @@ function bakWarn(rows){return '<div class="alert">系统每 10 分钟检查一�
 function layHtml(n){return '<span>'+n+(n===DLAY?'<span class="tag" style="background:#e8f7ee;color:#1a7f37;margin-left:6px">默认版面</span>':'')+'</span>'}
 Object.defineProperty(OPTS,'版面配置',{get:()=>LAYS.map(layHtml),configurable:true});
 TIPS['版面配置']='V3 的商户版面（总控「商户版面配置」里给这个商户开的那些）。主域名选一套作默认；落地指向是主站首页或注册页的渠道，默认用主域名这套，也可以单独换一套。';
-TIPS['绑定渠道']='渠道管理里用到这个域名的渠道（推广域名、跳转域名），没有渠道用到显示 --。用户打开后落到哪里（落地页、主站首页、主站注册页），在新增渠道时按链路选，域名这里不设。';
+TIPS['绑定渠道']='渠道管理里用到这个域名的渠道，没有渠道用到显示 --。主域名：落地指向是主站首页或注册页的渠道；推广域名、跳转域名：渠道里选的那个；防封下载页：安卓和 PWA 渠道（用默认的随机轮换）；下载域名：安卓渠道下载安装包。用户打开后落到哪里（落地页、主站首页、主站注册页），在新增渠道时按链路选，域名这里不设。';
 document.addEventListener('pick',ev=>{const el=ev.target;if(el&&el.dataset&&el.dataset.l==='版面配置'){const n=el.textContent.replace('默认版面','').trim();el.innerHTML=layHtml(n)}});
 function dTo(id){const c=CHANNELS.find(c=>c.id===id)||{};return c.to==='落地页'?'落地页 '+(c.lp||''):(c.to||'--')+' · '+(c.lay||DLAY)}
 {const ORD=['商户','渠道ID','渠道名','分组','渠道类型','归属代理','设备类型','母包','推广域名','落地指向','落地页','版面配置','广告接入配置','分享卡片','跳转域名','防封下载页','状态','备注'];
@@ -1770,7 +1774,7 @@ const RETCH=[
  ['渠道 B','GG_APK_IN_001','非代理','安卓原生','--',740,[49.0,35.1,26.2,18.9,14.0],27.3,540],
  ['Facebook-A','FB_WEB_IN_001','非代理','Web','--',880,[27.4,15.8,9.6,5.2,3.4],12.7,188]];
 const RETN=[1,3,7,15,30];const RETD=[31,31,27,19,4];const retBs=reg=>RETD.map(x=>Math.round(reg*x/31));
-function retCell(reg,rate,bs,N){if(rate==null)return '<span class="note">--</span>';const b=bs==null?reg:bs;const c=Math.round(b*rate/100);return `<div style="background:rgba(31,95,168,${Math.min(.55,rate/90).toFixed(2)});border-radius:4px;padding:4px 6px;min-width:58px;color:${rate>32?'#fff':'inherit'}">${rate.toFixed(1)}%<div style="font-size:11px;opacity:.8">${c.toLocaleString()} 人</div>${b<reg?`<div style="font-size:11px;opacity:.8">满 ${N} 天 ${b.toLocaleString()} 人</div>`:''}</div>`}
+function retCell(reg,rate,bs,N){if(rate==null)return '<span class="note">--</span>';const b=bs==null?reg:bs;const c=Math.round(b*rate/100);return `<div style="background:rgba(31,95,168,${Math.min(.55,rate/90).toFixed(2)});border-radius:4px;padding:4px 6px;min-width:58px;color:${rate>32?'#fff':'inherit'}">${(b?c/b*100:rate).toFixed(1)}%<div style="font-size:11px;opacity:.8">${c.toLocaleString()} 人</div>${b<reg?`<div style="font-size:11px;opacity:.8">满 ${N} 天 ${b.toLocaleString()} 人</div>`:''}</div>`}
 function retHtml(){const _RC=RFOK?RETCH.filter(r=>RFOK.includes(r[1])):RETCH;const _rg=L=>L.reduce((a,r)=>a+r[5],0),_ra=(L,i)=>L.reduce((a,r)=>a+r[5]*r[6][i],0)/_rg(L);const RDAY={f:_rg(_RC)/_rg(RETCH),d:RETN.map((_,i)=>_RC.length?_ra(_RC,i)-_ra(RETCH,i):0)};
  const mode=`<div class="bar" style="margin:6px 0 10px"><div class="radio" id="retM"><span class="${RETM==='ch'?'on':''}" onclick="retMode('ch')">按渠道</span><span class="${RETM==='grp'?'on':''}" onclick="retMode('grp')">按分组</span><span class="${RETM==='day'?'on':''}" onclick="retMode('day')">按注册日期</span></div></div>`;
  const head=[{t:'注册人数',k:r=>n(r.reg,1)},...RETN.map((d,i)=>({t:(d===1?'次日':d+' 日')+'留存',k:r=>retCell(r.reg,r.rt[i],r.bs&&r.bs[i],d)})),{t:'7 日首充率',cls:'newc',k:r=>r.fp==null?'<span class="note">--</span>':r.fp.toFixed(1)+'%'},{t:'7 日人均充值',cls:'newc',k:r=>r.ar==null?'<span class="note">--</span>':'₹ '+r.ar}];
@@ -2230,32 +2234,37 @@ CHANNELS.forEach((c,i)=>{if(!c.jp)c.jp=i%2?'https://jump2.1050.test':'https://ju
  document.addEventListener('click',e=>{if(moved){e.stopPropagation();e.preventDefault();moved=false}},true)}
 /* 各页操作记录：和域名管理同一套弹窗。[对象, 操作类型, [[改了什么, 修改前, 修改后]...], 备注, 操作人, 时间] */
 const PLOG={
- mAd:{obj:'配置名称',types:['新增','编辑','启用','停用','测试回传'],rows:[
-  ['FB-Web 主投放','编辑',[['优化事件','注册成功','首充成功']],'','运营-张伟','2026-11-04 11:20'],
-  ['Google-安卓原生','测试回传',[['测试结果','未测试','失败']],'平台返回：转化动作不存在','运营-李娜','2026-11-03 15:40'],
-  ['Kwai-安卓壳包','新增',[['广告平台','--','Kwai'],['投放端','--','安卓壳包'],['配置名称','--','Kwai-安卓壳包']],'','运营-李娜','2026-11-02 10:15'],
-  ['TikTok-PC','停用',[['状态','启用','停用']],'','运营-张伟','2026-10-30 17:05']]},
+ mAd:{obj:'配置名称',types:['新增','编辑','开启','关闭','测试回传'],rows:[
+  ['FB-Web 主投放','编辑',[['备注','--','A1 在用']],'','运营-李娜','2026-11-01 16:40'],
+  ['Google-安卓原生','关闭',[['状态','开启','关闭'],['备注','--','还没授权，先关着']],'','运营-张伟','2026-11-01 08:10'],
+  ['Kwai-Web','测试回传',[['回传状态','未测试','测试失败']],'平台返回：Pixel ID 不存在','运营-李娜','2026-11-01 11:05'],
+  ['FB-Web-A','新增',[['广告平台','--','Facebook'],['投放端','--','Web'],['配置名称','--','FB-Web-A']],'','运营-李娜','2026-10-30 11:20'],
+  ['Kwai-安卓壳包','新增',[['广告平台','--','Kwai'],['投放端','--','安卓壳包'],['配置名称','--','Kwai-安卓壳包']],'','运营-李娜','2026-10-30 09:00']]},
  mCh:{obj:'渠道',types:['新增','编辑','启用','停用','批量更新状态'],rows:[
   ['A3（agt_WEB_IN_003）','新增',[['渠道类型','--','代理'],['归属代理','--','8810102'],['落地指向','--','主站注册页']],'','运营-张伟','2026-11-03 09:20'],
-  ['A2（agt_WEB_IN_002）','编辑',[['广告接入配置','不接广告平台','TikTok-Web']],'','运营-张伟','2026-11-01 16:30'],
-  ['渠道 B（GG_APK_IN_001）','编辑',[['落地指向','主站注册页','落地页：下载送 500（印地语）']],'','运营-李娜','2026-10-31 14:10'],
-  ['渠道 A、A1','批量更新状态',[['状态','停用','启用']],'共 2 个渠道','运营-李娜','2026-10-29 10:00']]},
+  ['渠道 B（GG_APK_IN_001）','编辑',[['备注','--','子包还是 v3.0.2，等建议更新']],'','运营-张伟','2026-11-02 16:10'],
+  ['A2（agt_WEB_IN_002）','编辑',[['备注','--','同一代理第二次投放']],'','运营-张伟','2026-11-01 16:30'],
+  ['渠道 F（KW_SHELL_IN_001）','新增',[['渠道类型','--','非代理'],['设备类型','--','安卓壳包'],['状态','--','停用']],'','运营-李娜','2026-10-30 09:10'],
+  ['渠道 E（KW_WEB_IN_001）','停用',[['状态','启用','停用']],'配置测试没通过，先停着','运营-李娜','2026-11-01 11:10']]},
  mApp:{obj:'渠道 / 版本',types:['版本更新','回滚','自动打包'],rows:[
   ['渠道 B · 安卓原生 v3.1.0','版本更新',[['母包版本','安卓原生 v3.0.2','安卓原生 v3.1.0']],'建议更新','运营-张伟','2026-11-02 16:30'],
-  ['渠道 B · 子包','自动打包',[['子包','--','com.daman.app（渠道 B）']],'','运营-张伟','2026-10-28 11:00'],
+  ['渠道 C · 子包','自动打包',[['子包','--','com.ar.1050.fb_shell_in_001.daman']],'发给 Facebook 投放组上传','运营-李娜','2026-11-02 15:20'],
+  ['渠道 B · 子包','自动打包',[['子包','--','com.ar.1050.gg_apk_in_001.daman']],'','运营-张伟','2026-10-20 10:05'],
   ['渠道 C · 安卓壳包 v2.3.0','版本更新',[['母包版本','安卓壳包 v2.2.4','安卓壳包 v2.3.0']],'建议更新','运营-张伟','2026-10-27 10:20']]},
  mLp:{obj:'页面名称',types:['新增','编辑','删除'],rows:[
   ['下载送 500（印地语）','编辑',[['自动跳转','不跳转','5 秒后自动点按钮']],'','运营-李娜','2026-11-03 14:30'],
   ['daman 商城页（葡语）','新增',[['页面类型','--','PWA'],['语言','--','英语、葡萄牙语']],'','运营-张伟','2026-11-01 09:45'],
   ['注册送 500','编辑',[['隐私政策链接','--','https://www.1050.test/privacy']],'','运营-李娜','2026-10-30 16:00']]},
  aApp:{obj:'母包 / 版本',types:['新增母包','编辑母包','新建版本','发布','处理问题'],rows:[
-  ['安卓原生 v3.1.0','发布',[['发布状态','待发布','已发布']],'','admin01','2026-11-02 15:00'],
-  ['安卓壳包 v2.3.1','处理问题',[['处理状态','处理中','已修复']],'部分机型安装失败','admin02','2026-10-31 18:30'],
+  ['安卓原生 v3.2.0','新建版本',[['母包','--','安卓原生母包'],['更新类型','--','建议更新'],['更新说明','--','充值页提速、修复部分机型闪退']],'','admin01','2026-11-03 09:40'],
+  ['安卓原生母包','编辑母包',[['版本号','v3.0.2','v3.1.0']],'','admin01','2026-11-02 15:00'],
+  ['安卓壳包 网页内容 v2.4.0','发布',[['发布状态','草稿','已发布']],'强制更新','admin02','2026-11-02 14:00'],
+  ['安卓壳包 v2.3.1','处理问题',[['处理状态','处理中','已修复']],'部分机型安装失败','admin01','2026-10-31 20:40'],
   ['安卓壳包母包','编辑母包',[['版本号','v2.3.0','v2.3.1']],'','admin02','2026-10-30 18:00'],
-  ['安卓原生 v3.1.0','新建版本',[['母包','--','安卓原生母包'],['更新类型','--','建议更新']],'','admin01','2026-10-29 10:20']]}};
+  ['安卓原生 v3.1.0','发布',[['发布状态','草稿','已发布']],'建议更新','admin01','2026-10-28 11:20']]}};
 let PLK='';
 function plogTb(L){const c=PLOG[PLK],nw=i=>r=>`<span style="white-space:nowrap">${r[i]}</span>`;return table([{t:'商户',k:()=>pill(M)},{t:c.obj,k:nw(0)},{t:'操作类型',k:nw(1)},{t:'操作内容',l:1,k:domChg},{t:'操作人',k:nw(4)},{t:'操作时间',k:nw(5)}],L)}
-function pageLog(k){PLK=k;OPTS['操作类型']=PLOG[k].types;
+function pageLog(k){PLK=k;OPTS['操作类型']=PLOG[k].types;PLOG[k].rows.sort((a,b)=>b[5].localeCompare(a[5]));
  openDrawer('操作记录',`<div class="flt" id="plogF">${inp('商户',M,{req:1})}${inp('操作类型')}${inp('操作时间','2026-10-01 ~ 2026-11-04')}<div class="btns"><button class="btn p" onclick="pageLogQ()">⌕ 搜索</button><button class="btn" onclick="pageLog('${k}')">↻ 重置</button></div></div><div id="plogT">${plogTb(PLOG[k].rows)}</div>`,CLOSEF,900)}
 function pageLogQ(){const tp=$('#plogF div.inp[data-l="操作类型"]');const t=tp.classList.contains('v')?tp.textContent.trim():'';
  $('#plogT').innerHTML=plogTb(PLOG[PLK].rows.filter(r=>!t||r[1]===t))}
