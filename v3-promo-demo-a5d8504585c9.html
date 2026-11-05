@@ -869,7 +869,7 @@ function renderAd(){const {r,step,p}=ST.ad;
    b+=(p.test==='code'?F([p.name==='Kwai'?['测试点击编号','<input class="inp tcode" placeholder="从 Kwai 后台复制" style="min-width:0;width:100%">']:['Test Event Code',`<input class="inp tcode" placeholder="如 TEST12345，从 ${p.name} 后台的「Test Events」页复制" style="min-width:0;width:100%">`]],140):'')+
     F([['测试渠道',`<span>${adChOf(r)||'<span class="note">还没关联渠道，先去<a onclick="go(\'mCh\')">渠道管理</a>绑定</span>'}${(CHANNELS.find(c=>c.cfg===r.name)||{state:1}).state?'':' '+st('已停用','no')+'<span class="note" style="margin-left:8px">正式事件不发，测试事件照发</span>'}</span>`,{ro:1,full:1}]],140)+
     `<div class="bar" style="margin-top:12px"><button class="btn p" onclick="adTest()">发送 Test Event</button><span class="note">服务端事件马上发出</span>${p.test==='code'?'<button class="btn" style="margin-left:8px" onclick="adTestLink()">生成测试链接</button>':''}</div>${p.test==='code'?'<div id="tlink"></div>':''}`+
-    `<div class="testT">`+table([{t:'事件',k:e=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${e.n}</span><span class="sub">${e.zh}</span>`},{t:'结果',k:e=>`<span class="tr" data-sv="${e.how!=='Pixel'&&e.how!==CL?1:0}" data-zh="${e.zh}">${adTR(r,evs.indexOf(e))}</span>`}],evs)+`</div>`;
+    (p.name==='Adjust'?'':`<div class="testT">`+table([{t:'事件',k:e=>`<span style="font-family:Menlo,Consolas,monospace;font-size:12px">${e.n}</span><span class="sub">${e.zh}</span>`},{t:'结果',k:e=>`<span class="tr" data-sv="${e.how!=='Pixel'&&e.how!==CL?1:0}" data-zh="${e.zh}">${adTR(r,evs.indexOf(e))}</span>`}],evs)+`</div>`);
    if(p.test==='code')b+=p.name==='Kwai'?'<p class="note">带测试点击编号的事件只用于测试，不计入正式数据。测试点击编号关掉弹窗就清空。</p>':'<p class="note">带 Test Event Code 的事件只显示在平台的「Test Events」页，不计入正式数据。测试码关掉弹窗就清空。</p>';
   }
   openDrawer(step===1?`测试 ${p.name} 配置`:r.id?`编辑 ${p.name} 配置`:'新增广告接入配置',b,step===1?CLOSEF:`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="adSave()">保存</button>`,720,r.id?[['配置ID',r.id],['配置名称',r.name]]:null)}
@@ -2259,7 +2259,7 @@ function chToHide(){['落地指向','落地页','版面配置'].forEach(k=>{cons
  const TT=EV.TikTok,ta=by(TT,'激活'),tt=(zh,nz,tip)=>{const e=by(TT,zh);return {...e,zh:nz,zh0:zh,how:SV,tip:tip??e.tip}};
  EV.TikTok=[...(ta?[ta]:[]),tt('注册','完成注册事件'),tt('首充','首充事件',(by(TT,'首充').tip||'').replace('「充值」','「充值事件」')),tt('充值','充值事件')];
  PL.find(x=>x.name==='Facebook').intro='注册完成、登陆完成、充值发起、注册按钮点击由网页上的 Pixel 上报（前端事件）；首次充值成功、充值成功由我方服务端确认成功后用 Conversions API 发（服务器事件，带落地页记下的点击编号）。';
- PL.push({name:'Adjust',intro:'充值成功、首次充值成功由我方服务端发（服务器传值）；充值发起、登陆完成、注册完成、注册按钮点击由客户端上报（纯客户端）。',need:'应用识别码、安全认证识别码',idL:'应用识别码',keyL:'安全认证识别码',idPh:'粘贴 Adjust 后台的应用识别码',keyPh:'粘贴 Adjust 后台的安全认证识别码',test:'none',testTxt:'用测试渠道真实访问验证',doc:'https://help.adjust.com/',docT:'Adjust 帮助中心'});
+ PL.push({name:'Adjust',intro:'事件基于指定平台配置上报，遵循广告平台事件配置规则',need:'应用识别码、安全认证识别码',idL:'应用识别码',keyL:'安全认证识别码',idPh:'粘贴 Adjust 后台的应用识别码',keyPh:'粘贴 Adjust 后台的安全认证识别码',test:'none',testTxt:'用测试渠道真实访问验证',doc:'https://help.adjust.com/',docT:'Adjust 帮助中心'});
  const AS='ip_address = LastLoginIp',AC='adid = deviceId，revenue = orderAmount，currency = USD';
  EV.Adjust=[
   {n:'Purchase',zh:'充值成功',how:SV,std:1,top:'',srv:AS,cus:AC},
