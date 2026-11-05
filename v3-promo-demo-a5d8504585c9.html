@@ -944,7 +944,6 @@ PAGES.mCh={end:'m',title:'渠道管理',bd:['改','c'],from:'渠道管理',rende
    {t:'归属代理',k:'agent'},
    {t:'设备类型',k:r=>`<span class="tag">${r.end}</span>`+(()=>{const x=(window.SUBS||[]).find(y=>y.ch===r.id&&y.st==='ok');return x&&typeof subRe==='function'&&subRe(x)?`<span class="sub">${st('子包需人工重新上传','err')}</span>`:''})()},
    {t:'推广域名',k:r=>`<span style="white-space:nowrap">${mono(hostOf(r))}<a class="cpi" title="复制推广链接" onclick="event.stopPropagation();toast('已复制推广链接')"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M10.5 5V3.5A1.5 1.5 0 0 0 9 2H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5H5"/></svg></a></span>`},
-   {t:'落地指向',k:r=>toCell(r)},
    {t:'广告接入配置',k:r=>cfgCell(r)},
    {t:'状态',k:r=>chStCell(r)},{t:'创建人/时间',k:'c'},{t:'最后修改人/时间',k:'u'},{t:'备注',k:r=>r.rm||'--'},
    {t:'操作',k:r=>`<span class="ops"><a onclick="chEdit('${r.id}')">编辑</a>${r.dm?`<a onclick="chSwap('${r.id}')">换域名</a>`:''}<a onclick="chHis('${r.id}')">记录</a></span>`}
@@ -1491,9 +1490,12 @@ PAGES.mDom={end:'m',title:'域名管理',bd:['改','c'],render(){
   bakWarn(rows)+`<div class="bar"><button class="btn p" onclick="domEdit()">＋ 新增域名</button><button class="btn" style="margin-left:auto" onclick="domLog()">${CLK}操作记录</button></div>`+
   table([{t:'商户',k:()=>pill(M)},{t:'域名ID',k:0},{t:'域名类型',cls:'newc',k:r=>tags([r[2]])},{t:'域名',k:1},{t:'NS',cls:'newc',l:1,k:r=>nsCell(nsOf(r[1]))},{t:'能否访问',cls:'newc',k:r=>r[3]===3?st('检测中','run'):r[3]?st('已生效','ok'):st('无法访问','err')},
    {t:'使用情况',cls:'newc',k:r=>{const u=useOf(r);return u==='在用'?'<b style="font-weight:500">在用</b>':u}},
-   {t:'绑定渠道',cls:'newc',k:domCh},{t:'版面配置',cls:'newc',k:r=>r[2]==='主域名'||r[2]==='独立推广域名'?layOf(r):'--'},{t:'状态',k:r=>`<span class="sw ${domOn(r)?'on':''}" onclick="domSw('${r[0]}')"></span>`},{t:'创建人/时间',k:r=>DOMC[r[0]]||who('运营-张伟','2026-09-01 10:00')},{t:'最后修改人/时间',k:r=>DOMU[r[0]]||DOMC[r[0]]||who('运营-张伟','2026-09-01 10:00')},{t:'备注',k:r=>DOMRM[r[0]]||'--'},
+   {t:'绑定渠道',cls:'newc',k:domCh},{t:'落地指向',cls:'newc',l:1,k:domTo},{t:'版面配置',cls:'newc',k:r=>r[2]==='主域名'||r[2]==='独立推广域名'?layOf(r):'--'},{t:'状态',k:r=>`<span class="sw ${domOn(r)?'on':''}" onclick="domSw('${r[0]}')"></span>`},{t:'创建人/时间',k:r=>DOMC[r[0]]||who('运营-张伟','2026-09-01 10:00')},{t:'最后修改人/时间',k:r=>DOMU[r[0]]||DOMC[r[0]]||who('运营-张伟','2026-09-01 10:00')},{t:'备注',k:r=>DOMRM[r[0]]||'--'},
    {t:'操作',k:r=>`<span class="ops"><a onclick="domEdit('${r[0]}')">编辑</a><a onclick="toast('检查完成：${r[3]===3?'还在检测中，DNS 没生效':r[3]?'能正常访问':'打不开'}，详情见「解析检测记录」')">检查</a>${r[2]==='主域名'&&RESC.some(x=>x[0]===r[1])?`<a onclick="rescLog(RESC.findIndex(x=>x[0]==='${r[1]}'))">救援记录</a>`:''}${r[5]==='on'?`<a onclick="wildSwap('${r[1].slice(2)}')">一键替换</a>`:''}${r[5]==='pool'?`<a onclick="domSwap('${r[0]}')">替换</a>`:''}${r[5]==='dl'?`<a onclick="domSwap('${r[0]}')">换成备用</a>`:''}</span>`}],DOMROWS=rows)}};
 let DOMROWS=[];
+/* 落地指向：打开这个推广域名落到哪；泛域名下每个渠道是各自的子域名，一行一个 */
+function domTo(r){const t=r[2],d=r[1];if(t==='独立推广域名'){const c=CHANNELS.find(x=>x.dm===d);return c&&useOf(r)==='在用'?toCell(c):'--'}
+ if(t==='推广泛域名'&&r[5]==='on'){const L=wildCh(d.slice(2));return L.length?`<div style="line-height:22px">${L.map(c=>`<div style="white-space:nowrap">${c.name}：${toCell(c)}</div>`).join('')}</div>`:'--'}return '--'}
 /* NS：域名加进 Cloudflare 后分到的两个，同一个根域名同一对 */
 const NSP=[['luke','peaches'],['amy','walt'],['kara','tom'],['nina','rob']];
 function nsOf(d){const h=d.replace(/^https?:\/\//,'').replace(/^\*\./,'').split('.').slice(-2).join('.');let n=0;for(const c of h)n=(n*31+c.charCodeAt(0))%997;return NSP[n%NSP.length].map(x=>x+'.ns.cloudflare.com')}
