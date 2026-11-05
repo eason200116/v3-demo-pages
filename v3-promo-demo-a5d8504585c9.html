@@ -1426,7 +1426,7 @@ const _mChR=PAGES.mCh.render;PAGES.mCh.render=function(){let h=_mChR.call(this);
 function cfgCell(r){if(r.cfg==='--'||r.cfg==='不接广告平台'||!r.cfg)return '--';const c=CONFIGS.find(x=>x.name===r.cfg);if(!c)return r.cfg;const t=c.state?adStat(c):(c.test&&c.test[0]==='失败'?st('测试失败','err'):st('配置已关闭','no'));return `${r.cfg}<span class="sub">${t==='--'?'':t}</span>`}
 function lpViewN(n){const o=LPS.find(x=>x.name===n);if(o)lpView(o.id);else toast('没找到这个落地页')}
 function lpPub(n){const o=LPS.find(x=>x.name===n);return o&&o.pub===0?st('未发布','no'):st('已发布','ok')}
-function toCell(r){return r.to==='落地页'?`<span style="white-space:nowrap"><a onclick="lpViewN('${r.lp}')">${r.lp}</a> ${lpPub(r.lp)}</span>`:(r.to||'--')}
+function toCell(r){if(r.to==='落地页'&&!r.lp)return '<span class="note">未设置</span>';return r.to==='落地页'?`<span style="white-space:nowrap"><a onclick="lpViewN('${r.lp}')">${r.lp}</a> ${lpPub(r.lp)}</span>`:(r.to||'--')}
 
 /* ---- 新增/编辑渠道：安装设置、分享卡片、不接平台 ---- */
 const _chEdit0=chEdit;chEdit=function(id){const r=CHANNELS.find(x=>x.id===id)||{};if(r.sys)return toast('「主站」渠道是系统自带的，不能改');CHE_R=r;_chEdit0(id);
@@ -1540,8 +1540,8 @@ const DOMTYPES=['主域名','推广泛域名','独立推广域名','跳转域名
 function domFields(t,r){const d=r?r[1]:'';const base=[['域名类型',`<div class="inp v" data-l="域名类型">${t}</div>`,{req:1,full:1}]];
  const dm=(ph)=>['域名',I(d,ph),{req:1,full:1}];
  const m={'主域名':[['版面配置',`<div class="inp v" data-l="版面配置">${layHtml(DLAY)}</div>`,{req:1,full:1}],dm('如 https://www.1050.test'),['默认分享卡片',`<div style="display:flex;gap:8px;align-items:center"><input class="inp" style="width:180px" placeholder="标题" value="daman - Play & Win"><input class="inp" style="width:220px" placeholder="描述"><div class="lpup on">已上传 ✓</div></div>`,{full:1}]],
-  '推广泛域名':[dm('如 *.go1050.test，渠道自动生成 渠道code.go1050.test'),['绑定渠道','<span>自动给每个渠道生成子域名</span><span class="note" style="margin-left:8px">每个渠道落到哪里，在新增渠道时选</span>',{full:1,ro:1}]],
-  '独立推广域名':[dm('如 https://fb-a.1050.test，一个只给一个渠道'),(()=>{const ch=r&&CHANNELS.find(c=>c.dm===r[1]);return ch?['绑定渠道',`<span>${ch.name}（${ch.id}）</span><span class="note" style="margin-left:8px">落到：${dTo(ch.id)}</span>`,{full:1,ro:1}]:['绑定渠道','<span class="note">空闲。新增渠道时在「推广域名」里选它，落到哪里在渠道里选</span>',{full:1,ro:1}]})()],
+  '推广泛域名':[dm('如 *.go1050.test，渠道自动生成 渠道code.go1050.test'),['绑定渠道','<span>自动给每个渠道生成子域名</span><span class="note" style="margin-left:8px">渠道建好后，在下面给每个渠道选落到哪</span>',{full:1,ro:1}]],
+  '独立推广域名':[dm('如 https://fb-a.1050.test，一个只给一个渠道'),(()=>{const ch=r&&CHANNELS.find(c=>c.dm===r[1]);return ch?['绑定渠道',`<span>${ch.name}（${ch.id}）</span>`,{full:1,ro:1}]:['绑定渠道','<span class="note">空闲。新增渠道时在「推广域名」里选它，绑好后在这里选落到哪</span>',{full:1,ro:1}]})()],
   '跳转域名':[dm('如 https://jump1.1050.test')],
   '防封下载页':[dm('如 https://safe-g.1050.test'),['页面',S('daman 商城页','选一个PWA落地页'),{req:1,full:1}],['点按钮后','<span class="note">按主域名里设的救援方式走：装 PWA 或下载安装包，这里不用选</span>',{full:1}]],
   '下载域名':[dm('如 https://dl.1050.test')]};
@@ -2277,6 +2277,28 @@ function pageLogQ(){const tp=$('#plogF div.inp[data-l="操作类型"]');const t=
  const i=h.indexOf('<div class="bar">');if(i>=0){const j=h.indexOf('</div>',i);return h.slice(0,j)+b+h.slice(j)}
  const t=h.indexOf('<div class="tw">');return t>=0?h.slice(0,t)+`<div class="bar">${b}</div>`+h.slice(t):h}});
 {const h=location.hash.slice(1);if(PAGES[h])go(h);else render()}
+
+/* 11-05 落地页设置挪到域名：渠道表单不再选落到哪，在域名的新增/编辑里按渠道逐行选 */
+OPTS['落地指向D']=['落地页','主站首页','主站注册页'];OPTS['落地指向App']=['落地页'];
+Object.defineProperty(OPTS,'落地页PWA',{get:()=>LPS.filter(x=>x.type==='PWA').map(x=>x.name),configurable:true});
+Object.defineProperty(OPTS,'落地页AD',{get:()=>LPS.filter(x=>x.type==='广告图').map(x=>x.name),configurable:true});
+function domToRows(L){return `<div class="tw"><table class="domTo" style="width:100%"><thead><tr><th>渠道</th><th>落地指向</th><th>落地页</th></tr></thead><tbody>${L.map(c=>{const lp=c.to==='落地页';
+  return `<tr data-ch="${c.id}"><td style="white-space:nowrap">${c.name}<span class="sub">${c.end}</span></td><td><div class="inp v" data-k="${isApp(c.end)?'落地指向App':'落地指向D'}">${c.to||'落地页'}</div></td><td><div class="inp ${c.lp?'v':''}" data-k="${c.end==='PWA'?'落地页PWA':'落地页AD'}" style="${lp||!c.to?'':'display:none'}">${c.lp||'选落地页'}</div><span class="note" style="${lp||!c.to?'display:none':''}">--</span></td></tr>`}).join('')}</tbody></table></div>`}
+{const _df9=domFields;domFields=function(t,r){const a=_df9(t,r);if(!r)return a;
+ const L=t==='独立推广域名'?CHANNELS.filter(c=>c.dm===r[1]):t==='推广泛域名'?wildCh(r[1].slice(2)):null;
+ if(L&&L.length){const i=a.findIndex(x=>x[0]==='绑定渠道');a.splice(i<0?a.length:i+1,0,['落地指向',domToRows(L),{req:1,full:1}])}return a}}
+{const _de9=domEdit;domEdit=function(){const r=_de9.apply(this,arguments);document.querySelectorAll('#domF [data-k]').forEach(x=>x.dataset.l=x.dataset.k);return r}}
+document.addEventListener('pick',ev=>{const d=ev.target;if(!d.closest||!d.closest('table.domTo')||!/^落地指向/.test(d.dataset.l||''))return;
+ const td=d.closest('tr').children[2],on=d.textContent.trim()==='落地页';td.querySelector('.inp').style.display=on?'':'none';td.querySelector('.note').style.display=on?'none':''});
+{const _ds9=domSave;domSave=function(ed){const rows=[...document.querySelectorAll('#domF table.domTo tbody tr')];const V=[];
+ for(const tr of rows){const c=CHANNELS.find(x=>x.id===tr.dataset.ch);if(!c)continue;const to=tr.children[1].querySelector('.inp').textContent.trim(),l=tr.children[2].querySelector('.inp');
+  if(to==='落地页'&&!l.classList.contains('v'))return toast('请给「'+c.name+'」选落地页');V.push([c,to,to==='落地页'?l.textContent.trim():c.lp])}
+ const res=_ds9.apply(this,arguments);if(!document.querySelector('#modal.on')||!document.querySelector('#domF')){V.forEach(([c,to,lp])=>{c.to=to;c.lp=lp});if(V.length)render()}return res}}
+/* 渠道表单：落地指向、落地页两行藏起来（值从域名那边来） */
+function chToHide(){['落地指向','落地页'].forEach(k=>{const f=chFr(k);if(f)f.style.display='none'})}
+{const _t9=chToSet;chToSet=function(){const r=_t9.apply(this,arguments);chToHide();return r}}
+{const _e9=chEdit;chEdit=function(){const r=_e9.apply(this,arguments);chToHide();return r}}
+{const _s9=chSave;chSave=function(ed){const d=chFr('落地页')?.querySelector('div.inp');if(d&&!d.classList.contains('v')){d.textContent='';d.classList.add('v')}return _s9.apply(this,arguments)}}
 </script>
 
 </body></html>
