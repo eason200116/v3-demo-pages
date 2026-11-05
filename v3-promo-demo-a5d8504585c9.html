@@ -902,7 +902,7 @@ PAGES.mCh={end:'m',title:'渠道管理',bd:['改','c'],from:'渠道管理',rende
    {t:'商户',k:()=>pill(M)},{t:'渠道 code',k:r=>`<b style="font-weight:500;font-family:Menlo,Consolas,monospace">${r.id}</b>`},{t:'渠道名',k:'name'},{t:'分组',k:r=>r.grp?grpTag(r.grp):'--'},{t:'渠道类型',k:r=>tyTag(r.type)},
    {t:'归属代理',k:'agent'},
    {t:'设备类型',k:r=>`<span class="tag">${r.end}</span>`+(()=>{const x=(window.SUBS||[]).find(y=>y.ch===r.id&&y.st==='ok');return x&&typeof subRe==='function'&&subRe(x)?`<span class="sub">${st('子包需人工重新上传','err')}</span>`:''})()},
-   {t:'推广域名',k:r=>`<span style="white-space:nowrap">${mono(hostOf(r))}<a class="cpi" title="复制推广链接" onclick="event.stopPropagation();toast('已复制推广链接')"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M10.5 5V3.5A1.5 1.5 0 0 0 9 2H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5H5"/></svg></a></span>`},
+   {t:'域名配置',k:r=>`<span style="white-space:nowrap">${mono(hostOf(r))}<a class="cpi" title="复制推广链接" onclick="event.stopPropagation();toast('已复制推广链接')"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M10.5 5V3.5A1.5 1.5 0 0 0 9 2H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5H5"/></svg></a></span>`},
    {t:'广告接入配置',k:r=>cfgCell(r)},
    {t:'状态',k:r=>chStCell(r)},{t:'创建人/时间',k:'c'},{t:'最后修改人/时间',k:'u'},{t:'备注',k:r=>r.rm||'--'},
    {t:'操作',k:r=>`<span class="ops"><a onclick="chEdit('${r.id}')">编辑</a>${r.dm?`<a onclick="chSwap('${r.id}')">换域名</a>`:''}<a onclick="chHis('${r.id}')">记录</a></span>`}
@@ -944,7 +944,7 @@ function chEdit(id){const r=CHANNELS.find(x=>x.id===id)||{};const e=r.end||'Web'
   ['广告接入配置',(v=>`<div class="inp clr ${v?'v':''}" data-ph="选广告接入配置">${v||'选广告接入配置'}</div>`)(r.cfg&&r.cfg!=='--'&&r.cfg!=='不接广告平台'?r.cfg:''),{}],
   ['状态',`<span class="sw ${id&&r.state?'on':''}" id="chSt" onclick="chStGuard(event)"></span>`],
   ['备注',I(r.rm||'')]],110)+
- '<div class="alert" id="chTip" style="display:none"></div>'+(id?'<div class="alert w">渠道类型、设备类型、推广域名建好后不能改。</div>':''),
+ '<div class="alert" id="chTip" style="display:none"></div>'+(id?'<div class="alert w">渠道类型、设备类型、域名配置建好后不能改。</div>':''),
  `<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="chSave(${id?1:0})">保存</button>`,860,id?[['渠道 code',r.id]]:null);
  chEndSet(e,0,1);chTypeSet(r.type||'代理');chToSet(to)}
 function chLay(){const ag=($('#chType .on')?.textContent||'')==='代理渠道',lp=($('#chTo .on')?.textContent||'')==='落地页';const rm=chFr('备注');if(rm){const sf=chFr('防封下载页')?.style.display!=='none';rm.classList.toggle('full',((ag?1:0)+(lp?1:0)+(sf?1:0))%2===1)}}
@@ -2099,8 +2099,8 @@ var PD={
   plat:1,fields:{'事件记录':{rows:PD_EV}}},
  mCh:{end:'m',name:'渠道管理',
   use:['每次投放建一个渠道，系统自动生成渠道 code 和推广链接；报表、归属都按渠道算。'],
-  howL:'怎么配',how:['点「＋ 新增渠道」，选渠道类型：代理渠道 / 官方渠道','代理渠道必须选归属代理；官方渠道不挂代理','选设备类型，推广域名默认自动生成（也可用独立推广域名）','选跳转落地页，保存后自动生成渠道 code 和推广链接','到「推广配置」里把广告接入配置关联到这个渠道','用推广链接测试，通过后启用渠道再投放'],
-  flow:[['运营','选渠道类型','代理渠道 / 官方渠道'],['运营','选归属代理','代理渠道必须选'],['运营','选设备类型和域名','推广域名自动生成'],['系统','生成推广链接','渠道 code 作子域名'],['运营','关联广告接入','在推广配置里关联'],['运营','测试后启用','再开始投放']],
+  howL:'怎么配',how:['点「＋ 新增渠道」，选渠道类型：代理渠道 / 官方渠道','代理渠道必须选归属代理；官方渠道不挂代理','选设备类型，域名配置从空闲的推广域名里选','选跳转落地页，保存后自动生成渠道 code 和推广链接','到「推广配置」里把广告接入配置关联到这个渠道','用推广链接测试，通过后启用渠道再投放'],
+  flow:[['运营','选渠道类型','代理渠道 / 官方渠道'],['运营','选归属代理','代理渠道必须选'],['运营','选设备类型和域名','从空闲的推广域名里选'],['系统','生成推广链接','选的域名带上渠道 code'],['运营','关联广告接入','在推广配置里关联'],['运营','测试后启用','再开始投放']],
   terms:[['渠道 code','渠道的唯一编号，保存时自动生成，统计只认它'],['渠道类型','代理渠道挂一个代理；官方渠道不挂代理'],['推广域名','渠道的入口域名，一个渠道一个'],['跳转落地页','用户点这个渠道的推广链接先到的落地页，从落地页管理里选'],['设备类型','Web / PWA / 安卓原生 / 安卓壳包，一个渠道只对应一种'],['分组','自定义归类，只用来筛选和汇总，在「分组管理」里改']]},
  mApp:{end:'m',name:'应用与版本',sub:'含 版本更新、自动打包 两个页签',
   use:['看总控发的新母包，给安卓渠道安排更新；需要固定安装包时给渠道生成子包。'],
