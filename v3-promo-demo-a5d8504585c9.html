@@ -1,5 +1,14 @@
 <!doctype html><html lang="zh-CN"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.tw.cangrab{cursor:grab}.tw.dragging{cursor:grabbing;user-select:none}.tw::-webkit-scrollbar{height:10px}.tw::-webkit-scrollbar-thumb{background:#c8ccd2;border-radius:5px}.tw::-webkit-scrollbar-track{background:#f0f2f5}
-.cpi{display:inline-flex;vertical-align:-2px;margin-left:6px;color:var(--pri);cursor:pointer;opacity:.75}.cpi:hover{opacity:1}</style></head><body>
+.cpi{display:inline-flex;vertical-align:-2px;margin-left:6px;color:var(--pri);cursor:pointer;opacity:.75}.cpi:hover{opacity:1}
+.rpt-date-group{display:flex;align-items:center;flex-wrap:wrap;gap:8px;max-width:100%}.rpt-date-group>.fi{max-width:100%;min-width:0}.rpt-date-group>.fi>.inp{min-width:0;max-width:100%}.rpt-date-group>.quick{flex-shrink:0}
+.modal #adjustTokens input[data-adjust-event]{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+.modal .fr>.fc:has(>.sw:only-child){min-height:32px;display:flex;align-items:center}
+
+.modal #plogT>.tw>table{min-width:820px}
+.modal #plogT>.tw>table>thead>tr>th{white-space:nowrap;overflow-wrap:normal}
+.modal #plogT>.tw>table>tbody>tr>td:first-child{min-width:120px;white-space:nowrap;overflow-wrap:normal}.modal #plogT .pill{white-space:nowrap;overflow-wrap:normal}
+.modal #plogT>.tw>table :is(th,td):nth-child(2){min-width:130px}.modal #plogT>.tw>table :is(th,td):nth-child(3){min-width:88px;white-space:nowrap;overflow-wrap:normal}.modal #plogT>.tw>table :is(th,td):nth-child(4){min-width:220px}.modal #plogT>.tw>table :is(th,td):nth-child(5){min-width:88px}.modal #plogT>.tw>table :is(th,td):nth-child(6){min-width:156px}
+</style></head><body>
 <title>V3 推广 B 端 Demo</title>
 <style>
 :root{color-scheme:light;--blue:#1d5fa6;--blue2:#2a6fba;--pri:#1d61a8;--pri-soft:#eaf2fb;--line:#e4e7ec;--th:#f7f8fa;--ink:#1f2329;--mut:#7a8290;--green:#18a058;--green-soft:#e9f7ef;--red:#d03050;--red-soft:#fdecef;--orange:#f0a020;--orange-soft:#fff6e5;--bg:#f2f4f7;--new:#e8492f;--chg:#f08a00}
@@ -943,11 +952,11 @@ function merchantVersionDownload(id){const mother=MPS.find(m=>m[0]===id&&(m._mer
 
 
 /* ---- 商户 · 推广报表 ---- */
-function rptFlt(t){return flt([...(CUR==='aRpt'?[inp('集团','亚太集团')]:[]),inp('商户',M,CUR==='aRpt'?{}:{req:1}),...(t===1?[]:[t>=3?inp(t===4?'花费日期':'注册日期','2026-10-01 ~ 2026-10-31',{w:200}):inp(t===2?'发生时间':'统计日期','2026-11-01 ~ 2026-11-01',{w:200}),`<div class="quick"><span>今天</span><span>昨天</span><span>本周</span><span>本月</span></div>`]),inp('渠道类型','',{ph:'全部'}),...(t===4?[]:[inp('归属代理','',{ph:'全部'})]),inp('分组','',{ph:'全部'}),inp('渠道','',{ph:'全部',w:200}),...(t===4?[]:[inp('广告平台','',{ph:'全部'})])].concat(t===1?[inp('会员ID/手机号','',{t:1,ph:'请输入'}),inp('注册时间','2026-11-01 ~ 2026-11-01',{w:200}),inp('首充时间','',{w:200,ph:'请选择'})]:[]))}
+function rptFlt(t){return flt([...(CUR==='aRpt'?[inp('集团','亚太集团')]:[]),inp('商户',M,CUR==='aRpt'?{}:{req:1}),...(t===1?[]:[`<div class="rpt-date-group">${t>=3?inp(t===4?'花费日期':'注册日期','2026-10-01 ~ 2026-10-31',{w:200}):inp(t===2?'发生时间':'统计日期','2026-11-01 ~ 2026-11-01',{w:200})}<div class="quick"><span>今天</span><span>昨天</span><span>本周</span><span>本月</span></div></div>`]),inp('渠道类型','',{ph:'全部'}),...(t===4?[]:[inp('归属代理','',{ph:'全部'})]),inp('分组','',{ph:'全部'}),inp('渠道','',{ph:'全部',w:200}),...(t===4?[]:[inp('广告平台','',{ph:'全部'})])].concat(t===1?[inp('会员ID/手机号','',{t:1,ph:'请输入'}),inp('注册时间','2026-11-01 ~ 2026-11-01',{w:200}),inp('首充时间','',{w:200,ph:'请选择'})]:[]))}
 const chLabel=c=>`${c.id} · ${c.name}`;
 PAGES.mRpt={end:'m',title:'推广报表',bd:['新',''],tab:0,render(){
   const t=this.tab;let h=(CUR==='aRpt'?chg('new',ARPTCHG):chg('new','分三张报表：「新增报表」看用户从哪个渠道进来，一行一个渠道；「留存报表」看各渠道用户的质量（回不回来、付不付费）；「花费」录入各渠道的推广花费，看注册成本和首充成本。统计只认渠道 code：用户注册时写到用户身上，之后的充值、首充都按它算，域名不参与统计。注册按注册日期算（哪天注册算哪天，算进注册时的渠道，没有归因有效期）；首充、充值人数和金额按到账日期算（1 号注册、3 号到账算 3 号）；金额只算实付，不含赠送。筛选：商户、日期、渠道类型、代理、分组、渠道、广告平台；选了代理，渠道下拉只剩他名下的渠道。'))+
-  (CUR==='aRpt'?tabs2(['新增报表','留存报表','花费','用户来源','事件记录'],[0,3,4,1,2],t,'rptTab'):tabs2(['新增报表','留存报表','花费','用户来源'],[0,3,4,1],t,'rptTab'))+
+  tabs2(['新增报表','留存报表','花费','用户来源'],[0,3,4,1],t,'rptTab')+
   rptFlt(t);
   const nn=(v,tab)=>v==='--'?'--':n(v,tab);
   if(t===0)h+=`<div class="kpis">${(M==='(1050)daman'?[['落地页浏览','6,940'],['点按钮数','3,942'],['注册','679'],['首充人数','222'],['充值金额','₹ 382,400']]:[['落地页浏览','0'],['点按钮数','0'],['注册','0'],['首充人数','0'],['充值金额','--']]).map(k=>`<div class="kpi"><span>${k[0]} ${hi(k[0])}</span><b>${k[1]}</b></div>`).join('')}</div>`+
@@ -968,7 +977,6 @@ PAGES.mRpt={end:'m',title:'推广报表',bd:['新',''],tab:0,render(){
    ['1105023','dev2026','2026-11-01 15:40:02','Facebook-A','Web','--','未知','--','--','FB_WEB_IN_001','--','否','未匹配'],
    ['1105024','anil_m','2026-11-01 16:11:58','A2','Web','8810021','未知','--','--','agt_WEB_IN_002','--','否','未匹配'],
    ['1105025','neha.s','2026-11-01 17:02:33','渠道 A','Web','--','未知','--','--','self_WEB_IN_001','2026-11-01 17:30:45','是','不发平台']]);
-  if(t===2)h+=evRecTbl();
   if(t===3)h+=retHtml();
   if(t===4)h+=spHtml();
   return h}};
@@ -985,7 +993,7 @@ function evRecTbl(){const fe=`<span class="sub">${st('前端已触发','ok')}</s
    ['EV90023','首充','1105022','RC2611010091','₹ 1,000','渠道 C · 安卓壳包','15:20:11','服务端',st('成功','ok'),'Facebook Subscribe'+sv('平台已接收'),`<a onclick="evView('EV90023')">查看</a>`],
    ['EV90031','注册','1105024','--','--','A2 · Web','16:11:58','服务端',st('成功','ok'),'TikTok CompleteRegistration'+sv('回传异常','err'),(CUR==='aRpt'?`<a onclick="evView('EV90031')">查看</a>`:`<span class="ops"><a onclick="evView('EV90031')">查看</a><a onclick="toast('演示：已重新发送；没收到的先存着，重新授权后补发')">重试</a></span>`)]])}
 function n(v,tab){return `<span class="num" onclick="rptTab(${tab})">${v.toLocaleString()}</span>`}
-function rptTab(i){if(i===2&&CUR!=='aRpt')return go('mEvLog');PAGES[CUR==='aRpt'?'aRpt':'mRpt'].tab=i;RFOK=null;render()}
+function rptTab(i){if(i===2){TENANT_SCOPE.page.mPromo=tenantPageValue()||M;return go('mEvLog')}PAGES[CUR==='aRpt'?'aRpt':'mRpt'].tab=i;RFOK=null;render()}
 
 /* ---- 商户 · 落地页/PWA管理 ---- */
 const LPPATH=1;const LPS=[
@@ -1197,7 +1205,7 @@ function verPub(v){const r=VERS.find(x=>x[0]===v);if(!r)return;if(!/已通过/.t
  $('#cfok').onclick=()=>{r[7]=st('已发布','ok');r[8]=[0,'0 / 410 台'];closeDrawer();render();toast('已发布')}}
 
 /* ---- 总控 · 推广报表 ---- */
-PAGES.aRpt={end:'a',title:'推广报表',bd:['新',''],tab:0,render(){return PAGES.mRpt.render.call(this)}}; function aRptTab(i){PAGES.aRpt.tab=i;render()}
+PAGES.aRpt={end:'a',title:'推广报表',bd:['新',''],tab:0,render(){return PAGES.mRpt.render.call(this)}}; function aRptTab(i){if(i===2)return rptTab(2);PAGES.aRpt.tab=i;render()}
 
 /* ============ 菜单 ============ */
 const MNAV=['会员','运营','优惠','财务','游戏','代理','报表','风控','系统'];
@@ -1217,7 +1225,7 @@ function renderTop(end,cur){
 
 /* ============ 路由 ============ */
 let CUR='intro';
-function go(k,tab){if(k==='mRescue')k='mDom';if(k in PROMO_ALIAS){PAGES.mPromo.tab=PROMO_ALIAS[k];if(k==='mAd'&&tab!=null)PAGES.mAd.tab=tab;k='mPromo';tab=null}k=({mGuide:'mCh'})[k]||k;if(!PAGES[k]&&k!=='intro')k='mPromo';if(tab!=null&&PAGES[k])PAGES[k].tab=tab;CUR=k;closeDrawer();if(location.hash.slice(1)!==k)history.replaceState(null,'','#'+k);render();window.scrollTo(0,0)}
+function go(k,tab){if((k==='aRpt'||k==='mRpt')&&tab===2){TENANT_SCOPE.page.mPromo=TENANT_SCOPE.page[k]||M;k='mEvLog';tab=null}if(k==='mRescue')k='mDom';if(k in PROMO_ALIAS){PAGES.mPromo.tab=PROMO_ALIAS[k];if(k==='mAd'&&tab!=null)PAGES.mAd.tab=tab;k='mPromo';tab=null}k=({mGuide:'mCh'})[k]||k;if(!PAGES[k]&&k!=='intro')k='mPromo';if(tab!=null&&PAGES[k])PAGES[k].tab=tab;CUR=k;closeDrawer();if(location.hash.slice(1)!==k)history.replaceState(null,'','#'+k);render();window.scrollTo(0,0)}
 function render(){
   const dn=[['intro','方案介绍']],mk=['mPromo','mCh','mApp','mRpt','mDom','mLp'].filter(k=>PAGES[k]),ak=['aApp','aRpt'];
   const btn=k=>{const p=PAGES[k];return `<button class="${CUR===k?'on':''}" onclick="go('${k}')">${p.title}<span class="bd ${p.bd[1]}">${p.bd[0]}</span></button>`};
@@ -2634,7 +2642,7 @@ publishedMotherCandidates=function(merchant,type){return MOTHER_GRANTS.filter(g=
 publishedMotherForType=function(merchant,type,expected){const all=publishedMotherCandidates(merchant,type),candidate=expected?all.find(p=>p.grant.mp===expected.mp&&p.grant.version===expected.version):all.find(p=>/启用/.test(p.mother[6]));if(!candidate)return {error:'当前商户没有对应端已下发、已发布且启用的母包'};if(!/启用/.test(candidate.mother[6]))return {error:'母包已停用，不能生成新APP包'};return candidate};
 function publicLatest(m){return !MPS.some(other=>other[2]===m[2]&&motherCompareVersion(motherCurrent(other)[0],motherCurrent(m)[0])>0)}
 motherApp=function(){return '平台公用APP'};
-motherForm=function(m){TENANT_SCOPE.form=null;MOTHER_FILE=null;const r=m?motherCurrent(m):null;openDrawer(m?'编辑母包':'新增母包',`<div id="motherForm">${F([['母包ID',m?m[0]:'保存后生成',{ro:1}],['母包名称',I(m?motherHtml(m[1]):''),{req:1}],['类型',m?m[2]:S(''),m?{ro:1}:{req:1}],['版本号',VNO(r?r[0]:''),{req:1}],['母包状态',`<span class="sw ${!m||/启用/.test(m[6])?'on':''}"></span>`],['更新方式','安装包升级',{ro:1}],['更新类型',R(['强制更新','建议更新','静默更新'],m?m._updateType:'建议更新'),{req:1}],['更新说明','<textarea class="inp ta" id="motherNote"></textarea>',{req:1,full:1}],['上传安装包',motherUpload(),{req:!m,full:1}],['发布状态',r?r[7]:st('未发布','no'),{ro:1}],['最后修改人/时间',m?m[7]:'--',{ro:1}]],120)}</div>`,`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="motherSave('${m?m[0]:''}')">保存</button>`,720,m?[['母包ID',m[0]]]:null);document.getElementById('motherNote').value=r?r[4]:'';document.getElementById('motherFileName').textContent=m?m._file?.name||'':'';document.getElementById('motherForm').addEventListener('input',e=>{if(e.target.matches('input.vno')&&MOTHER_FILE){MOTHER_FILE.check='idle';MOTHER_FILE.checkedTarget='';motherPackageUI()}})};
+motherForm=function(m){TENANT_SCOPE.form=null;MOTHER_FILE=null;const r=m?motherCurrent(m):null;openDrawer(m?'编辑母包':'新增母包',`<div id="motherForm">${F([['母包ID',m?m[0]:'保存后生成',{ro:1}],['母包名称',I(m?motherHtml(m[1]):''),{req:1}],['类型',m?m[2]:S(''),m?{ro:1}:{req:1}],['版本号',VNO(r?r[0]:''),{req:1}],['母包状态',`<span class="sw ${!m||/启用/.test(m[6])?'on':''}"></span>`],['更新方式','安装包升级',{ro:1}],['更新类型',R(['强制更新','建议更新','静默更新'],m?m._updateType:'建议更新'),{req:1,full:1}],['更新说明','<textarea class="inp ta" id="motherNote"></textarea>',{req:1,full:1}],['上传安装包',motherUpload(),{req:!m,full:1}],['发布状态',r?r[7]:st('未发布','no'),{ro:1}],['最后修改人/时间',m?m[7]:'--',{ro:1}]],120)}</div>`,`<button class="btn" onclick="closeDrawer()">取消</button><button class="btn p" onclick="motherSave('${m?m[0]:''}')">保存</button>`,720,m?[['母包ID',m[0]]]:null);document.getElementById('motherNote').value=r?r[4]:'';document.getElementById('motherFileName').textContent=m?m._file?.name||'':'';document.getElementById('motherForm').addEventListener('input',e=>{if(e.target.matches('input.vno')&&MOTHER_FILE){MOTHER_FILE.check='idle';MOTHER_FILE.checkedTarget='';motherPackageUI()}})};
 motherSave=function(id){let m=id&&MPS.find(x=>x[0]===id);if(id&&!m)return toast('母包不存在');const r=m?motherCurrent(m):null,name=tenantRead('母包名称'),type=m?m[2]:tenantRead('类型'),note=tenantRead('更新说明'),version=motherVersionCheck(document.querySelector('#dbody input.vno'),r?r[0]:null);if(!name||!type||!note)return toast('请填写母包名称、类型和更新说明');if(!version)return;const changed=!m||version!==r[0]||!!MOTHER_FILE;if(changed&&!MOTHER_FILE)return toast('新增或修改版本号时必须选择新的安装包');if(m&&MOTHER_FILE&&motherCompareVersion(version,r[0])<=0)return toast('更换安装包时，版本号必须大于当前版本 '+r[0]);if(changed&&(MOTHER_FILE.check!=='pass'||MOTHER_FILE.checkedTarget!==version))return toast('请先完成Demo模拟包内版本检测，且版本一致');if(!m){const next='MP'+String(++MOTHER_SEQ).padStart(2,'0');m=[next,name,type,version,'',[],st('启用','ok'),''];m._public=true;m._uploadProcesses={};m._current=[version,name,'安装包','安装包升级',note,'','',st('未发布','no'),null,'',''];m._meta={id:'VER-'+next,size:''};MPS.push(m)}else if(changed&&r[7].includes('已发布')&&m._meta.size)m._rollback={current:[...r],meta:{...m._meta},file:{...m._file},updateType:m._updateType};const current=motherCurrent(m);m[1]=current[1]=name;m[3]=current[0]=version;current[3]='安装包升级';current[4]=note;m._updateType=chFr('更新类型')?.querySelector('.radio .on')?.textContent||'建议更新';m[6]=chFr('母包状态')?.querySelector('.sw.on')?st('启用','ok'):st('停用','no');m[7]=who('当前账号',demoNow());if(MOTHER_FILE){m._file={...MOTHER_FILE};m._meta.size=(MOTHER_FILE.size/1024/1024).toFixed(2)+' MB'}if(changed){current[7]=st('未发布','no');current[8]=null;const task={id:'Q-MOTHER-'+(++SUBQSEQ),taskType:'mother',mp:m[0],mother:m[1],version,trigger:'上传现成安装包',status:'pending',progress:0,submit:AQUEUE.now,start:'',finish:'',bundle:motherBundle(m)};m._uploadProcesses[version]=task;AQUEUE.rows.unshift(task)}closeDrawer();render();toast(changed?'已保存，上传与版本核对处理已入队':'已保存')};
 const PUBLIC_QUERY={type:'',state:'',name:''};
 PAGES.aApp.render=function(){if(this.tab===1)return tabs(['母包','自动打包队列'],1,'aAppTab')+aQueuePage();const rows=MPS.filter(m=>(!PUBLIC_QUERY.type||m[2]===PUBLIC_QUERY.type)&&(!PUBLIC_QUERY.state||(motherCurrent(m)[7].includes(PUBLIC_QUERY.state)&&!(PUBLIC_QUERY.state==='已发布'&&motherCurrent(m)[7].includes('未发布'))))&&(!PUBLIC_QUERY.name||m[1].includes(PUBLIC_QUERY.name)));return tabs(['母包','自动打包队列'],0,'aAppTab')+`<div class="flt"><div class="fi"><label>母包名称</label><input class="inp" value="${motherHtml(PUBLIC_QUERY.name)}" oninput="PUBLIC_QUERY.name=this.value"></div>${['type','state'].map(key=>`<div class="fi"><label>${key==='type'?'类型':'发布状态'}</label><select class="inp" onchange="PUBLIC_QUERY.${key}=this.value"><option value="">全部</option>${(key==='type'?['安卓原生','安卓壳包']:['未发布','已发布','已下架']).map(v=>`<option${PUBLIC_QUERY[key]===v?' selected':''}>${v}</option>`).join('')}</select></div>`).join('')}<div class="btns"><button class="btn p" onclick="render()">搜索</button><button class="btn" onclick="Object.assign(PUBLIC_QUERY,{type:'',state:'',name:''});render()">重置</button></div></div><p class="note">母包为平台公用；启用/停用控制新APP包生成，发布时选择下发商户；已发旧包保持不变。</p><div class="bar"><button class="btn p" onclick="motherNew()">＋ 新增母包</button></div>`+table([{t:'版本ID',k:m=>m._meta.id},{t:'母包ID',k:0},{t:'母包名称',k:m=>motherHtml(m[1])},{t:'类型',k:2},{t:'版本号',k:m=>motherCurrent(m)[0]+(publicLatest(m)?' '+st('最新','ok'):'')},{t:'母包状态',k:6},{t:'更新方式',k:()=>'安装包升级'},{t:'更新类型',k:m=>m._updateType},{t:'更新说明',k:m=>motherHtml(motherCurrent(m)[4])},{t:'发布状态',k:m=>motherCurrent(m)[7]},{t:'文件大小',k:m=>m._meta.size||'--'},{t:'下载',k:m=>m._meta.size?`<a onclick="motherAction('${m[0]}','download')">下载</a>`:'--'},{t:'升级进度',k:m=>motherCurrent(m)[8]?.[1]||'--'},{t:'最后修改人/时间',k:7},{t:'操作',k:m=>`<span class="ops"><a onclick="motherEdit('${m[0]}')">编辑母包</a><a onclick="motherDistribute('${m[0]}')">发布</a>${motherCurrent(m)[7].includes('已发布')?`<a onclick="motherAction('${m[0]}','rollback')">回滚</a><a class="r" onclick="motherAction('${m[0]}','unpublish')">下架</a>`:`<a class="r" onclick="motherAction('${m[0]}','delete')">删除</a>`}</span>`}],rows)};
@@ -2690,6 +2698,11 @@ AQUEUE.rows.push({id:'Q-MOTHER-INITIAL-01',taskType:'mother',mp:'MP01',mother:MP
 
 
 {const fn=PAGES.aApp.render;PAGES.aApp.render=function(){const html=fn.call(this),button=`<button class="btn" style="margin-left:auto" onclick="pageLog('aApp')">${CLK}操作记录</button>`,bar=html.indexOf('<div class="bar">'),end=html.indexOf('</div>',bar);return bar>=0?html.slice(0,end)+button+html.slice(end):html+`<div class="bar">${button}</div>`}};
+
+/* 同一弹窗内多组表单共用标签宽度，只调整布局。 */
+function alignDialogLabels(root){const groups=[...document.querySelectorAll(root+' .fm')];if(groups.length<2)return;const width=Math.max(...groups.map(group=>parseFloat(group.style.getPropertyValue('--lw'))||0));if(width)groups.forEach(group=>group.style.setProperty('--lw',width+'px'))}
+{const original=lpForm;lpForm=function(){const result=original.apply(this,arguments);alignDialogLabels('#lpF');return result}}
+{const original=renderAd;renderAd=function(){const result=original.apply(this,arguments);alignDialogLabels('#dbody');return result}}
 
 {const h=location.hash.slice(1);if(h==='mRescue')go('mDom');else if(PAGES[h]||h in PROMO_ALIAS)go(h);else render()}
 </script>
